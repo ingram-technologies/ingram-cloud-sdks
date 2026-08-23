@@ -7,7 +7,7 @@ import type { ModelMessage } from "ai";
  * projected as a standard `mcp_approval_request` item, which the AI SDK
  * surfaces as a `tool-approval-request` content part. Its `approvalId` encodes
  * both the run and the underlying call as `"<run_id>::<tool_call_id>"`. You
- * resume by sending a decision back ({@link approvalResponseMessage}).
+ * resume by sending a decision back ({@link approvalResponseMessages}).
  */
 export interface IngramApprovalRequest {
 	/** The composite approval id: `"<run_id>::<tool_call_id>"`. */
@@ -81,27 +81,54 @@ export function getApprovalRequests(
 }
 
 /**
- * Build the `tool` message to append to `messages` so the next
- * `streamText`/`generateText` call resumes the paused run with your decision.
+ * The messages that resume a paused run with your decision. Append them to
+ * `messages` and make the next `streamText`/`generateText` call.
+ *
+ * Two messages, not one: the AI SDK refuses a `tool-approval-response` whose
+ * request is not in the same `messages` array (`AI_InvalidToolApprovalError`),
+ * so the pair reconstructs the assistant turn that raised the approval — the
+ * provider-executed `tool-call` and its `tool-approval-request` — from the
+ * request itself. That keeps a `threadId` resume self-contained: Ingram Cloud
+ * holds the history, and you send only these. On the wire the pair is the one
+ * standard `mcp_approval_response` item; the reconstructed assistant turn stays
+ * client-side.
  */
-export function approvalResponseMessage(
-	approval: IngramApprovalRequest | string,
+export function approvalResponseMessages(
+	approval: IngramApprovalRequest,
 	decision: ApprovalDecision,
-): ModelMessage {
-	const id = typeof approval === "string" ? approval : approval.id;
-	return {
-		role: "tool",
-		content: [
-			{
-				type: "tool-approval-response",
-				approvalId: id,
-				approved: decision === "approve",
-				// Required: the AI SDK only forwards provider-executed approval
-				// responses to the provider.
-				providerExecuted: true,
-			},
-		],
-	};
+): ModelMessage[] {
+	return [
+		{
+			role: "assistant",
+			content: [
+				{
+					type: "tool-call",
+					toolCallId: approval.toolCallId,
+					toolName: `mcp.${approval.toolName}`,
+					input: approval.args,
+					providerExecuted: true,
+				},
+				{
+					type: "tool-approval-request",
+					approvalId: approval.id,
+					toolCallId: approval.toolCallId,
+				},
+			],
+		},
+		{
+			role: "tool",
+			content: [
+				{
+					type: "tool-approval-response",
+					approvalId: approval.id,
+					approved: decision === "approve",
+					// Required: the AI SDK only forwards provider-executed approval
+					// responses to the provider.
+					providerExecuted: true,
+				},
+			],
+		},
+	];
 }
 
 /**

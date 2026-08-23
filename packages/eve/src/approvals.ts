@@ -5,7 +5,7 @@
  * channel**: the turn's content carries a `tool-approval-request` part whose
  * `approvalId` encodes both the run and the underlying call as
  * `"<run_id>::<tool_call_id>"`. You resume by sending the decision back as a
- * `tool-approval-response` message ({@link approvalResponseMessage}).
+ * `tool-approval-response` message ({@link approvalResponseMessages}).
  *
  * The helpers are `@ingram-cloud/ai-sdk`'s (this package builds its model
  * seam on the adapter), re-exported here so eve users import one package. They
@@ -14,7 +14,7 @@
  * connection.
  */
 export {
-	approvalResponseMessage,
+	approvalResponseMessages,
 	approvalWireItem,
 	buildApprovalId,
 	getApprovalRequests,

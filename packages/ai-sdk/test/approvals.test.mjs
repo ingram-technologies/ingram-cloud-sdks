@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-	approvalResponseMessage,
+	approvalResponseMessages,
 	approvalWireItem,
 	buildApprovalId,
 	getApprovalRequests,
@@ -57,19 +57,46 @@ test("getApprovalRequests extracts approvals from result content parts", () => {
 	});
 });
 
-test("approvalResponseMessage builds the provider-executed approval response", () => {
-	assert.deepEqual(approvalResponseMessage("run_a::tc_1", "approve"), {
-		role: "tool",
-		content: [
-			{
-				type: "tool-approval-response",
-				approvalId: "run_a::tc_1",
-				approved: true,
-				providerExecuted: true,
-			},
-		],
-	});
-	const rejected = approvalResponseMessage("run_a::tc_1", "reject");
+const approval = {
+	id: "run_a::tc_1",
+	runId: "run_a",
+	toolCallId: "tc_1",
+	toolName: "delete_page",
+	args: { id: "p1" },
+};
+
+test("approvalResponseMessages reconstructs the request the AI SDK requires in history", () => {
+	assert.deepEqual(approvalResponseMessages(approval, "approve"), [
+		{
+			role: "assistant",
+			content: [
+				{
+					type: "tool-call",
+					toolCallId: "tc_1",
+					toolName: "mcp.delete_page",
+					input: { id: "p1" },
+					providerExecuted: true,
+				},
+				{
+					type: "tool-approval-request",
+					approvalId: "run_a::tc_1",
+					toolCallId: "tc_1",
+				},
+			],
+		},
+		{
+			role: "tool",
+			content: [
+				{
+					type: "tool-approval-response",
+					approvalId: "run_a::tc_1",
+					approved: true,
+					providerExecuted: true,
+				},
+			],
+		},
+	]);
+	const [, rejected] = approvalResponseMessages(approval, "reject");
 	assert.equal(rejected.content[0].approved, false);
 });
 

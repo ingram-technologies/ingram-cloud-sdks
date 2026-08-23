@@ -137,13 +137,13 @@ without `threadId`; a `threadId` provider is rejected with a `400`.
 A tool the agent marks `destructiveHint` pauses the run for approval. The pause
 arrives as a `tool-approval-request` content part whose `approvalId` is
 `"<run_id>::<tool_call_id>"`. Pull the pending approvals off the result and
-resume by appending a decision:
+resume by sending a decision:
 
 ```ts
 import {
 	createIngramCloud,
 	getApprovalRequests,
-	approvalResponseMessage,
+	approvalResponseMessages,
 } from "@ingram-cloud/ai-sdk";
 import { generateText } from "ai";
 
@@ -155,16 +155,19 @@ if (approvals.length) {
 	const decided = await askTheHuman(approvals); // your UI/policy
 	const resumed = await generateText({
 		model: ingram(""),
-		messages: [
-			...messages,
-			...first.response.messages,
-			...decided.map((a) =>
-				approvalResponseMessage(a.request, a.ok ? "approve" : "reject"),
-			),
-		],
+		messages: decided.flatMap((a) =>
+			approvalResponseMessages(a.request, a.ok ? "approve" : "reject"),
+		),
 	});
 }
 ```
+
+`approvalResponseMessages` returns the assistant turn that raised the approval
+plus the `tool-approval-response` — the AI SDK rejects a response whose request
+is not in the same `messages` (`AI_InvalidToolApprovalError`). With a
+`threadId` those two messages are the whole resume; stateless, put them after
+`...messages, ...first.response.messages`. Keep the `IngramApprovalRequest`
+(it's plain JSON) between the pause and the decision.
 
 On `approve`, Ingram Cloud executes the tool and continues; the executed call
 arrives as a `tool-result` part. On `reject`, the run completes with

@@ -12,7 +12,7 @@
  */
 export { createIngramCloud } from "./provider.js";
 export {
-	approvalResponseMessage,
+	approvalResponseMessages,
 	approvalWireItem,
 	buildApprovalId,
 	getApprovalRequests,

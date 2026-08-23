@@ -1,6 +1,6 @@
 {
 	"name": "@ingram-cloud/eve",
-	"version": "2.0.0",
+	"version": "3.0.0",
 	"description": "eve adapter for Ingram Cloud — run an Ingram smith as an eve agent's model over the OpenAI Responses API, attach an Ingram-hosted deployment's tools as an eve MCP connection, and resolve human-in-the-loop approvals. Standards-first; no proprietary protocol.",
 	"keywords": [
 		"agents",
@@ -46,7 +46,7 @@
 		"prepack": "bun run build"
 	},
 	"dependencies": {
-		"@ingram-cloud/ai-sdk": "^2.0.0"
+		"@ingram-cloud/ai-sdk": "^3.0.0"
 	},
 	"devDependencies": {
 		"ai": "^7.0.65",

@@ -89,14 +89,14 @@ arrives as a standard `tool-approval-request` content part whose `approvalId` is
 `@ingram-cloud/eve/approvals`:
 
 ```ts
-import { getApprovalRequests, approvalResponseMessage } from "@ingram-cloud/eve";
+import { getApprovalRequests, approvalResponseMessages } from "@ingram-cloud/eve";
 
 // `content` from the model result (composite approval ids are Ingram's).
 const approvals = getApprovalRequests(result.content);
 for (const a of approvals) {
 	const decision = (await askTheHuman(a)) ? "approve" : "reject";
-	// Append this message and run the next turn to resume the paused run.
-	messages.push(approvalResponseMessage(a, decision));
+	// Append these and run the next turn to resume the paused run.
+	messages.push(...approvalResponseMessages(a, decision));
 }
 ```
 

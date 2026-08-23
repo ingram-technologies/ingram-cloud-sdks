@@ -1,6 +1,6 @@
 {
 	"name": "@ingram-cloud/ai-sdk",
-	"version": "2.2.0",
+	"version": "3.0.0",
 	"description": "Vercel AI SDK adapter for Ingram Cloud — a pre-configured OpenAI Responses provider plus smith identity, thread memory, and human-in-the-loop approval helpers. Server-side tool calls and approvals arrive as standard AI SDK stream parts; no proprietary protocol required.",
 	"keywords": [
 		"agents",

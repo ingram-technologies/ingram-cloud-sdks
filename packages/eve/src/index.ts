@@ -14,7 +14,7 @@
 export { ingramCloudModel, type IngramCloudModelSettings } from "./model.js";
 export { defineIngramMcpConnection } from "./connection.js";
 export {
-	approvalResponseMessage,
+	approvalResponseMessages,
 	approvalWireItem,
 	buildApprovalId,
 	getApprovalRequests,

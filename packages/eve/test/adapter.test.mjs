@@ -4,7 +4,7 @@ import test from "node:test";
 // Import the pure modules directly (not the package index), so the suite never
 // loads `eve` or the AI SDK — these are string/shape helpers with no runtime.
 import {
-	approvalResponseMessage,
+	approvalResponseMessages,
 	approvalWireItem,
 	buildApprovalId,
 	getApprovalRequests,
@@ -40,30 +40,29 @@ test("approvalWireItem yields the raw mcp_approval_response input item", () => {
 	});
 });
 
-test("approvalResponseMessage yields the provider-executed approval response", () => {
-	assert.deepEqual(
-		approvalResponseMessage(
-			{
-				id: "run_a::tc_1",
-				runId: "run_a",
-				toolCallId: "tc_1",
-				toolName: "delete_page",
-				args: {},
-			},
-			"reject",
-		),
+test("approvalResponseMessages re-exports the ai-sdk resume pair", () => {
+	const [request, response] = approvalResponseMessages(
 		{
-			role: "tool",
-			content: [
-				{
-					type: "tool-approval-response",
-					approvalId: "run_a::tc_1",
-					approved: false,
-					providerExecuted: true,
-				},
-			],
+			id: "run_a::tc_1",
+			runId: "run_a",
+			toolCallId: "tc_1",
+			toolName: "delete_page",
+			args: {},
 		},
+		"reject",
 	);
+	assert.equal(request.role, "assistant");
+	assert.deepEqual(response, {
+		role: "tool",
+		content: [
+			{
+				type: "tool-approval-response",
+				approvalId: "run_a::tc_1",
+				approved: false,
+				providerExecuted: true,
+			},
+		],
+	});
 });
 
 test("getApprovalRequests extracts composite approval requests, skips foreign ones", () => {
