@@ -1,19 +1,17 @@
 # @ingram-cloud/flue
 
-Drive an [Ingram Cloud](https://cloud.ingram.tech) smith from a
-[Flue](https://flueframework.com) agent. A thin, idiomatic extension of Flue:
-register a smith as a model **provider**, attach Ingram-hosted **tools** over
-MCP, and resolve **approvals** — each over an industry-standard surface, no
-bespoke protocol.
+Run an [Ingram Cloud](https://cloud.ingram.tech) smith from a
+[Flue](https://flueframework.com) agent. The package provides three things:
 
-## Philosophy: stand on the standard
+- `registerIngramCloud()`: a smith as a Flue model provider, over Flue's
+  built-in `openai-completions` wire protocol pointed at Ingram Cloud's
+  [OpenAI-compatible API](https://cloud.ingram.tech/docs/openai-compat).
+- `defineIngramMcp()` / `connectIngramMcp()`: an Ingram-hosted
+  [MCP](https://cloud.ingram.tech/docs/tools) deployment as Flue tools.
+- Approval helpers for the standard tool-call channel.
 
-This package adds no proprietary client. The provider rides Flue's built-in
-`openai-completions` wire protocol pointed at Ingram Cloud's
-[OpenAI-compatible API](https://cloud.ingram.tech/docs/openai-compat); tools ride
-[MCP](https://cloud.ingram.tech/docs/tools); approvals ride the **standard
-tool-call channel**. A smith still runs the agent loop server-side — memory,
-tools, approvals, isolation — but to Flue it looks like any model.
+The smith runs its agent loop server-side (memory, tools, approvals,
+isolation). To Flue it is a model.
 
 ## Install
 
@@ -21,15 +19,14 @@ tools, approvals, isolation — but to Flue it looks like any model.
 npm install @ingram-cloud/flue
 ```
 
-`@flue/runtime` (v2) is a **peer dependency** — you already have it in a Flue
-app. It must stay a peer: `setProvider()` writes to a module-scoped registry,
-so the adapter and your app have to share one instance.
+`@flue/runtime` (v2) is a peer dependency and must stay one: `setProvider()`
+writes to a module-scoped registry, so the adapter and your app have to share
+one instance.
 
-## Provider: a smith as your model
+## Provider
 
-Register once in `src/app.ts`, before routing — exactly like any other Flue
-provider. Flue 2 resolves model ids against the provider's declared list, so
-name every model you plan to use:
+Register once in `src/app.ts`, before routing. Flue 2 resolves model ids
+against the provider's declared list, so name every model you plan to use:
 
 ```ts
 import { registerIngramCloud } from "@ingram-cloud/flue";
@@ -64,15 +61,15 @@ export function Triage() {
 
 ### The model id is the LLM, not the agent
 
-The agent a smith runs — its instructions, tools, and memory — is resolved from
-the smith, **never** from the model id. The model id is the upstream inference
-LLM for the turn (`ingram.model("gpt-5.6-sol")` runs the smith's agent on GPT-5.6 Sol).
+The agent a smith runs (instructions, tools, memory) is resolved from the
+smith, never from the model id. The model id is the upstream inference LLM for
+the turn: `ingram.model("gpt-5.6-sol")` runs the smith's agent on GPT-5.6 Sol.
 
-Unlike the raw OpenAI-compatible surface, **Flue requires a non-empty model id**
-(`provider/model`), so there is no "use the agent's configured model" form here —
-name the model you want. `ingram.model("")` throws to make that explicit.
+Flue requires a non-empty model id (`provider/model`), so unlike the raw
+OpenAI-compatible surface there is no "use the smith's configured model" form.
+`ingram.model("")` throws.
 
-Server-side with a tenant-admin token instead of a smith token? Name the smith:
+With a tenant-admin token, name the smith:
 
 ```ts
 const ingram = registerIngramCloud({
@@ -83,7 +80,7 @@ const ingram = registerIngramCloud({
 
 Never ship a tenant-admin token to the browser.
 
-## Tools: Ingram-hosted MCP
+## Tools
 
 Expose an Ingram Cloud deployment of `kind: "mcp"` as Flue tools. Mount the
 definition with `useMcpConnection()`:
@@ -104,16 +101,16 @@ export function Assistant() {
 }
 ```
 
-Tools arrive as ordinary Flue tools, so they compose with native tools, skills,
-and the sandbox. Outside an agent render (trusted application code, Node target
-only), `connectIngramMcp(settings)` connects now and returns `{ tools, close }`.
+The tools are ordinary Flue tools. Outside an agent render (trusted application
+code, Node target only), `connectIngramMcp(settings)` connects immediately and
+returns `{ tools, close }`.
 
-## Approvals (human-in-the-loop)
+## Approvals
 
 A smith tool marked `destructiveHint` pauses the run for approval. On this
-surface the pause arrives as a tool call whose id is `"<run_id>::<tool_call_id>"`
-and the turn ends with `finish_reason: "tool_calls"`. The helpers are pure and
-also live at `@ingram-cloud/flue/approvals`:
+surface the pause arrives as a tool call whose id is `"<run_id>::<tool_call_id>"`,
+and the turn ends with `finish_reason: "tool_calls"`. The helpers also live at
+`@ingram-cloud/flue/approvals`:
 
 ```ts
 import { getApprovalRequests, approvalWireMessage } from "@ingram-cloud/flue";
@@ -127,10 +124,10 @@ for (const a of approvals) {
 }
 ```
 
-On `approve`, Ingram Cloud executes the tool itself and continues; on `reject`,
-the run completes with `stop_reason: "approval_rejected"` and nothing runs.
+On `approve`, Ingram Cloud executes the tool and continues; on `reject`, the run
+completes with `stop_reason: "approval_rejected"` and nothing runs.
 
-## Identity & tokens
+## Identity and tokens
 
 | Token                                    | Use                       | How the smith is chosen                |
 | ---------------------------------------- | ------------------------- | -------------------------------------- |
@@ -139,9 +136,6 @@ the run completes with `stop_reason: "approval_rejected"` and nothing runs.
 
 ## Notes
 
-- **ESM-only**, ships as `dist/`. Build with `npm run build` (plain `tsc`).
-- Independent of the API's api/web checks, like the `pulumi/` and
-  `ai-sdk/` packages. Keep it in step when the OpenAI-compatible / MCP
-  surfaces it wraps change.
-- For the same product over the Vercel AI SDK, see
+- ESM-only, ships as `dist/`. Build with `npm run build` (plain `tsc`).
+- For the Vercel AI SDK, use
   [`@ingram-cloud/ai-sdk`](https://www.npmjs.com/package/@ingram-cloud/ai-sdk).

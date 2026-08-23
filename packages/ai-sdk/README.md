@@ -1,29 +1,20 @@
 # @ingram-cloud/ai-sdk
 
 Drive an [Ingram Cloud](https://cloud.ingram.tech) smith from the
-[Vercel AI SDK](https://ai-sdk.dev). It is a thin, idiomatic extension of the AI
-SDK: a pre-configured provider plus small helpers for the few things Ingram
-Cloud adds on top — smith identity, server-side memory, and human-in-the-loop
-approvals.
+[Vercel AI SDK](https://ai-sdk.dev): a pre-configured provider plus helpers for
+what Ingram Cloud adds on top of the AI SDK (smith identity, server-side memory,
+human-in-the-loop approvals).
 
-## Philosophy: stand on the standard
+The provider is `@ai-sdk/openai`'s Responses model pointed at Ingram Cloud's
+[Responses API](https://cloud.ingram.tech/docs/openai-compat). The smith's turn
+arrives as standard AI SDK parts: text, server-executed tool calls
+(`tool-call`/`tool-result`), and approval pauses (`tool-approval-request`).
+Memory is one request header. The agent loop (memory, tools, approvals,
+isolation) runs server-side; to `streamText` the smith is a model.
 
-This package is deliberately **not** a bespoke protocol client. The main entry
-point is `@ai-sdk/openai`'s Responses model pointed at Ingram Cloud's
-[Responses API](https://cloud.ingram.tech/docs/openai-compat), so your app
-speaks the OpenAI Responses wire format end-to-end and the smith's full agentic
-turn arrives as **standard AI SDK parts**: text, the agent's server-executed
-tool calls (`tool-call`/`tool-result`), and approval pauses
-(`tool-approval-request`). Memory rides a single request header. There is no
-custom SSE envelope to parse and no `streamText` replacement to learn.
-
-A smith still runs the agent loop server-side (that's the whole point — memory,
-tools, approvals, isolation), but from your code it looks like any other model.
-
-> The native run envelope (`/v1/smiths/{id}/runs`) is available behind the opt-in
-> [`/native`](#native-fallback) subpath for the one thing the standard parts
-> don't carry — the in-flight `tool.executing` frame the moment a tool starts.
-> Prefer the standard provider.
+> The native run envelope (`/v1/smiths/{id}/runs`) is available behind the
+> [`/native`](#native-fallback) subpath. It carries one thing the standard parts
+> do not: the in-flight `tool.executing` frame when a tool starts.
 
 ## Install
 
@@ -31,8 +22,8 @@ tools, approvals, isolation), but from your code it looks like any other model.
 npm install @ingram-cloud/ai-sdk ai
 ```
 
-`ai` (v7+) is a peer dependency — you already have it. `@ai-sdk/react` is only
-needed for the [client helpers](#client-usechat).
+`ai` (v7+) is a peer dependency. `@ai-sdk/react` is needed only for the
+[client helpers](#client-usechat).
 
 ## Quickstart
 
@@ -55,7 +46,7 @@ const result = streamText({
 for await (const delta of result.textStream) process.stdout.write(delta);
 ```
 
-Server-side with a tenant-admin token instead? Name the smith explicitly:
+With a tenant-admin token, name the smith:
 
 ```ts
 const ingram = createIngramCloud({
@@ -64,14 +55,13 @@ const ingram = createIngramCloud({
 });
 ```
 
-Never ship a tenant-admin token to the browser — proxy through your backend.
+Never ship a tenant-admin token to the browser; proxy through your backend.
 
 ### Server-side tool steps
 
-When the agent's own MCP tools run inside a turn, each call reaches the stream
-as a `tool-call` part (named `mcp.<tool>`, marked `providerExecuted`) followed
-by a `tool-result` part, slotted between the text runs — a multi-step turn
-arrives as steps, not one unbroken text run:
+When the agent's MCP tools run inside a turn, each call reaches the stream as a
+`tool-call` part (named `mcp.<tool>`, marked `providerExecuted`) followed by a
+`tool-result` part, between the text runs:
 
 ```ts
 for await (const part of result.fullStream) {
@@ -81,14 +71,12 @@ for await (const part of result.fullStream) {
 }
 ```
 
-In a `useChat` UI the same parts arrive as tool invocations on the message — no
-extra wiring.
+In `useChat` the same parts arrive as tool invocations on the message.
 
 ### Client (`useChat`)
 
-The recommended shape is a proxy route: the browser talks to your `/api/chat`
-route, which holds the token and runs `createIngramCloud`. The client is plain AI
-SDK:
+Use a proxy route: the browser talks to your `/api/chat` route, which holds the
+token and runs `createIngramCloud`. The client is plain AI SDK:
 
 ```tsx
 "use client";
@@ -105,16 +93,15 @@ export function Chat() {
 }
 ```
 
-## Memory: one header
+## Memory
 
-A stateless call sends the whole context each turn. Pass a `threadId` and Ingram
+A stateless call sends the whole context each turn. With a `threadId`, Ingram
 Cloud holds the conversation server-side (the same thread model as a native
-run): you send only the new turn, and
-[memory](https://cloud.ingram.tech/docs/memory) works. This holds with
-client-side `tools` too — the thread replays the prior turns, tool-call linkage
-included. Use a `cnv_`
-[conversation](https://cloud.ingram.tech/docs/conversations) id as the `threadId`
-and the chat's transcript accrues on the conversation.
+run) and you send only the new turn; see
+[memory](https://cloud.ingram.tech/docs/memory). This holds with client-side
+`tools` too: the thread replays the prior turns, tool-call linkage included.
+Use a `cnv_` [conversation](https://cloud.ingram.tech/docs/conversations) id as
+the `threadId` and the transcript accrues on the conversation.
 
 ```ts
 const ingram = createIngramCloud({
@@ -125,8 +112,8 @@ const ingram = createIngramCloud({
 
 ## Structured outputs (`generateObject`)
 
-`generateObject` sends your schema as a strict `text.format` and Ingram Cloud
-enforces it — conforming JSON or an error, never a best-effort guess:
+`generateObject` sends your schema as a strict `text.format`. Ingram Cloud
+returns conforming JSON or an error:
 
 ```ts
 import { generateObject } from "ai";
@@ -142,13 +129,13 @@ const { object } = await generateObject({
 });
 ```
 
-The schema'd call is a stateless one-shot (no tools, no memory) — use a provider
-**without** `threadId` for it; a `threadId` provider is rejected with a `400`.
+The call is a stateless one-shot with no tools and no memory. Use a provider
+without `threadId`; a `threadId` provider is rejected with a `400`.
 
 ## Approvals (human-in-the-loop)
 
 A tool the agent marks `destructiveHint` pauses the run for approval. The pause
-arrives as a standard `tool-approval-request` content part whose `approvalId` is
+arrives as a `tool-approval-request` content part whose `approvalId` is
 `"<run_id>::<tool_call_id>"`. Pull the pending approvals off the result and
 resume by appending a decision:
 
@@ -179,22 +166,19 @@ if (approvals.length) {
 }
 ```
 
-On `approve`, Ingram Cloud executes the tool itself and continues — the executed
-call arrives as a `tool-result` part like any other server-side step; on
-`reject`, the run completes with `stop_reason: "approval_rejected"` and nothing
-runs. Calling `/v1/responses` directly without AI SDK message conversion? Use
+On `approve`, Ingram Cloud executes the tool and continues; the executed call
+arrives as a `tool-result` part. On `reject`, the run completes with
+`stop_reason: "approval_rejected"` and nothing runs. When calling
+`/v1/responses` directly without AI SDK message conversion, use
 `approvalWireItem(id, "approve")` to build the raw `mcp_approval_response`
 input item.
 
 ## Tools
 
-Two models, both standard — pick per use case:
-
-- **Client-side tools (you run them).** Define tools with the AI SDK's `tool()` and
-  pass them to `streamText`/`generateText` as with any provider. The model's calls
-  come back for **you** to execute; the SDK loops by re-sending the conversation.
-  Ingram Cloud executes nothing — the standard OpenAI function-call contract, no
-  Ingram-specific setup.
+- Client-side tools, run by you. Define tools with the AI SDK's `tool()` and
+  pass them to `streamText`/`generateText`. The model's calls come back for you
+  to execute; the SDK loops by re-sending the conversation. This is the OpenAI
+  function-call contract; Ingram Cloud executes nothing.
 
     ```ts
     import { tool } from "ai";
@@ -212,15 +196,13 @@ Two models, both standard — pick per use case:
     });
     ```
 
-    A turn that passes `tools` runs only those client tools (the agent still supplies
-    instructions; its server-side MCP tools sit out that turn). Memory composes: with
+    A turn that passes `tools` runs only those client tools; the agent still
+    supplies instructions, and its server-side MCP tools sit out that turn. With
     a `threadId` the loop is stateful and you send only the new turn.
 
-- **Server-side tools (MCP).** Ingram Cloud calls your MCP server and runs the tools
-  for you, with approval gating. Don't pass `tools` — register the MCP server once
-  and it's available to the smith automatically. Every call is visible on the
-  stream (see [Server-side tool steps](#server-side-tool-steps)). For
-  shared/remote tools.
+- Server-side tools, run by Ingram Cloud over MCP, with approval gating. Register
+  the MCP server once and the smith has it; don't pass `tools`. Every call is
+  visible on the stream (see [Server-side tool steps](#server-side-tool-steps)).
 
 ## Identity & tokens
 
@@ -229,16 +211,15 @@ Two models, both standard — pick per use case:
 | Smith token (`sub = "<tenant>:<smith>"`) | browser-safe; the default | the token _is_ the smith               |
 | Tenant-admin token                       | server-side only          | pass `smithId` (sent as `IC-Smith-Id`) |
 
-The agent is the one the smith runs — chosen by the smith, never by an argument.
-The `model` argument is the upstream inference LLM: `""` uses the agent's configured
-model; a model id (e.g. `gpt-5.6-sol`) overrides the LLM for that call.
+The agent is chosen by the smith, not by an argument. The `model` argument is
+the inference LLM: `""` uses the agent's configured model; a model id (e.g.
+`gpt-5.6-sol`) overrides it for that call.
 
 ## Native fallback
 
-`@ingram-cloud/ai-sdk/native` parses Ingram Cloud's native SSE envelope
-into an AI SDK UI message stream. Reach for it only when you need the native
-extras the standard parts don't carry — chiefly the in-flight `tool.executing`
-frame the moment a tool starts:
+`@ingram-cloud/ai-sdk/native` parses Ingram Cloud's native SSE envelope into an
+AI SDK UI message stream. Use it for the `tool.executing` frame; the standard
+provider covers everything else.
 
 ```ts
 import { pipeIngramCloudRun } from "@ingram-cloud/ai-sdk/native";
@@ -250,15 +231,12 @@ const result = await pipeIngramCloudRun(icResponse, writer, {
 // result.status: "completed" | "paused" | "failed" | "cancelled" | "unknown"
 ```
 
-`"unknown"` means the stream closed without saying how the run ended — treat the
+`"unknown"` means the stream closed without saying how the run ended: treat the
 text as partial and read the run record. `result.warnings` is set when a
-`completed` turn answered without a tool source or a skill it needed: the answer
-is shaped exactly like a healthy one, so this is the only way to tell.
+`completed` turn answered without a tool source or a skill it needed. The
+answer is shaped like a healthy one, so the warning is the only signal.
 
 ## Notes
 
-- **ESM-only**, ships as `dist/`. Build with `npm run build` (plain `tsc`).
-- Independent of the API's api/web checks, like the `pulumi/` package. Keep it
-  in step when the Responses surface it wraps changes.
-- This is the seed of the official Ingram Cloud JavaScript SDK; the intended
-  long-term home is `@ai-sdk/ingram-cloud`.
+- ESM-only, ships as `dist/`. Build with `npm run build` (plain `tsc`).
+- The intended long-term home of this package is `@ai-sdk/ingram-cloud`.

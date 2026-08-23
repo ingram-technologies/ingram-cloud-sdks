@@ -1,21 +1,18 @@
 # @ingram-cloud/eve
 
-Wire an [Ingram Cloud](https://cloud.ingram.tech) smith into an
-[eve](https://vercel.com/eve) agent. A thin, idiomatic extension of eve: run a
-smith as your agent's **model**, attach Ingram-hosted **tools** as an MCP
-connection, and resolve **approvals** — each over an industry-standard surface,
-no bespoke protocol.
+Run an [Ingram Cloud](https://cloud.ingram.tech) smith inside an
+[eve](https://vercel.com/eve) agent. The package provides three things:
 
-## Philosophy: stand on the standard
+- `ingramCloudModel()`: a smith as the agent's `model`, a plain AI SDK
+  `LanguageModel` over Ingram Cloud's
+  [Responses API](https://cloud.ingram.tech/docs/openai-compat). The smith's
+  server-executed tool calls arrive as standard `tool-call`/`tool-result` parts.
+- `defineIngramMcpConnection()`: an Ingram-hosted
+  [MCP](https://cloud.ingram.tech/docs/tools) deployment as an eve connection.
+- Approval helpers for the AI SDK's standard approval channel.
 
-This package adds no proprietary client. The model rides Ingram Cloud's
-[Responses API](https://cloud.ingram.tech/docs/openai-compat) as a plain
-AI SDK `LanguageModel` (eve takes one directly) — the smith's server-executed
-tool calls arrive as standard `tool-call`/`tool-result` parts; tools ride
-[MCP](https://cloud.ingram.tech/docs/tools) through eve's own connection system;
-approvals ride the AI SDK's **standard approval channel**. A smith still runs
-the agent loop server-side — memory, tools, approvals, isolation — but to eve it
-looks like any model.
+The smith runs its agent loop server-side (memory, tools, approvals,
+isolation). To eve it is a model.
 
 ## Install
 
@@ -23,13 +20,11 @@ looks like any model.
 npm install @ingram-cloud/eve
 ```
 
-`eve` and `ai` are **peer dependencies** — you already have them in an eve
-project.
+`eve` and `ai` are peer dependencies.
 
-## Model: a smith as your agent's model
+## Model
 
-eve's `model` takes an AI SDK `LanguageModel`, so a smith drops straight into
-`agent/agent.ts`:
+eve's `model` takes an AI SDK `LanguageModel`:
 
 ```ts
 // agent/agent.ts
@@ -42,18 +37,19 @@ export default defineAgent({
 });
 ```
 
-eve routes this as an external provider — it bypasses the AI Gateway and talks to
+eve routes this as an external provider: it bypasses the AI Gateway and talks to
 Ingram Cloud directly.
 
 ### The model id is the LLM, not the agent
 
-The agent a smith runs — its instructions, tools, and memory — is resolved from
-the smith, **never** from the model id. `modelId` is the upstream inference LLM
-for the turn: omit it to use the smith's configured model, or name one to
-override it (`ingramCloudModel({ apiKey, modelId: "gpt-5.6-sol" })`).
+The agent a smith runs (instructions, tools, memory) is resolved from the
+smith, never from the model id. `modelId` is the upstream inference LLM for the
+turn: omit it to use the smith's configured model, or name one to override it
+(`ingramCloudModel({ apiKey, modelId: "gpt-5.6-sol" })`).
 
-Opt into Ingram Cloud's server-side memory with `threadId`. Server-side with a
-tenant-admin token instead of a smith token? Name the smith with `smithId`:
+`threadId` opts into Ingram Cloud's server-side memory.
+
+With a tenant-admin token, name the smith with `smithId`:
 
 ```ts
 ingramCloudModel({ apiKey: process.env.IC_TENANT_TOKEN!, smithId: "smt_…" });
@@ -61,7 +57,7 @@ ingramCloudModel({ apiKey: process.env.IC_TENANT_TOKEN!, smithId: "smt_…" });
 
 Never ship a tenant-admin token to the browser.
 
-## Tools: Ingram-hosted MCP as an eve connection
+## Tools
 
 Expose an Ingram Cloud deployment of `kind: "mcp"` as an eve connection. The
 filename is the connection name:
@@ -77,19 +73,19 @@ export default defineIngramMcpConnection({
 });
 ```
 
-eve discovers the deployment's tools, brokers auth, and hands them to the model —
-the token never reaches the model. Gate them with eve's own per-connection
+eve discovers the deployment's tools, brokers auth, and hands them to the model;
+the token never reaches the model. Gate them with eve's per-connection
 `approval` (`never()` / `once()` / `always()` from `eve/tools/approval`) or filter
 with `tools: { allow: [...] }`.
 
-This is distinct from `ingramCloudModel`: there a _smith_ runs its own server-side
-tools as the model; here an eve agent calls Ingram-hosted tools directly over MCP.
+Here the eve agent calls Ingram-hosted tools over MCP. With `ingramCloudModel`,
+the smith runs its own tools server-side.
 
-## Approvals (human-in-the-loop)
+## Approvals
 
 A smith tool marked `destructiveHint` pauses its run for approval. The pause
 arrives as a standard `tool-approval-request` content part whose `approvalId` is
-`"<run_id>::<tool_call_id>"`. The helpers are pure and also live at
+`"<run_id>::<tool_call_id>"`. The helpers also live at
 `@ingram-cloud/eve/approvals`:
 
 ```ts
@@ -104,12 +100,11 @@ for (const a of approvals) {
 }
 ```
 
-On `approve`, Ingram Cloud executes the tool itself and continues; on `reject`,
-the run completes with `stop_reason: "approval_rejected"` and nothing runs. These
-are the smith's **server-side** approvals — distinct from eve's per-connection
-`approval` gate above.
+On `approve`, Ingram Cloud executes the tool and continues; on `reject`, the run
+completes with `stop_reason: "approval_rejected"` and nothing runs. These are the
+smith's server-side approvals, not eve's per-connection `approval` gate.
 
-## Identity & tokens
+## Identity and tokens
 
 | Token                                    | Use                       | How the smith is chosen                |
 | ---------------------------------------- | ------------------------- | -------------------------------------- |
@@ -118,13 +113,9 @@ are the smith's **server-side** approvals — distinct from eve's per-connection
 
 ## Notes
 
-- **ESM-only**, ships as `dist/`. Build with `npm run build` (plain `tsc`).
+- ESM-only, ships as `dist/`. Build with `npm run build` (plain `tsc`).
 - Built on
-  [`@ingram-cloud/ai-sdk`](https://www.npmjs.com/package/@ingram-cloud/ai-sdk)
-  (the model seam) — for the same product over the raw Vercel AI SDK or
-  [Flue](https://flueframework.com)
-  ([`@ingram-cloud/flue`](https://www.npmjs.com/package/@ingram-cloud/flue)),
-  reach for those.
-- Independent of the API's api/web checks, like the `pulumi/`, `ai-sdk/`,
-  and `flue/` packages. Keep it in step when the Responses / MCP surfaces
-  it wraps change.
+  [`@ingram-cloud/ai-sdk`](https://www.npmjs.com/package/@ingram-cloud/ai-sdk).
+  For the raw Vercel AI SDK use that package; for
+  [Flue](https://flueframework.com) use
+  [`@ingram-cloud/flue`](https://www.npmjs.com/package/@ingram-cloud/flue).

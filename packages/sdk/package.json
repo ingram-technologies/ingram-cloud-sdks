@@ -1,6 +1,6 @@
 {
 	"name": "@ingram-cloud/sdk",
-	"version": "1.5.0",
+	"version": "1.6.0",
 	"description": "Typed wire contract + management-plane client for the Ingram Cloud API: Zod schemas to validate request/response bodies, TypeScript types for the JSON you read back, SSE/webhook event types, and a typed REST client.",
 	"keywords": [
 		"api",
