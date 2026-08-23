@@ -1,0 +1,62 @@
+{
+	"name": "@ingram-cloud/eve",
+	"version": "2.0.0",
+	"description": "eve adapter for Ingram Cloud — run an Ingram smith as an eve agent's model over the OpenAI Responses API, attach an Ingram-hosted deployment's tools as an eve MCP connection, and resolve human-in-the-loop approvals. Standards-first; no proprietary protocol.",
+	"keywords": [
+		"agents",
+		"ai-sdk",
+		"eve",
+		"ingram",
+		"ingram-cloud",
+		"llm",
+		"mcp",
+		"openai-responses"
+	],
+	"homepage": "https://github.com/ingram-technologies/ingram-cloud-sdks/tree/main/packages/eve#readme",
+	"bugs": "https://github.com/ingram-technologies/ingram-cloud-sdks/issues",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ingram-technologies/ingram-cloud-sdks.git",
+		"directory": "packages/eve"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./approvals": {
+			"types": "./dist/approvals.d.ts",
+			"import": "./dist/approvals.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"lint": "oxlint",
+		"format": "oxfmt --write .",
+		"test": "bun run build && node --test test/*.test.mjs",
+		"prepack": "bun run build"
+	},
+	"dependencies": {
+		"@ingram-cloud/ai-sdk": "^2.0.0"
+	},
+	"devDependencies": {
+		"ai": "^7.0.65",
+		"eve": "^0.37.0"
+	},
+	"peerDependencies": {
+		"ai": "^7.0.0",
+		"eve": ">=0.14.0 <1.0.0"
+	},
+	"engines": {
+		"node": ">=20"
+	}
+}

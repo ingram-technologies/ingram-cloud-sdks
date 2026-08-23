@@ -1,0 +1,74 @@
+{
+	"name": "@ingram-cloud/sdk",
+	"version": "1.5.0",
+	"description": "Typed wire contract + management-plane client for the Ingram Cloud API: Zod schemas to validate request/response bodies, TypeScript types for the JSON you read back, SSE/webhook event types, and a typed REST client.",
+	"keywords": [
+		"api",
+		"ingram",
+		"ingram-cloud",
+		"openapi",
+		"sdk",
+		"wire",
+		"zod"
+	],
+	"homepage": "https://github.com/ingram-technologies/ingram-cloud-sdks/tree/main/packages/sdk#readme",
+	"bugs": "https://github.com/ingram-technologies/ingram-cloud-sdks/issues",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ingram-technologies/ingram-cloud-sdks.git",
+		"directory": "packages/sdk"
+	},
+	"files": [
+		"ts",
+		"dist"
+	],
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./ts/index.ts",
+			"bun": "./ts/index.ts",
+			"default": "./dist/index.js"
+		},
+		"./schemas": {
+			"types": "./ts/schemas.ts",
+			"bun": "./ts/schemas.ts",
+			"default": "./dist/schemas.js"
+		},
+		"./zod": {
+			"types": "./ts/zod/index.ts",
+			"bun": "./ts/zod/index.ts",
+			"default": "./dist/zod/index.js"
+		},
+		"./responses": {
+			"types": "./ts/responses.ts",
+			"bun": "./ts/responses.ts",
+			"default": "./dist/responses.js"
+		},
+		"./client": {
+			"types": "./ts/client.ts",
+			"bun": "./ts/client.ts",
+			"default": "./dist/client.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"typecheck": "tsc --noEmit",
+		"lint": "oxlint",
+		"format": "oxfmt --write .",
+		"test": "vitest run",
+		"prepack": "bun run build"
+	},
+	"dependencies": {
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"vitest": "^4.1.10"
+	},
+	"engines": {
+		"node": ">=20"
+	}
+}

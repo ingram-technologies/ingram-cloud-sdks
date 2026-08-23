@@ -1,0 +1,60 @@
+{
+	"name": "@ingram-cloud/flue",
+	"version": "2.0.0",
+	"description": "Flue adapter for Ingram Cloud — register an Ingram smith as a Flue model provider over the OpenAI-compatible API, attach its server-side tools over MCP, and resolve human-in-the-loop approvals. Standards-first; no proprietary protocol.",
+	"keywords": [
+		"agents",
+		"flue",
+		"ingram",
+		"ingram-cloud",
+		"llm",
+		"mcp",
+		"openai-compatible",
+		"pi"
+	],
+	"homepage": "https://github.com/ingram-technologies/ingram-cloud-sdks/tree/main/packages/flue#readme",
+	"bugs": "https://github.com/ingram-technologies/ingram-cloud-sdks/issues",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ingram-technologies/ingram-cloud-sdks.git",
+		"directory": "packages/flue"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./approvals": {
+			"types": "./dist/approvals.d.ts",
+			"import": "./dist/approvals.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"lint": "oxlint",
+		"format": "oxfmt --write .",
+		"test": "bun run build && node --test test/*.test.mjs",
+		"prepack": "bun run build"
+	},
+	"dependencies": {
+		"@earendil-works/pi-ai": "^0.83.0"
+	},
+	"devDependencies": {
+		"@flue/runtime": "^2.0.3"
+	},
+	"peerDependencies": {
+		"@flue/runtime": "^2.0.0"
+	},
+	"engines": {
+		"node": ">=20"
+	}
+}

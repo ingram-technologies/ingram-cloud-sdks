@@ -1,0 +1,24 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "unicorn", "oxc", "import"],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn"
+	},
+	"rules": {
+		"no-unused-vars": "warn",
+		"typescript/no-non-null-assertion": "error",
+		"typescript/no-explicit-any": "error",
+		"unicorn/prefer-node-protocol": "off"
+	},
+	"ignorePatterns": ["**/dist", "packages/sdk/ts/schemas.ts"],
+	"overrides": [
+		{
+			"files": ["packages/pulumi/**"],
+			"rules": {
+				"typescript/no-explicit-any": "off",
+				"typescript/no-non-null-assertion": "off"
+			}
+		}
+	]
+}

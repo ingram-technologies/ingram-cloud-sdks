@@ -1,0 +1,42 @@
+{
+	"name": "@ingram-cloud/pulumi",
+	"version": "2.1.1",
+	"description": "Pulumi dynamic resources for the Ingram Cloud /v1 API — projects, project tokens, agents, MCP servers, channels, webhooks, model keys.",
+	"keywords": [
+		"ingram",
+		"ingram-cloud",
+		"pulumi"
+	],
+	"homepage": "https://github.com/ingram-technologies/ingram-cloud-sdks/tree/main/packages/pulumi#readme",
+	"bugs": "https://github.com/ingram-technologies/ingram-cloud-sdks/issues",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ingram-technologies/ingram-cloud-sdks.git",
+		"directory": "packages/pulumi"
+	},
+	"files": [
+		"dist"
+	],
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"lint": "oxlint",
+		"format": "oxfmt --write .",
+		"prepack": "bun run build"
+	},
+	"devDependencies": {
+		"@pulumi/pulumi": "^3.255.0"
+	},
+	"peerDependencies": {
+		"@pulumi/pulumi": "^3.0.0"
+	},
+	"engines": {
+		"node": ">=20"
+	}
+}

@@ -1,0 +1,64 @@
+{
+	"name": "@ingram-cloud/ai-sdk",
+	"version": "2.2.0",
+	"description": "Vercel AI SDK adapter for Ingram Cloud — a pre-configured OpenAI Responses provider plus smith identity, thread memory, and human-in-the-loop approval helpers. Server-side tool calls and approvals arrive as standard AI SDK stream parts; no proprietary protocol required.",
+	"keywords": [
+		"agents",
+		"ai-sdk",
+		"ingram",
+		"ingram-cloud",
+		"llm",
+		"openai-responses",
+		"vercel-ai-sdk"
+	],
+	"homepage": "https://github.com/ingram-technologies/ingram-cloud-sdks/tree/main/packages/ai-sdk#readme",
+	"bugs": "https://github.com/ingram-technologies/ingram-cloud-sdks/issues",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ingram-technologies/ingram-cloud-sdks.git",
+		"directory": "packages/ai-sdk"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./react": {
+			"types": "./dist/react.d.ts",
+			"import": "./dist/react.js"
+		},
+		"./native": {
+			"types": "./dist/native.d.ts",
+			"import": "./dist/native.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"lint": "oxlint",
+		"format": "oxfmt --write .",
+		"test": "bun run build && node --test test/*.test.mjs",
+		"prepack": "bun run build"
+	},
+	"dependencies": {
+		"@ai-sdk/openai": "^4.0.41",
+		"@ai-sdk/provider": "^4.0.0"
+	},
+	"devDependencies": {
+		"ai": "^7.0.65"
+	},
+	"peerDependencies": {
+		"ai": "^7.0.0"
+	},
+	"engines": {
+		"node": ">=20"
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		// Pulumi dynamic-resource subclasses declare output fields (`secret!`,
+		// `inboundSecret!`, …) that the base `Resource` constructor populates via
+		// super(). With ES2022's default `useDefineForClassFields: true`, those
+		// declarations re-emit as `this.x = undefined` AFTER super(), clobbering
+		// the outputs (every consumer reads `undefined`). Must stay false.
+		"useDefineForClassFields": false,
+		"module": "node16",
+		"moduleResolution": "node16",
+		"lib": ["ES2022"],
+		"declaration": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"types": ["node"]
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "dist"]
+}
