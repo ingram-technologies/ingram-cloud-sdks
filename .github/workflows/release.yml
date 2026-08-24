@@ -1,0 +1,56 @@
+name: Release
+
+# Publishes one package to npm via OIDC trusted publishing (`id-token: write`
+# plus the per-package trusted-publisher config on npmjs.com naming this
+# workflow; a publish E404 means that config is missing for the package).
+#
+# Cut a release: bump `version` in the package's package.json and the root
+# README table, commit, tag `<name>@<version>` (for example `sdk@1.6.0`) and push
+# the tag. Re-running for an existing tag: dispatch with the package name.
+
+on:
+  push:
+    tags: ["*@*"]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Package directory under packages/ (sdk, ai-sdk, eve, flue, pulumi)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: bun install --frozen-lockfile
+      - name: Resolve the package
+        id: pkg
+        run: |
+          if [ -n "${{ inputs.package }}" ]; then
+            name="${{ inputs.package }}"
+          else
+            name="${GITHUB_REF_NAME%@*}"
+          fi
+          [ -f "packages/$name/package.json" ] || { echo "no packages/$name"; exit 1; }
+          version="$(node -p "require('./packages/$name/package.json').version")"
+          if [ -z "${{ inputs.package }}" ] && [ "$name@$version" != "$GITHUB_REF_NAME" ]; then
+            echo "tag $GITHUB_REF_NAME != $name@$version"; exit 1
+          fi
+          echo "dir=packages/$name" >> "$GITHUB_OUTPUT"
+      - run: bun run lint
+      - run: bun run test
+        working-directory: ${{ steps.pkg.outputs.dir }}
+      - run: npm publish --provenance --access public
+        working-directory: ${{ steps.pkg.outputs.dir }}
