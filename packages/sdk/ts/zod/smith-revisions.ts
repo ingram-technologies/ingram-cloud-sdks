@@ -12,11 +12,17 @@
  * operator can roll back. History is append-only — a *restore* re-applies an old
  * snapshot as a brand-new revision.
  *
+ * `snapshot` must carry every key the API snapshots, or Zod strips the missing
+ * one from the response: it is stored and re-applied on restore, but invisible
+ * to the operator deciding whether to roll back. `skills` was absent here and
+ * did exactly that.
+ *
  * `.meta({ id })` names the component so the emitted OpenAPI references it as
  * `#/components/schemas/<id>` rather than inlining it.
  */
 import { z } from "zod";
 import { pageOut } from "./_page.js";
+import { SkillRef } from "./skills.js";
 
 /** An immutable snapshot of a smith's effective behaviour config at one revision. */
 export const SmithRevisionOut = z
@@ -28,6 +34,8 @@ export const SmithRevisionOut = z
 			enabled_hosted_tools: z.array(z.string()).optional(),
 			vector_store_ids: z.array(z.string()).optional(),
 			mcp_servers: z.array(z.string()).nullish(),
+			/** Skills the smith carried at this revision. */
+			skills: z.array(SkillRef).nullish(),
 			// Nullish: a snapshot taken while the smith inherited a sparse agent
 			// version carries null (= the default) for these.
 			auto_memory: z.boolean().nullish(),
