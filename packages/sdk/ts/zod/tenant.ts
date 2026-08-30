@@ -226,11 +226,14 @@ export const ModelsListOut = z
 	})
 	.meta({ id: "ModelsListOut" });
 
-/** A BYOK model key — the `api_key` is NEVER echoed, only its presence. */
+/** A BYOK model key — the `api_key` is NEVER echoed, only its presence.
+ *  `workspace_id` is Anthropic's `anthropic-workspace-id`: required by an
+ *  identity-linked (multi-workspace) key, implicit in a workspace-scoped one. */
 export const ModelKeyOut = z
 	.object({
 		provider: z.string(),
 		base_url: z.string().nullable(),
+		workspace_id: z.string().nullable(),
 		has_key: z.boolean(),
 		updated_at: z.string().nullable(),
 	})
@@ -240,12 +243,14 @@ export const ModelKeyListOut = z
 	.object({ data: z.array(ModelKeyOut) })
 	.meta({ id: "ModelKeyListOut" });
 
-/** The PUT ack — never echoes the key, only presence + the (non-secret) base_url. */
+/** The PUT ack — never echoes the key, only presence + the non-secret
+ *  `base_url` / `workspace_id`. */
 export const ModelKeyConfiguredOut = z
 	.object({
 		provider: z.string(),
 		configured: z.boolean(),
 		base_url: z.string().nullable(),
+		workspace_id: z.string().nullable(),
 	})
 	.meta({ id: "ModelKeyConfiguredOut" });
 
@@ -253,6 +258,7 @@ export const ModelKeyIn = z
 	.object({
 		api_key: z.string(),
 		base_url: z.string().nullish(),
+		workspace_id: z.string().nullish(),
 	})
 	.meta({ id: "ModelKeyIn" });
 
