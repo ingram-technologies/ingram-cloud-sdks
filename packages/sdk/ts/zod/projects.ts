@@ -30,6 +30,29 @@ export const ProjectOut = z
 export const ProjectListOut = pageOut(ProjectOut, "ProjectListOut");
 
 /**
+ * A third-party app linked to the organization through the authorization
+ * server (`GET /oauth/authorize` with no `resource`): one per `(organization,
+ * client_id)`, owning the project it runs in. Disconnecting revokes every
+ * token the app holds.
+ */
+export const AppInstallOut = z
+	.object({
+		id: z.string(),
+		organization: z.string(),
+		/** The app's Client ID Metadata Document URL. */
+		client_id: z.string(),
+		client_name: z.string(),
+		project: z.string(),
+		/** The scopes the app's tokens carry, space-separated. */
+		scope: z.string(),
+		created_at: z.string(),
+		revoked_at: z.string().nullable(),
+	})
+	.meta({ id: "AppInstallOut" });
+
+export const AppInstallListOut = pageOut(AppInstallOut, "AppInstallListOut");
+
+/**
  * The secret minted when an org mints a project (tenant-admin) token. Shape
  * matches `mintToken`'s return; the `tenant` module owns the canonical
  * `ICMintedToken` re-export, so this stays project-named and project-scoped.
@@ -66,3 +89,5 @@ export const ProjectTokenIn = z
 // ── Inferred consumer-facing type ────────────────────────────────────────────
 
 export type ICProject = z.infer<typeof ProjectOut>;
+
+export type ICAppInstall = z.infer<typeof AppInstallOut>;

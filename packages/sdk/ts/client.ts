@@ -56,6 +56,7 @@ import type {
 	ICOrgUsage,
 	ICOrgUsageSeries,
 	ICProject,
+	ICAppInstall,
 	ICProvider,
 	ICRecallHit,
 	ICRun,
@@ -1689,6 +1690,15 @@ export class IngramCloud {
 						opts,
 					),
 			},
+		},
+
+		/** Third-party apps linked through the authorization server. */
+		apps: {
+			list: (query?: PageOpts, opts?: RequestOptions) =>
+				this.page<ICAppInstall>("/organization/apps", query, opts),
+			/** Disconnect: revokes every token the app holds. */
+			delete: (id: string, opts?: RequestOptions) =>
+				this.empty("DELETE", `/organization/apps/${enc(id)}`, opts),
 		},
 	};
 }

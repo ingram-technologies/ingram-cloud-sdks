@@ -84,7 +84,7 @@ export type {
 	ICUsageBreakdown,
 	ICUsageEvent,
 } from "./zod/observability.js";
-export type { ICProject } from "./zod/projects.js";
+export type { ICProject, ICAppInstall } from "./zod/projects.js";
 export type { ICActor } from "./zod/_actor.js";
 export type {
 	ICRun,

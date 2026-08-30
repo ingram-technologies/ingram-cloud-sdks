@@ -305,18 +305,28 @@ export const ProviderIn = z
  *  `authorize_url`. */
 export const AuthorizeRequestOut = z
 	.object({
+		/** `connector`: an MCP host connecting to a deployment (the tenant's page
+		 *  completes it naming a smith). `app`: a third-party app linking an
+		 *  organization (the console completes it with an organization token; the
+		 *  grant's subject is the app's project in that organization). */
+		kind: z.enum(["connector", "app"]),
+		client_id: z.string(),
 		client_name: z.string(),
+		/** The scopes the client asked for, space-separated (`app` only). */
+		scope: z.string(),
 		target_name: z.string(),
+		/** '' on an `app` request until it is completed. */
 		tenant: z.string(),
 		resource: z.string(),
 		deployment_id: z.string(),
 	})
 	.meta({ id: "AuthorizeRequestOut" });
 
-/** Complete the delegated grant: the tenant asserts (server-to-server) which
- *  smith the end-user authorized. */
+/** Complete the delegated grant server-to-server. A `connector` request names
+ *  the smith the end-user authorized; an `app` request carries nothing — the
+ *  organization is the token's. */
 export const AuthorizeCompleteIn = z
-	.object({ smith_id: z.string() })
+	.object({ smith_id: z.string().nullish() })
 	.meta({ id: "AuthorizeCompleteIn" });
 
 /** Where the tenant 302s the browser after completing or declining. */
