@@ -268,16 +268,30 @@ export const VectorStoreFileBatchOut = z
 
 // ── Search ───────────────────────────────────────────────────────────────────
 
+/** OpenAI's `ranking_options`. `hybrid_search` turns on reciprocal-rank fusion
+ *  of the embedding ranking with a full-text (keyword) ranking, weighted as
+ *  given; without it search is embedding-only. */
+export const VectorStoreRankingOptions = z
+	.object({
+		score_threshold: z.number().min(0).max(1).optional(),
+		hybrid_search: z
+			.object({
+				embedding_weight: z.number().min(0),
+				text_weight: z.number().min(0),
+			})
+			.refine((w) => w.embedding_weight > 0 || w.text_weight > 0, {
+				message: "at least one weight must be positive",
+			})
+			.optional(),
+	})
+	.meta({ id: "VectorStoreRankingOptions" });
+
 export const VectorStoreSearchIn = z
 	.object({
 		query: z.union([z.string().min(1), z.array(z.string().min(1)).min(1)]),
 		max_num_results: z.number().int().min(1).max(50).optional(),
 		filters: VectorStoreFilter.nullish(),
-		ranking_options: z
-			.object({
-				score_threshold: z.number().min(0).max(1).optional(),
-			})
-			.optional(),
+		ranking_options: VectorStoreRankingOptions.optional(),
 	})
 	.meta({ id: "VectorStoreSearchIn" });
 
@@ -285,7 +299,8 @@ export const VectorStoreSearchResult = z
 	.object({
 		file_id: z.string(),
 		filename: z.string(),
-		/** Cosine similarity in [0, 1]. */
+		/** In [0, 1]: cosine similarity, or — with `hybrid_search` — the fused
+		 *  reciprocal-rank score (1 = first in both rankings). */
 		score: z.number(),
 		attributes: VectorStoreAttributes.nullable(),
 		content: z.array(z.object({ type: z.literal("text"), text: z.string() })),
