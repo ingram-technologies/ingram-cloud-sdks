@@ -310,14 +310,15 @@ async function uploadUiTemplate(
 // Reconcile the agent's UI templates against its draft `current` state: upload any
 // whose bytes or metadata drifted (or are new), delete any the resource no longer
 // declares. The draft this leaves behind is what the publish step snapshots.
+const eq = (a: unknown, b: unknown) =>
+	JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+
 async function syncUiTemplates(
 	i: AgentInputs,
 	id: string,
 	current: Record<string, unknown>[],
 ): Promise<void> {
 	const desired = resolveUiTemplates(i.uiTemplates);
-	const eq = (a: unknown, b: unknown) =>
-		JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 	for (const t of desired) {
 		const cur = current.find((e) => e?.name === t.name);
 		const unchanged =
@@ -435,7 +436,7 @@ function uiResourcesSig(list?: UiResourceSnap[] | null): unknown[] {
 			csp: e.csp ?? null,
 			permissions: e.permissions ?? null,
 		}))
-		.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+		.toSorted((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 }
 
 // Stable signature of the *content* that warrants a new published version
@@ -444,7 +445,7 @@ function agentContentSig(s: AgentSnapshot): string {
 	const base: Record<string, unknown> = {
 		instructions: s.instructions ?? null,
 		model: s.model ?? null,
-		tools: [...(s.enabled_hosted_tools ?? [])].sort(),
+		tools: (s.enabled_hosted_tools ?? []).toSorted(),
 		auto_memory: s.auto_memory ?? null,
 		memory_consolidation: s.memory_consolidation ?? null,
 		variables: s.variables ?? [],
@@ -455,10 +456,10 @@ function agentContentSig(s: AgentSnapshot): string {
 	const ui = uiResourcesSig(s.ui_resources);
 	if (ui.length) base.ui_resources = ui;
 	// Same discipline for mcp_servers: unset (= all) stays out of the signature.
-	if (s.mcp_servers != null) base.mcp_servers = [...s.mcp_servers].sort();
+	if (s.mcp_servers != null) base.mcp_servers = s.mcp_servers.toSorted();
 	// And for vector stores: omit when empty so agents without any keep a
 	// byte-identical signature to pre-vectorStoreIds releases.
-	const vs = [...(s.vector_store_ids ?? [])].sort();
+	const vs = (s.vector_store_ids ?? []).toSorted();
 	if (vs.length) base.vector_store_ids = vs;
 	// Skills, deliberately NOT sorted: reference order is the run's index-ceiling
 	// drop priority, so reordering the array is itself a content change worth a
@@ -640,6 +641,7 @@ const agentProvider: pulumi.dynamic.ResourceProvider = {
 					`Agent ${id} can't be archived while smiths still run it. Delete or ` +
 						`re-point those smiths first, or set { retainOnDelete: true } on the ` +
 						`resource to leave the agent in place. ${e}`,
+					{ cause: e },
 				);
 			throw e;
 		}
@@ -820,7 +822,7 @@ function resolveSkillFiles(dir: string): ResolvedSkillFile[] {
 	walk(nodePath.resolve(dir), "");
 	if (!out.some((f) => f.rel === `${root}/SKILL.md`))
 		throw new Error(`skill: ${dir} has no SKILL.md`);
-	return out.sort((a, b) => (a.rel < b.rel ? -1 : a.rel > b.rel ? 1 : 0));
+	return out.toSorted((a, b) => (a.rel < b.rel ? -1 : a.rel > b.rel ? 1 : 0));
 }
 
 /** A content signature over the whole bundle — what `diff` compares. */
@@ -1133,7 +1135,7 @@ function vsFilesSig(files?: VectorStoreFile[]): string {
 				content_hash: f.contentHash,
 				chunking: f.chunkingStrategy ?? null,
 			}))
-			.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0)),
+			.toSorted((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0)),
 	);
 }
 
@@ -1750,8 +1752,8 @@ const webhookProvider: pulumi.dynamic.ResourceProvider = {
 	async diff(_id, olds: WebhookInputs, news: WebhookInputs) {
 		const replaces = olds.url !== news.url ? ["url"] : [];
 		const eventsChanged =
-			JSON.stringify([...(olds.events ?? [])].sort()) !==
-			JSON.stringify([...(news.events ?? [])].sort());
+			JSON.stringify((olds.events ?? []).toSorted()) !==
+			JSON.stringify((news.events ?? []).toSorted());
 		return { changes: replaces.length > 0 || eventsChanged, replaces };
 	},
 	// Enables `pulumi import` of a webhook a script already created (id is the
