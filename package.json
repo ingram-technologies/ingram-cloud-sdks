@@ -25,9 +25,9 @@
 		"ci": "bun run lint && bun run format:check && bun run build && bun run typecheck && bun run test"
 	},
 	"devDependencies": {
-		"@types/node": "^26.2.0",
-		"oxfmt": "^0.63.0",
-		"oxlint": "^1.78.0",
+		"@types/node": "^26.4.0",
+		"oxfmt": "^0.65.0",
+		"oxlint": "^1.80.0",
 		"typescript": "^7.0.2",
 		"vitest": "^4.1.10"
 	},

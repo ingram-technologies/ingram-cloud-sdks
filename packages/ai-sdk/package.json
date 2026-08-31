@@ -49,11 +49,11 @@
 		"prepack": "bun run build"
 	},
 	"dependencies": {
-		"@ai-sdk/openai": "^4.0.41",
-		"@ai-sdk/provider": "^4.0.0"
+		"@ai-sdk/openai": "^4.0.52",
+		"@ai-sdk/provider": "^4.0.9"
 	},
 	"devDependencies": {
-		"ai": "^7.0.65"
+		"ai": "^7.0.85"
 	},
 	"peerDependencies": {
 		"ai": "^7.0.0"

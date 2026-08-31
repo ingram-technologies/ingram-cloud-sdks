@@ -49,7 +49,7 @@
 		"@ingram-cloud/ai-sdk": "^3.0.0"
 	},
 	"devDependencies": {
-		"ai": "^7.0.65",
+		"ai": "^7.0.85",
 		"eve": "^0.37.0"
 	},
 	"peerDependencies": {
