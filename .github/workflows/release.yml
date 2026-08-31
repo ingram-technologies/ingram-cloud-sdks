@@ -53,7 +53,7 @@ jobs:
             # Workspace ranges resolve to sibling packages, whose dist/ a fresh
             # checkout lacks — build them all so the package under test compiles.
             - run: bun run build
-            - run: bun run test
+            - run: bun run --if-present test
               working-directory: ${{ steps.pkg.outputs.dir }}
             - run: npm publish --provenance --access public
               working-directory: ${{ steps.pkg.outputs.dir }}
