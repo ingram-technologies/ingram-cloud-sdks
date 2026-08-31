@@ -50,7 +50,7 @@
 	},
 	"devDependencies": {
 		"ai": "^7.0.85",
-		"eve": "^0.37.0"
+		"eve": "^0.47.3"
 	},
 	"peerDependencies": {
 		"ai": "^7.0.0",
