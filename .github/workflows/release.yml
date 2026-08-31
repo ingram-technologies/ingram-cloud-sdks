@@ -53,7 +53,15 @@ jobs:
             # Workspace ranges resolve to sibling packages, whose dist/ a fresh
             # checkout lacks — build them all so the package under test compiles.
             - run: bun run build
-            - run: bun run --if-present test
+            # `bun run test` falls through to the system `test` binary when a package
+            # has no such script (pulumi), so check the script exists first.
+            - name: Test
+              run: |
+                  if node -e "process.exit(require('./package.json').scripts?.test ? 0 : 1)"; then
+                    bun run test
+                  else
+                    echo "no test script"
+                  fi
               working-directory: ${{ steps.pkg.outputs.dir }}
             - run: npm publish --provenance --access public
               working-directory: ${{ steps.pkg.outputs.dir }}
