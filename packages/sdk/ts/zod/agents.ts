@@ -25,8 +25,8 @@ export const AgentVariable = z
 	})
 	.meta({ id: "AgentVariable" });
 
-/** A predeclared UI-backed capability (Rung 2) bound to a UI template — the MCP
- *  host's model calls it as a typed tool and the template renders the result. */
+/** A typed app-tool bound to a UI template: the MCP host's model (or the
+ *  rendered panel) calls it and the template renders the result. */
 export const UiResourceTool = z
 	.object({
 		description: z.string(),
@@ -34,8 +34,12 @@ export const UiResourceTool = z
 		input_schema: z.record(z.string(), z.unknown()).optional(),
 		/** Scoped instruction the smith runs with when this tool is called. */
 		instruction: z.string().nullish(),
-		/** Writes gate through approval; reads flow freely (OpenUI Query/Mutation). */
+		/** Writes gate through approval; reads flow freely. */
 		mutating: z.boolean().optional(),
+		/** Who may call the tool — the MCP Apps `_meta.ui.visibility` list. Omitted
+		 *  means both; `["app"]` hides it from the host's model so only the rendered
+		 *  panel can call it (a refresh or a paginated read). */
+		visibility: z.array(z.enum(["model", "app"])).optional(),
 	})
 	.meta({ id: "UiResourceTool" });
 
@@ -50,19 +54,31 @@ export const UiCsp = z
 	})
 	.meta({ id: "UiCsp" });
 
+/** The authored metadata of a UI template — one set of fields shared by the
+ *  upload sidecar and the stored resource. `csp`, `permissions`, `prefers_border`
+ *  and `domain` are the MCP Apps resource `_meta.ui`, echoed to the host verbatim. */
+const uiTemplateMeta = {
+	csp: UiCsp.nullish(),
+	/** Host permissions the template requests, a Permissions-Policy-style map
+	 *  (e.g. `{ "camera": {}, "microphone": {} }`). */
+	permissions: z.record(z.string(), z.unknown()).nullish(),
+	/** Whether the host should draw its own border around the panel. Omitted
+	 *  leaves it to the host (Claude: borderless on web, bordered on mobile). */
+	prefers_border: z.boolean().nullish(),
+	/** A stable sandbox origin for the panel, in the host's own format — needed
+	 *  only when the panel runs its own OAuth flow or is CORS-allowlisted. */
+	domain: z.string().nullish(),
+	tool: UiResourceTool.nullish(),
+};
+
 /** A tenant-authored interactive UI template (MCP Apps, SEP-1865) attached to an
  *  agent. The HTML bundle lives in blob storage; this is its wire metadata (the
- *  internal blob ref is never exposed). `csp`/`permissions` mirror the standard
- *  `_meta.ui` shape and are echoed to the host on `resources/read`. */
+ *  internal blob ref is never exposed). */
 export const UiResource = z
 	.object({
 		name: z.string(),
 		content_hash: z.string(),
-		csp: UiCsp.optional(),
-		/** Host permissions the template requests, a Permissions-Policy-style map
-		 *  (e.g. `{ "camera": {}, "microphone": {} }`). */
-		permissions: z.record(z.string(), z.unknown()).optional(),
-		tool: UiResourceTool.nullish(),
+		...uiTemplateMeta,
 	})
 	.meta({ id: "UiResource" });
 
@@ -197,9 +213,7 @@ export const UiResourceIn = z
 			.string()
 			.regex(/^[a-z0-9][a-z0-9_-]*$/, "lowercase letters, digits, - and _")
 			.max(63),
-		csp: UiCsp.nullish(),
-		permissions: z.record(z.string(), z.unknown()).nullish(),
-		tool: UiResourceTool.nullish(),
+		...uiTemplateMeta,
 	})
 	.meta({ id: "UiResourceIn" });
 

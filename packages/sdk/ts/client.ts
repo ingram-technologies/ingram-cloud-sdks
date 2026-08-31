@@ -832,7 +832,7 @@ export class IngramCloud {
 					opts,
 				),
 			/** Upload/replace a template — `html` is the bundle, `meta` its
-			 *  `{ name, csp?, permissions?, tool? }` sidecar. Replaces by name. */
+			 *  `UiResourceIn` sidecar. Replaces by name. */
 			put: (
 				aid: string,
 				html: string | Blob,
