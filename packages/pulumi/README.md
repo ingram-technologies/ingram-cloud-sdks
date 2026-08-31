@@ -80,10 +80,13 @@ export const curatorAgentId = curator.agentId;
 
 **MCP Apps UI templates.** Pass `uiTemplates` to attach interactive HTML bundles
 (MCP Apps, SEP-1865). A template's bytes upload when they or its metadata change.
-Its name, content hash and `tool`/`csp`/`permissions` are part of the content
-signature, so editing a template publishes and rolls out a new version. Provide
-the HTML as an absolute `htmlPath` or inline `html`; `tool` binds it as a typed
-app-tool. Removing a template from the array deletes it from the draft.
+Its name, content hash and metadata (`tool`, `csp`, `permissions`,
+`prefersBorder`, `domain`) are part of the content signature, so editing a
+template publishes and rolls out a new version. Provide the HTML as an absolute
+`htmlPath` or inline `html`; `tool` binds it as a typed app-tool, and
+`tool.visibility: ["app"]` hides that tool from the host's model so only the
+rendered panel can call it. Removing a template from the array deletes it from
+the draft.
 
 ```ts
 import { join } from "node:path";

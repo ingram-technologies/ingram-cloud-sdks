@@ -201,10 +201,10 @@ export interface AgentSkillRef {
 //
 // A tenant-authored interactive HTML bundle attached to an agent. The bytes ride
 // a multipart upload to `/v1/agents/{aid}/ui`; the API stores them in blob
-// storage and freezes the metadata ({ name, content_hash, csp, permissions,
-// tool }) into the version snapshot on publish. Mirrors `UiResourceIn` /
-// `UiResourceTool` from `@ingram-cloud/sdk/zod` (kept as local types so this
-// package stays dependency-free).
+// storage and freezes `{ name, content_hash, ...metadata }` into the version
+// snapshot on publish. Mirrors `UiResourceIn` / `UiResourceTool` from
+// `@ingram-cloud/sdk/zod` (kept as local types so this package stays
+// dependency-free).
 
 /** CSP domain allowlists for the sandboxed iframe (the `_meta.ui.csp` shape). */
 export interface UiCsp {
@@ -214,8 +214,8 @@ export interface UiCsp {
 	baseUriDomains?: string[];
 }
 
-/** A typed app-tool bound to a template (Rung 2): the host's model calls it and
- *  the template renders the result. */
+/** A typed app-tool bound to a template: the host's model (or the rendered
+ *  panel) calls it and the template renders the result. */
 export interface UiResourceTool {
 	description: string;
 	/** JSON Schema for the tool's arguments. */
@@ -224,6 +224,9 @@ export interface UiResourceTool {
 	instruction?: string | null;
 	/** Writes gate through approval; reads flow freely. */
 	mutating?: boolean;
+	/** MCP Apps `_meta.ui.visibility`: `["app"]` hides the tool from the host's
+	 *  model so only the rendered panel can call it. Omitted means both. */
+	visibility?: ("model" | "app")[];
 }
 
 /** One UI template declared on an `IcAgent`. Provide the HTML via `htmlPath`
@@ -238,16 +241,40 @@ export interface UiTemplate {
 	csp?: UiCsp;
 	/** Permissions-Policy-style host permissions the template requests. */
 	permissions?: Record<string, unknown>;
+	/** Whether the host draws its own border around the panel; omitted leaves it
+	 *  to the host. */
+	prefersBorder?: boolean;
+	/** A stable sandbox origin for the panel, in the host's own format (Claude:
+	 *  `{sha256(connector URL)[:32]}.claudemcpcontent.com`). */
+	domain?: string;
 	tool?: UiResourceTool;
+}
+
+/** The wire metadata sidecar of one template: `UiResourceIn` minus `name`, the
+ *  same keys the API freezes into the snapshot. */
+type UiTemplateMeta = Partial<Record<(typeof UI_META_KEYS)[number], unknown>>;
+const UI_META_KEYS = [
+	"csp",
+	"permissions",
+	"prefers_border",
+	"domain",
+	"tool",
+] as const;
+
+/** The declared metadata keys of `obj`, in canonical order, absent ones dropped —
+ *  so a resource input and a stored entry compare byte-equal under `eq`. */
+function pickUiMeta(obj: object): UiTemplateMeta {
+	const src = obj as Record<string, unknown>;
+	const out: UiTemplateMeta = {};
+	for (const k of UI_META_KEYS) if (src[k] != null) out[k] = src[k];
+	return out;
 }
 
 interface ResolvedUiTemplate {
 	name: string;
 	bytes: Uint8Array;
 	contentHash: string;
-	csp?: UiCsp;
-	permissions?: Record<string, unknown>;
-	tool?: UiResourceTool;
+	meta: UiTemplateMeta;
 }
 
 // Read each template's HTML bundle (from `htmlPath` or inline `html`), hash the
@@ -267,9 +294,13 @@ function resolveUiTemplates(templates?: UiTemplate[]): ResolvedUiTemplate[] {
 			name: t.name,
 			bytes,
 			contentHash: createHash("sha256").update(bytes).digest("hex"),
-			csp: t.csp,
-			permissions: t.permissions,
-			tool: t.tool,
+			meta: pickUiMeta({
+				csp: t.csp,
+				permissions: t.permissions,
+				prefers_border: t.prefersBorder,
+				domain: t.domain,
+				tool: t.tool,
+			}),
 		};
 	});
 }
@@ -288,11 +319,7 @@ async function uploadUiTemplate(
 		"file",
 		new File([new Uint8Array(t.bytes)], `${t.name}.html`, { type: "text/html" }),
 	);
-	const meta: Record<string, unknown> = { name: t.name };
-	if (t.csp) meta.csp = t.csp;
-	if (t.permissions) meta.permissions = t.permissions;
-	if (t.tool) meta.tool = t.tool;
-	form.set("metadata", JSON.stringify(meta));
+	form.set("metadata", JSON.stringify({ name: t.name, ...t.meta }));
 	const res = await fetch(`${baseUrl}/v1/agents/${aid}/ui`, {
 		method: "POST",
 		headers: { Authorization: `Bearer ${token}`, "IC-Api-Version": IC_API_VERSION },
@@ -322,11 +349,7 @@ async function syncUiTemplates(
 	for (const t of desired) {
 		const cur = current.find((e) => e?.name === t.name);
 		const unchanged =
-			cur &&
-			cur.content_hash === t.contentHash &&
-			eq(cur.tool, t.tool) &&
-			eq(cur.csp, t.csp) &&
-			eq(cur.permissions, t.permissions);
+			cur && cur.content_hash === t.contentHash && eq(pickUiMeta(cur), t.meta);
 		if (!unchanged) await uploadUiTemplate(i.baseUrl, i.token, id, t);
 	}
 	for (const e of current) {
@@ -401,12 +424,9 @@ function agentBody(i: AgentInputs) {
 // wire shape IC stores on a published version. Both the camelCase resource inputs
 // and a live version's `snapshot` map onto this one shape before signing, so the
 // signature is computed exactly one way (and stays byte-stable across both paths).
-interface UiResourceSnap {
+interface UiResourceSnap extends UiTemplateMeta {
 	name: string;
 	content_hash: string;
-	tool?: unknown;
-	csp?: unknown;
-	permissions?: unknown;
 }
 
 interface AgentSnapshot {
@@ -423,19 +443,13 @@ interface AgentSnapshot {
 }
 
 // Canonical, name-sorted signature of an agent's frozen UI templates: each
-// entry's name + content hash + tool/csp/permissions metadata. Both the resource
-// inputs (hash computed from local bytes) and a published version's snapshot
-// (hash already stored) map onto this shape, so a template edit moves the
-// signature exactly one way.
+// entry's name + content hash + declared metadata. Both the resource inputs
+// (hash computed from local bytes) and a published version's snapshot (hash
+// already stored) map onto this shape, so a template edit moves the signature
+// exactly one way.
 function uiResourcesSig(list?: UiResourceSnap[] | null): unknown[] {
 	return (list ?? [])
-		.map((e) => ({
-			name: e.name,
-			content_hash: e.content_hash,
-			tool: e.tool ?? null,
-			csp: e.csp ?? null,
-			permissions: e.permissions ?? null,
-		}))
+		.map((e) => ({ name: e.name, content_hash: e.content_hash, ...pickUiMeta(e) }))
 		.toSorted((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 }
 
@@ -503,9 +517,7 @@ function inputsToSnapshot(i: {
 		ui_resources: resolveUiTemplates(i.uiTemplates).map((t) => ({
 			name: t.name,
 			content_hash: t.contentHash,
-			tool: t.tool,
-			csp: t.csp,
-			permissions: t.permissions,
+			...t.meta,
 		})),
 	};
 }
