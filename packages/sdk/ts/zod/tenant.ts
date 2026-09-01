@@ -328,11 +328,31 @@ export const AuthorizeRequestOut = z
 	})
 	.meta({ id: "AuthorizeRequestOut" });
 
+/** Who consented, for an `app` request that asked for `openid`.
+ *
+ *  The consent page is the only party that ever sees the person — the API is
+ *  handed an organization token and would otherwise learn nothing about them.
+ *  So the page asserts the identity here, and the API signs it into an
+ *  `id_token` the app can verify against the published JWKS. OIDC claim names,
+ *  because that is what an app already knows how to read. */
+export const AuthorizeUser = z
+	.object({
+		sub: z.string(),
+		email: z.string().nullish(),
+		email_verified: z.boolean().nullish(),
+		name: z.string().nullish(),
+		picture: z.string().nullish(),
+	})
+	.meta({ id: "AuthorizeUser" });
+
 /** Complete the delegated grant server-to-server. A `connector` request names
- *  the smith the end-user authorized; an `app` request carries nothing — the
- *  organization is the token's. */
+ *  the smith the end-user authorized; an `app` request carries the organization
+ *  implicitly (it is the token's) and `user` when `openid` was requested. */
 export const AuthorizeCompleteIn = z
-	.object({ smith_id: z.string().nullish() })
+	.object({
+		smith_id: z.string().nullish(),
+		user: AuthorizeUser.nullish(),
+	})
 	.meta({ id: "AuthorizeCompleteIn" });
 
 /** Where the tenant 302s the browser after completing or declining. */
