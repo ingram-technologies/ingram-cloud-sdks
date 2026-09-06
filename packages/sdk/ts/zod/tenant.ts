@@ -366,6 +366,8 @@ export const AuthorizeRedirectOut = z
 export const HostedToolOut = z
 	.object({
 		name: z.string(),
+		/** What to call it in an interface. `name` is the wire identifier. */
+		title: z.string(),
 		description: z.string(),
 	})
 	.meta({ id: "HostedToolOut" });
