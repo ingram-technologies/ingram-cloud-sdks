@@ -1,6 +1,10 @@
+import { loginCommand, logoutCommand } from "./login";
 import type { Leaf } from "../tree";
 
-/** The commands that are not `/v1` operations. Filled in by later tasks. */
+/** The commands that are not `/v1` operations. */
 export function extraCommands(_apiVersion: string): Leaf[] {
-	return [];
+	return [
+		{ id: "login", command: loginCommand },
+		{ id: "logout", command: logoutCommand },
+	];
 }
