@@ -45,27 +45,47 @@ export function loginUrl(
 /** Open a URL with the platform's opener; failure is not fatal — the URL is
  *  printed either way, which is all a remote shell can use. */
 function openBrowser(url: string): void {
-	const cmd =
+	// `start` is a cmd.exe builtin, not an executable on PATH — it must run
+	// through cmd.exe, and its first quoted argument is a window title, so an
+	// empty one is required or `url` itself would be swallowed as the title.
+	const [cmd, args] =
 		process.platform === "darwin"
-			? "open"
+			? ["open", [url]]
 			: process.platform === "win32"
-				? "start"
-				: "xdg-open";
+				? ["cmd", ["/c", "start", "", url]]
+				: ["xdg-open", [url]];
 	try {
-		spawn(cmd, [url], { stdio: "ignore", detached: true }).unref();
+		spawn(cmd, args, { stdio: "ignore", detached: true }).unref();
 	} catch {
 		// printed by the caller
 	}
 }
 
-/** Wait for the console's redirect on a loopback port. */
+/** How long to wait for the console's redirect before giving up. The console
+ *  itself treats a code as expired after a minute; a login that never
+ *  reaches the browser (a headless box, a browser that failed to launch)
+ *  would otherwise hang `ic login` forever with no way out but Ctrl-C. */
+const CALLBACK_TIMEOUT_MS = 120_000;
+
+/** Wait for the console's redirect on a loopback port. `listen` settles once
+ *  the server is bound (or fails to bind); `code` settles once the browser
+ *  answers (or the wait times out) — a bind failure rejects both. */
 function awaitCode(state: string): Promise<{ port: number; code: Promise<string> }> {
-	let resolve!: (v: string) => void;
-	let reject!: (e: Error) => void;
+	let resolveCode!: (v: string) => void;
+	let rejectCode!: (e: Error) => void;
 	const code = new Promise<string>((res, rej) => {
-		resolve = res;
-		reject = rej;
+		resolveCode = res;
+		rejectCode = rej;
 	});
+	// A bind failure rejects `code` before the caller ever reaches `await
+	// listener.code` — an orphaned rejection Node would otherwise warn about.
+	// This extra handler doesn't consume the rejection for a real awaiter;
+	// it's chained off, not in place of, the original promise.
+	code.catch(() => {});
+	const fail = (err: unknown) => {
+		clearTimeout(timer);
+		rejectCode(err instanceof Error ? err : new Error(String(err)));
+	};
 	const server = createServer((req, res) => {
 		const url = new URL(req.url ?? "/", "http://127.0.0.1");
 		if (url.pathname !== "/callback") {
@@ -77,19 +97,30 @@ function awaitCode(state: string): Promise<{ port: number; code: Promise<string>
 			res.end(
 				"This response did not come from the login you started. Nothing was saved.\n",
 			);
-			reject(
-				new Error("state mismatch: the browser answered a different login."),
-			);
+			fail(new Error("state mismatch: the browser answered a different login."));
 		} else {
 			res.end("Signed in. You can close this tab.\n");
-			resolve(url.searchParams.get("code") ?? "");
+			clearTimeout(timer);
+			resolveCode(url.searchParams.get("code") ?? "");
 		}
 		server.close();
 	});
-	return new Promise((res) => {
+	const timer = setTimeout(() => {
+		server.close();
+		fail(new Error("Timed out waiting for the browser. Run ic login again."));
+	}, CALLBACK_TIMEOUT_MS);
+	timer.unref();
+	return new Promise((resolveListen, rejectListen) => {
+		// A bind failure (no loopback interface, a sandboxed network namespace)
+		// is an "error" event; with no listener, Node treats it as fatal and
+		// crashes the process outside this function's own try/catch.
+		server.once("error", (err) => {
+			fail(err);
+			rejectListen(err);
+		});
 		server.listen(0, "127.0.0.1", () => {
 			const port = (server.address() as { port: number }).port;
-			res({ port, code });
+			resolveListen({ port, code });
 		});
 	});
 }
@@ -100,7 +131,7 @@ interface TokenResponse {
 	expires_at: string;
 }
 
-async function redeem(
+export async function redeem(
 	consoleUrl: string,
 	code: string,
 	verifier: string,
