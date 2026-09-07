@@ -285,18 +285,24 @@ async function oneShotTurn(
 	text: string,
 	io: { tty: boolean; json: boolean },
 ): Promise<void> {
+	let runId: string | null = null;
 	const { result, threadId: minted } = await streamTurn(
 		session,
 		sid,
 		threadId,
 		text,
 		{ write: (s) => process.stdout.write(s), tty: io.tty, json: io.json },
-		() => {},
+		(rid) => {
+			runId = rid;
+		},
 	);
 	if (!threadId && minted) process.stderr.write(`Thread: ${minted}\n`);
 	if (result.kind === "approval") {
 		process.stderr.write(
-			`\nPaused for approval ${result.approvalId} (${result.tool}); no TTY to resolve it here.\n`,
+			`\nPaused for approval ${result.approvalId} (${result.tool}); no TTY to resolve it here.\n` +
+				(runId
+					? `Resolve with: ic api post smiths/${sid}/runs/${runId}/submit -f -\n`
+					: ""),
 		);
 		process.exitCode = 1;
 	} else if (result.kind === "failed") {
@@ -388,6 +394,13 @@ export function chatCommand(apiVersion: string): Command<CommandContext> {
 				let live: { sid: string; rid: string } | null = null;
 				let lastRunId: string | null = null;
 				let sigints = 0;
+				// rl.close() restores the terminal's raw mode before exit — skipping
+				// it leaves the parent shell reading a raw, no-echo tty until the
+				// user runs `stty sane`.
+				const exit = (code: number) => {
+					rl.close();
+					process.exit(code);
+				};
 				const onSigint = () => {
 					sigints += 1;
 					if (sigints === 1 && live) {
@@ -396,10 +409,10 @@ export function chatCommand(apiVersion: string): Command<CommandContext> {
 							kind: "cancel",
 						})
 							.catch(() => {})
-							.finally(() => process.exit(130));
-						setTimeout(() => process.exit(130), 3000).unref();
+							.finally(() => exit(130));
+						setTimeout(() => exit(130), 3000).unref();
 					} else {
-						process.exit(130);
+						exit(130);
 					}
 				};
 				process.on("SIGINT", onSigint);
