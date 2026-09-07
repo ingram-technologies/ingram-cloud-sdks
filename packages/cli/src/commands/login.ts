@@ -12,9 +12,9 @@ import {
 	DEFAULT_CONSOLE_URL,
 	loadConfig,
 	saveConfig,
-} from "../config";
-import { openSession } from "../client";
-import { reportError } from "../errors";
+} from "../config.js";
+import { openSession } from "../client.js";
+import { reportError } from "../errors.js";
 
 /**
  * Sign in through the browser, so nobody pastes a key.

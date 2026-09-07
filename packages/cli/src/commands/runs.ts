@@ -3,12 +3,12 @@ import { readFileSync } from "node:fs";
 import { buildCommand } from "@stricli/core";
 import type { Command, CommandContext } from "@stricli/core";
 
-import { openSession } from "../client";
-import { reportError } from "../errors";
-import { proposeIdCompletions, resolveRef, resourceForParam } from "../ids";
-import { print } from "../output";
-import { bodyFromFlags, fillPath, flagsForOperation } from "../params";
-import type { Operation } from "../spec";
+import { openSession } from "../client.js";
+import { reportError } from "../errors.js";
+import { proposeIdCompletions, resolveRef, resourceForParam } from "../ids.js";
+import { print } from "../output.js";
+import { bodyFromFlags, fillPath, flagsForOperation } from "../params.js";
+import type { Operation } from "../spec.js";
 
 /**
  * The five operations whose 200 is `text/event-stream` as often as it is

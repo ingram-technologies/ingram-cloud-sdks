@@ -3,7 +3,7 @@ import { createRequire } from "node:module";
 import { buildCommand } from "@stricli/core";
 import type { CommandContext } from "@stricli/core";
 
-import { activeProfile } from "../config";
+import { activeProfile } from "../config.js";
 
 const require_ = createRequire(import.meta.url);
 

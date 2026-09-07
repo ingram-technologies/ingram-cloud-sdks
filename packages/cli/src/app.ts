@@ -2,12 +2,12 @@ import { buildApplication } from "@stricli/core";
 import type { Application, CommandContext } from "@stricli/core";
 
 /** Commands that are not operations: sign-in, chat, the raw escape hatch. */
-import { extraCommands } from "./commands";
-import { genericCommand } from "./generic";
-import { OVERRIDES } from "./overrides";
-import { loadSpec, operations } from "./spec";
-import { buildTree } from "./tree";
-import type { Leaf } from "./tree";
+import { extraCommands } from "./commands/index.js";
+import { genericCommand } from "./generic.js";
+import { OVERRIDES } from "./overrides.js";
+import { loadSpec, operations } from "./spec.js";
+import { buildTree } from "./tree.js";
+import type { Leaf } from "./tree.js";
 
 export function buildIc(): Application<CommandContext> {
 	const spec = loadSpec();

@@ -2,7 +2,7 @@ import { buildCommand, proposeCompletions } from "@stricli/core";
 import { buildInstallCommand } from "@stricli/auto-complete";
 import type { Command, CommandContext } from "@stricli/core";
 
-import type { Leaf } from "../tree";
+import type { Leaf } from "../tree.js";
 
 /**
  * Shell tab-completion, in two pieces.

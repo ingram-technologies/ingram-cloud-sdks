@@ -3,12 +3,12 @@ import { readFileSync } from "node:fs";
 import { buildCommand } from "@stricli/core";
 import type { Command, CommandContext } from "@stricli/core";
 
-import { openSession } from "./client";
-import { reportError } from "./errors";
-import { proposeIdCompletions, resolveRef, resourceForParam } from "./ids";
-import { print } from "./output";
-import { bodyFromFlags, fillPath, flagsForOperation, queryFromFlags } from "./params";
-import type { Operation } from "./spec";
+import { openSession } from "./client.js";
+import { reportError } from "./errors.js";
+import { proposeIdCompletions, resolveRef, resourceForParam } from "./ids.js";
+import { print } from "./output.js";
+import { bodyFromFlags, fillPath, flagsForOperation, queryFromFlags } from "./params.js";
+import type { Operation } from "./spec.js";
 
 /**
  * Every operation that is plain JSON in and JSON out becomes a command this

@@ -5,18 +5,18 @@ import {
 	agentsUiPutCommand,
 	filesContentCommand,
 	filesUploadCommand,
-} from "./commands/files";
+} from "./commands/files.js";
 import {
 	compatStreamCommand,
 	runEventsCommand,
 	runStreamCommand,
-} from "./commands/runs";
+} from "./commands/runs.js";
 import {
 	skillsCreateCommand,
 	skillsVersionsContentCommand,
 	skillsVersionsCreateCommand,
-} from "./commands/skills";
-import type { Operation } from "./spec";
+} from "./commands/skills.js";
+import type { Operation } from "./spec.js";
 
 /**
  * Operations whose command is hand-written, keyed by `operationId`.

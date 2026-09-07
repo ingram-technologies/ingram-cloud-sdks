@@ -3,12 +3,12 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { buildCommand } from "@stricli/core";
 import type { Command, CommandContext } from "@stricli/core";
 
-import { openSession } from "../client";
-import { reportError } from "../errors";
-import { proposeIdCompletions, resolveRef, resourceForParam } from "../ids";
-import { print } from "../output";
-import { fillPath } from "../params";
-import type { Operation } from "../spec";
+import { openSession } from "../client.js";
+import { reportError } from "../errors.js";
+import { proposeIdCompletions, resolveRef, resourceForParam } from "../ids.js";
+import { print } from "../output.js";
+import { fillPath } from "../params.js";
+import type { Operation } from "../spec.js";
 
 /**
  * Plain single-file uploads and downloads — the shapes JSON cannot carry that

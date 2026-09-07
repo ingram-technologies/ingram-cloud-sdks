@@ -2,8 +2,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
-import type { Session } from "./client";
-import type { Operation } from "./spec";
+import type { Session } from "./client.js";
+import type { Operation } from "./spec.js";
 
 /**
  * Turning what a person types into the id the API wants.
