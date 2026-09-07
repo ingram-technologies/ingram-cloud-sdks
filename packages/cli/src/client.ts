@@ -18,10 +18,7 @@ export interface Session {
 	apiVersion: string;
 }
 
-export function openSession(opts: {
-	profile?: string;
-	apiVersion: string;
-}): Session {
+export function openSession(opts: { profile?: string; apiVersion: string }): Session {
 	const profile = activeProfile(opts.profile);
 	let path = "/";
 	const ic = new IngramCloud({

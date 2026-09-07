@@ -7,12 +7,7 @@ import { openSession } from "./client";
 import { reportError } from "./errors";
 import { resolveRef } from "./ids";
 import { print } from "./output";
-import {
-	bodyFromFlags,
-	fillPath,
-	flagsForOperation,
-	queryFromFlags,
-} from "./params";
+import { bodyFromFlags, fillPath, flagsForOperation, queryFromFlags } from "./params";
 import type { Operation } from "./spec";
 
 /**
@@ -131,7 +126,9 @@ export function genericCommand(
 							query: { ...query, ...(cursor ? { cursor } : {}) },
 						});
 						rows.push(...(page.data ?? []));
-						cursor = page.has_more ? (page.next_cursor ?? undefined) : undefined;
+						cursor = page.has_more
+							? (page.next_cursor ?? undefined)
+							: undefined;
 					} while (cursor);
 					print({ data: rows }, { json: values.json === true, tty });
 					return;
@@ -154,7 +151,9 @@ export function genericCommand(
 			positional: {
 				kind: "array",
 				parameter: {
-					brief: op.pathParams.map((p) => p.description ?? p.name).join(", ") || op.id,
+					brief:
+						op.pathParams.map((p) => p.description ?? p.name).join(", ") ||
+						op.id,
 					parse: String,
 					placeholder: op.pathParams[0]?.name,
 				},
