@@ -1,0 +1,52 @@
+{
+	"name": "@ingram-cloud/cli",
+	"version": "0.1.0",
+	"description": "The Ingram Cloud command line: every /v1 operation as a command, browser sign-in, and a terminal chat with a smith.",
+	"keywords": [
+		"agents",
+		"cli",
+		"ingram",
+		"ingram-cloud",
+		"smiths"
+	],
+	"homepage": "https://github.com/ingram-technologies/ingram-cloud-sdks/tree/main/packages/cli#readme",
+	"bugs": "https://github.com/ingram-technologies/ingram-cloud-sdks/issues",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ingram-technologies/ingram-cloud-sdks.git",
+		"directory": "packages/cli"
+	},
+	"bin": {
+		"ic": "./dist/bin.js"
+	},
+	"files": [
+		"dist",
+		"openapi.json"
+	],
+	"type": "module",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"typecheck": "tsc --noEmit",
+		"lint": "oxlint",
+		"format": "oxfmt --write .",
+		"test": "vitest run",
+		"sync-spec": "bun run scripts/sync-spec.ts",
+		"prepack": "bun run build"
+	},
+	"dependencies": {
+		"@ingram-cloud/sdk": "^1.12.0",
+		"@stricli/auto-complete": "^1.3.0",
+		"@stricli/core": "^1.3.0"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.4.1",
+		"vitest": "^4.1.10"
+	},
+	"engines": {
+		"node": ">=20"
+	}
+}

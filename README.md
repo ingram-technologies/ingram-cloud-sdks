@@ -10,6 +10,7 @@ from one workspace. MIT.
 | [`@ingram-cloud/eve`](packages/eve)       | 3.0.0   | Run a smith as an [eve](https://vercel.com/eve) agent's model; attach hosted tools over MCP.          |
 | [`@ingram-cloud/flue`](packages/flue)     | 2.0.0   | Register a smith as a [Flue](https://flueframework.com) model provider; attach hosted tools over MCP. |
 | [`@ingram-cloud/pulumi`](packages/pulumi) | 2.2.0   | Pulumi resources for agents, MCP servers, channels, webhooks and model keys.                          |
+| [`@ingram-cloud/cli`](packages/cli)       | 0.1.0   | The command line: every /v1 operation as a command, browser sign-in, terminal chat.                   |
 
 Every package rides a standard surface where one exists: the OpenAI-compatible
 Responses and Chat Completions APIs for inference, MCP for tools, and the AI

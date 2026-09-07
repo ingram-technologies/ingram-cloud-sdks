@@ -55,6 +55,7 @@ import type {
 	ICModelKey,
 	ICOrgUsage,
 	ICOrgUsageSeries,
+	ICOrganizationKey,
 	ICProject,
 	ICAppInstall,
 	ICProvider,
@@ -120,7 +121,13 @@ import type { DiscordAppIn } from "./zod/discord.js";
 import type { EmailConfigIn } from "./zod/email.js";
 import type { McpServerIn } from "./zod/mcp.js";
 import type { RecallBody, WorkingMemorySet } from "./zod/memories.js";
-import type { ProjectIn, ProjectTokenIn, ProjectTokenOut } from "./zod/projects.js";
+import type {
+	OrganizationKeyCreatedOut,
+	OrganizationKeyIn,
+	ProjectIn,
+	ProjectTokenIn,
+	ProjectTokenOut,
+} from "./zod/projects.js";
 import type { RunIn, Submit } from "./zod/runs.js";
 import type { Skill, SkillUpdateIn, SkillVersion } from "./zod/skills.js";
 import type {
@@ -1655,6 +1662,22 @@ export class IngramCloud {
 						query,
 					},
 				),
+		},
+
+		keys: {
+			list: (query?: PageOpts, opts?: RequestOptions) =>
+				this.page<ICOrganizationKey>("/organization/keys", query, opts),
+			create: (
+				body: z.input<typeof OrganizationKeyIn> = {},
+				opts?: RequestOptions,
+			) =>
+				this.json<z.infer<typeof OrganizationKeyCreatedOut>>(
+					"POST",
+					"/organization/keys",
+					{ ...opts, body },
+				),
+			delete: (id: string, opts?: RequestOptions) =>
+				this.empty("DELETE", `/organization/keys/${enc(id)}`, opts),
 		},
 
 		projects: {

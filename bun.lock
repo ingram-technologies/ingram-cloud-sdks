@@ -26,6 +26,22 @@
         "ai": "^7.0.0",
       },
     },
+    "packages/cli": {
+      "name": "@ingram-cloud/cli",
+      "version": "0.1.0",
+      "bin": {
+        "ic": "./dist/bin.js",
+      },
+      "dependencies": {
+        "@ingram-cloud/sdk": "^1.12.0",
+        "@stricli/auto-complete": "^1.3.0",
+        "@stricli/core": "^1.3.0",
+      },
+      "devDependencies": {
+        "@types/bun": "^1.4.1",
+        "vitest": "^4.1.10",
+      },
+    },
     "packages/eve": {
       "name": "@ingram-cloud/eve",
       "version": "3.0.0",
@@ -56,7 +72,7 @@
     },
     "packages/pulumi": {
       "name": "@ingram-cloud/pulumi",
-      "version": "2.1.1",
+      "version": "2.2.0",
       "devDependencies": {
         "@pulumi/pulumi": "^3.260.0",
       },
@@ -153,6 +169,8 @@
     "@hono/node-server": ["@hono/node-server@2.1.1", "", { "peerDependencies": { "hono": "^4" } }, "sha512-ELuehkj5VCBdgEw9zs+ivkKwyzzUCSQuE96YmiPvn1ECBoZCczbFXJLeEGMTYjphP6gydh4pHMqEYPVMYUVgQg=="],
 
     "@ingram-cloud/ai-sdk": ["@ingram-cloud/ai-sdk@workspace:packages/ai-sdk"],
+
+    "@ingram-cloud/cli": ["@ingram-cloud/cli@workspace:packages/cli"],
 
     "@ingram-cloud/eve": ["@ingram-cloud/eve@workspace:packages/eve"],
 
@@ -404,9 +422,15 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
+    "@stricli/auto-complete": ["@stricli/auto-complete@1.3.0", "", { "dependencies": { "@stricli/core": "^1.3.0" }, "bin": { "auto-complete": "dist/bin/cli.js" } }, "sha512-egN+fdP2USbP08DkhSH+y9XsiXSrJMgbR1E5SuOD2kqI4AckufhOIKokDzmzmUT6yMa7j0jmWu29phT/jXwzqQ=="],
+
+    "@stricli/core": ["@stricli/core@1.3.0", "", {}, "sha512-LnBe2HntygaLDU5trtjiC3J4C/YkmIZuM0XB52IF4qaLqJH09kgD1fnZiS2gaYUnt0nAN2a+1b4PSOBcfPrN4Q=="],
+
     "@tufjs/canonical-json": ["@tufjs/canonical-json@2.0.0", "", {}, "sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA=="],
 
     "@tufjs/models": ["@tufjs/models@4.1.0", "", { "dependencies": { "@tufjs/canonical-json": "2.0.0", "minimatch": "^10.1.1" } }, "sha512-Y8cK9aggNRsqJVaKUlEYs4s7CvQ1b1ta2DVPyAimb0I2qhzjNk+A+mxvll/klL0RlfuIUei8BF7YWiua4kQqww=="],
+
+    "@types/bun": ["@types/bun@1.4.1", "", { "dependencies": { "bun-types": "1.4.1" } }, "sha512-0AVGiTXGajf1rgKom3N+c5L7CBxuoyyv1i44M0nX4UDK0G/fnRAMiri93nHuVPIb429KKtAgj7HatVmmOjeQLA=="],
 
     "@types/chai": ["@types/chai@5.2.3", "", { "dependencies": { "@types/deep-eql": "*", "assertion-error": "^2.0.1" } }, "sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA=="],
 
@@ -511,6 +535,8 @@
     "buffer-equal-constant-time": ["buffer-equal-constant-time@1.0.1", "", {}, "sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA=="],
 
     "buffer-from": ["buffer-from@1.1.2", "", {}, "sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ=="],
+
+    "bun-types": ["bun-types@1.4.1", "", { "dependencies": { "@types/node": "*" } }, "sha512-loKuVrAFZKfEv+JvWkHRS9GW5IqLuLRjVXN9p+vZvBN86O5hf/pBZQ5hSoyipsrMmWObZBDvWnlmKvjKTM0PdA=="],
 
     "cacache": ["cacache@20.0.4", "", { "dependencies": { "@npmcli/fs": "^5.0.0", "fs-minipass": "^3.0.0", "glob": "^13.0.0", "lru-cache": "^11.1.0", "minipass": "^7.0.3", "minipass-collect": "^2.0.1", "minipass-flush": "^1.0.5", "minipass-pipeline": "^1.2.4", "p-map": "^7.0.2", "ssri": "^13.0.0" } }, "sha512-M3Lab8NPYlZU2exsL3bMVvMrMqgwCnMWfdZbK28bn3pK6APT/Te/I8hjRPNu1uwORY9a1eEQoifXbKPQMfMTOA=="],
 
