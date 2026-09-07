@@ -49,9 +49,20 @@ export function configPath(
 }
 
 export function loadConfig(env: Env = process.env): Config {
+	let raw: string;
 	try {
-		return JSON.parse(readFileSync(configPath(env), "utf8")) as Config;
+		raw = readFileSync(configPath(env), "utf8");
 	} catch {
+		return { profiles: {} }; // no file yet — the ordinary first run
+	}
+	try {
+		return JSON.parse(raw) as Config;
+	} catch {
+		// The file exists but is not valid JSON: say so, rather than silently
+		// discarding whatever profiles it held.
+		process.stderr.write(
+			`warning: ${configPath(env)} is not valid JSON, ignoring it.\n`,
+		);
 		return { profiles: {} };
 	}
 }

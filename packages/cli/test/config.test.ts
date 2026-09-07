@@ -1,9 +1,15 @@
-import { mkdtempSync, readFileSync, statSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { dirname, join } from "node:path";
+import { describe, expect, it, vi } from "vitest";
 
-import { configPath, loadConfig, saveConfig, tokenFor } from "../src/config";
+import {
+	activeProfile,
+	configPath,
+	loadConfig,
+	saveConfig,
+	tokenFor,
+} from "../src/config";
 
 const home = () => mkdtempSync(join(tmpdir(), "ic-cli-"));
 
@@ -44,6 +50,16 @@ describe("the store", () => {
 	it("is an empty store when no file exists", () => {
 		expect(loadConfig({ XDG_CONFIG_HOME: home() })).toEqual({ profiles: {} });
 	});
+
+	it("warns and starts empty when the file is not valid JSON, instead of silently discarding it", () => {
+		const env = { XDG_CONFIG_HOME: home() };
+		mkdirSync(dirname(configPath(env)), { recursive: true });
+		writeFileSync(configPath(env), "{not json", { mode: 0o600 });
+		const warn = vi.spyOn(process.stderr, "write").mockImplementation(() => true);
+		expect(loadConfig(env)).toEqual({ profiles: {} });
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining("not valid JSON"));
+		warn.mockRestore();
+	});
 });
 
 describe("tokenFor", () => {
@@ -71,5 +87,30 @@ describe("tokenFor", () => {
 		expect(() =>
 			tokenFor({ base_url: "https://x" }, "/organization/projects"),
 		).toThrow(/ic login/);
+	});
+});
+
+describe("activeProfile", () => {
+	it("is the stored profile when nothing overrides it", () => {
+		const env = { XDG_CONFIG_HOME: home() };
+		saveConfig(
+			{ profiles: { default: { base_url: "https://x", org_key: "k" } } },
+			env,
+		);
+		expect(activeProfile("default", env)).toEqual({
+			base_url: "https://x",
+			org_key: "k",
+		});
+	});
+
+	it("lets INGRAM_CLOUD_TOKEN act as both credentials, so CI never writes a file", () => {
+		// tokenFor only ever reads project.token, never project.id — the id/name
+		// fields are placeholders, not a claim that a real project is selected.
+		const profile = activeProfile("default", {
+			XDG_CONFIG_HOME: home(),
+			INGRAM_CLOUD_TOKEN: "tok_env",
+		});
+		expect(tokenFor(profile, "/organization/projects")).toBe("tok_env");
+		expect(tokenFor(profile, "/smiths")).toBe("tok_env");
 	});
 });
