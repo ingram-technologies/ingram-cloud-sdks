@@ -54,6 +54,7 @@ export function flagsForOperation(op: Operation): Record<string, FlagSpec> {
 			parse: p.schema?.type === "boolean" ? undefined : String,
 			brief: briefFor(p.name, p.schema ?? {}, false),
 			optional: true,
+			variadic: p.schema?.type === "array",
 		};
 	}
 	return flags;

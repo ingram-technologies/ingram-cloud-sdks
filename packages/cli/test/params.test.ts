@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { bodyFromFlags, flagsForOperation } from "../src/params";
+import {
+	bodyFromFlags,
+	fillPath,
+	flagsForOperation,
+	queryFromFlags,
+} from "../src/params";
 import type { Operation } from "../src/spec";
 
 const op = (over: Partial<Operation> = {}): Operation => ({
@@ -82,5 +87,52 @@ describe("bodyFromFlags", () => {
 				{ external_id: "u1", display_name: "old" },
 			),
 		).toEqual({ external_id: "u1", display_name: "Ada" });
+	});
+});
+
+describe("queryFromFlags", () => {
+	it("carries only the query parameters the caller set", () => {
+		expect(
+			queryFromFlags(
+				op({
+					queryParams: [
+						{ name: "limit", in: "query", schema: { type: "number" } },
+					],
+				}),
+				{ limit: "20", "external-id": "unrelated" },
+			),
+		).toEqual({ limit: "20" });
+	});
+
+	it("marks an array-typed query parameter variadic, like an array-typed body property", () => {
+		const flags = flagsForOperation(
+			op({
+				queryParams: [
+					{
+						name: "tags",
+						in: "query",
+						schema: { type: "array", items: { type: "string" } },
+					},
+				],
+			}),
+		);
+		expect(flags.tags.variadic).toBe(true);
+	});
+});
+
+describe("fillPath", () => {
+	it("fills placeholders from positional arguments, in path order", () => {
+		expect(
+			fillPath(op({ path: "/v1/smiths/{smith_id}/runs/{run_id}" }), [
+				"smt_1",
+				"run_2",
+			]),
+		).toBe("/v1/smiths/smt_1/runs/run_2");
+	});
+
+	it("encodes a positional that needs it", () => {
+		expect(fillPath(op({ path: "/v1/smiths/{smith_id}" }), ["a b"])).toBe(
+			"/v1/smiths/a%20b",
+		);
 	});
 });
