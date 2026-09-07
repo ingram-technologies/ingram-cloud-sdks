@@ -14,8 +14,17 @@ interface ApiFailure {
 	message: string;
 }
 
+/** Whatever was thrown, as the `ApiFailure` shape a real `ICError` (or a
+ *  config error like "Not signed in…") carries. `throw` accepts any value —
+ *  a rejected promise's reason is often a bare string — so this is not a
+ *  no-op cast: anything without a `message` string gets one via `String()`. */
+function asFailure(error: unknown): ApiFailure {
+	if (error instanceof Error) return error as Error & ApiFailure;
+	return { message: String(error) };
+}
+
 export function messageFor(error: unknown): string {
-	const e = error as ApiFailure;
+	const e = asFailure(error);
 	const head = e.detail ?? e.message;
 	const parts = [head];
 	if (e.code) parts.push(`(${e.code})`);
@@ -24,7 +33,7 @@ export function messageFor(error: unknown): string {
 }
 
 export function exitCodeFor(error: unknown): number {
-	const e = error as ApiFailure;
+	const e = asFailure(error);
 	if (/Not signed in|No project selected/.test(e.message ?? "")) return 3;
 	if (e.status) return 1;
 	return 2;

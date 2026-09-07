@@ -65,6 +65,10 @@ export function print(value: unknown, opts: { json: boolean; tty: boolean }): vo
 		process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 		return;
 	}
+	if (isScalar(value)) {
+		process.stdout.write(`${cell(value)}\n`);
+		return;
+	}
 	const page = value as { data?: unknown };
 	if (Array.isArray(page?.data)) {
 		process.stdout.write(`${renderList(page.data as Record<string, unknown>[])}\n`);

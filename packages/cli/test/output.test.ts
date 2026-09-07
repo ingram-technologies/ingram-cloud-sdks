@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { renderList, renderObject } from "../src/output";
-import { exitCodeFor, messageFor } from "../src/errors";
+import { print, renderList, renderObject } from "../src/output";
+import { exitCodeFor, messageFor, reportError } from "../src/errors";
 
 describe("renderList", () => {
 	it("puts the id first and the natural key beside it", () => {
@@ -39,6 +39,42 @@ describe("renderObject", () => {
 	});
 });
 
+const write = (fn: () => void) => {
+	const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+	try {
+		fn();
+		return spy.mock.calls.map((c) => c[0]).join("");
+	} finally {
+		spy.mockRestore();
+	}
+};
+
+describe("print", () => {
+	it("renders a page's data as a table on a terminal", () => {
+		const out = write(() =>
+			print({ data: [{ id: "smt_1" }] }, { json: false, tty: true }),
+		);
+		expect(out).toContain("ID");
+		expect(out).toContain("smt_1");
+	});
+
+	it("prints a scalar body as-is, rather than routing it through renderObject", () => {
+		// Object.keys("ok") is ['0','1']; renderObject would silently render
+		// per-character garbage instead of the string.
+		expect(write(() => print("ok", { json: false, tty: true }))).toBe("ok\n");
+		expect(write(() => print(null, { json: false, tty: true }))).toBe("\n");
+	});
+
+	it("passes the body through untouched off a terminal, or with --json", () => {
+		expect(write(() => print({ id: "smt_1" }, { json: false, tty: false }))).toBe(
+			`${JSON.stringify({ id: "smt_1" }, null, 2)}\n`,
+		);
+		expect(write(() => print({ id: "smt_1" }, { json: true, tty: true }))).toBe(
+			`${JSON.stringify({ id: "smt_1" }, null, 2)}\n`,
+		);
+	});
+});
+
 describe("errors", () => {
 	it("shows the message, the code and the request id", () => {
 		const e = Object.assign(new Error("x"), {
@@ -53,5 +89,24 @@ describe("errors", () => {
 	it("exits 3 when not signed in, so a script can tell it from a real failure", () => {
 		expect(exitCodeFor(new Error("Not signed in. Run: ic login"))).toBe(3);
 		expect(exitCodeFor(Object.assign(new Error("x"), { status: 404 }))).toBe(1);
+	});
+
+	it("handles a thrown value that is not an Error, instead of printing the literal string undefined", () => {
+		// throw accepts any value; a rejected promise's reason is often a bare
+		// string, and reportError is the last-resort handler — it must not
+		// itself crash or discard the failure text.
+		expect(messageFor("Not signed in. Run: ic login")).toBe(
+			"Not signed in. Run: ic login",
+		);
+		expect(exitCodeFor("Not signed in. Run: ic login")).toBe(3);
+		expect(exitCodeFor(null)).toBe(2);
+	});
+
+	it("reports a failure to stderr and returns its exit code", () => {
+		const spy = vi.spyOn(process.stderr, "write").mockImplementation(() => true);
+		const code = reportError(new Error("Not signed in. Run: ic login"));
+		expect(spy).toHaveBeenCalledWith("error: Not signed in. Run: ic login\n");
+		expect(code).toBe(3);
+		spy.mockRestore();
 	});
 });
