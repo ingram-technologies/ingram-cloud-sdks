@@ -69,6 +69,32 @@ export const ProjectTokenOut = z
 	})
 	.meta({ id: "ProjectTokenOut" });
 
+/** A long-lived organization credential for IaC. Its secret is returned only
+ * when created; this is the metadata that remains available for rotation. */
+export const OrganizationKeyOut = z
+	.object({
+		id: z.string(),
+		label: z.string().nullable(),
+		created_at: z.string(),
+		expires_at: z.string().nullable(),
+		revoked_at: z.string().nullable(),
+	})
+	.meta({ id: "OrganizationKeyOut" });
+
+export const OrganizationKeyListOut = pageOut(
+	OrganizationKeyOut,
+	"OrganizationKeyListOut",
+);
+
+/** The one-time response from minting an organization key. */
+export const OrganizationKeyCreatedOut = z
+	.object({
+		id: z.string(),
+		token: z.string(),
+		expires_at: z.string(),
+	})
+	.meta({ id: "OrganizationKeyCreatedOut" });
+
 // ── Request bodies ──────────────────────────────────────────────────────────
 
 export const ProjectIn = z
@@ -86,8 +112,14 @@ export const ProjectTokenIn = z
 	})
 	.meta({ id: "ProjectTokenIn" });
 
+/** A display label, such as the CLI hostname that requested the key. */
+export const OrganizationKeyIn = z
+	.object({ label: z.string().trim().min(1).max(200).nullish() })
+	.meta({ id: "OrganizationKeyIn" });
+
 // ── Inferred consumer-facing type ────────────────────────────────────────────
 
 export type ICProject = z.infer<typeof ProjectOut>;
 
 export type ICAppInstall = z.infer<typeof AppInstallOut>;
+export type ICOrganizationKey = z.infer<typeof OrganizationKeyOut>;
