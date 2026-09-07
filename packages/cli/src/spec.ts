@@ -40,7 +40,9 @@ export interface Operation {
 	description: string;
 	pathParams: SpecParameter[];
 	queryParams: SpecParameter[];
-	/** The JSON request body schema, dereferenced, or null. */
+	/** The JSON request body schema, its own top-level `$ref` resolved, or
+	 *  null. Nested `$ref`s (a property, an array's `items`) are left as-is —
+	 *  the flag builder that reads this only looks at top-level properties. */
 	body: SpecSchema | null;
 	/** Request media types other than JSON — a multipart upload, say. */
 	requestMediaTypes: string[];
