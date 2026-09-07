@@ -4,8 +4,10 @@ import { dirname, join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 
 import {
+	DEFAULT_CONSOLE_URL,
 	activeProfile,
 	configPath,
+	consoleBase,
 	loadConfig,
 	saveConfig,
 	tokenFor,
@@ -112,5 +114,16 @@ describe("activeProfile", () => {
 		});
 		expect(tokenFor(profile, "/organization/projects")).toBe("tok_env");
 		expect(tokenFor(profile, "/smiths")).toBe("tok_env");
+	});
+});
+
+describe("consoleBase", () => {
+	it("lets IC_CONSOLE_BASE point a login at a local console", () => {
+		// Without this, `ic login` against a dev stack sends the browser to the
+		// production console, which mints a key for the wrong database.
+		expect(consoleBase({ IC_CONSOLE_BASE: "http://localhost:3000" })).toBe(
+			"http://localhost:3000",
+		);
+		expect(consoleBase({})).toBe(DEFAULT_CONSOLE_URL);
 	});
 });
