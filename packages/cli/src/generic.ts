@@ -5,7 +5,7 @@ import type { Command, CommandContext } from "@stricli/core";
 
 import { openSession } from "./client";
 import { reportError } from "./errors";
-import { resolveRef } from "./ids";
+import { proposeIdCompletions, resolveRef, resourceForParam } from "./ids";
 import { print } from "./output";
 import { bodyFromFlags, fillPath, flagsForOperation, queryFromFlags } from "./params";
 import type { Operation } from "./spec";
@@ -81,6 +81,7 @@ export function genericCommand(
 			...args: string[]
 		) {
 			try {
+				const profile = (values.profile as string | undefined) ?? "default";
 				const session = openSession({
 					profile: values.profile as string | undefined,
 					apiVersion:
@@ -99,8 +100,13 @@ export function genericCommand(
 				// A positional may be a natural key, a prefix or `last`; the API
 				// only ever accepts an id.
 				const ids: string[] = [];
-				for (const [i, param] of op.pathParams.entries())
-					ids.push(await resolveRef(session, param.name, args[i] ?? ""));
+				for (const [i] of op.pathParams.entries())
+					ids.push(
+						await resolveRef(
+							{ session, profile, op, paramIndex: i, resolvedIds: ids },
+							args[i] ?? "",
+						),
+					);
 
 				const fileBody = values.body
 					? (JSON.parse(
@@ -141,7 +147,7 @@ export function genericCommand(
 							);
 						cursor = next;
 					}
-					print({ data: rows }, { json: values.json === true, tty });
+					print({ data: rows }, { json: values.json === true, tty, profile });
 					return;
 				}
 
@@ -151,27 +157,36 @@ export function genericCommand(
 					...(body && Object.keys(body).length ? { body } : {}),
 				});
 				if (res.status === 204) return;
-				print(await res.json(), { json: values.json === true, tty });
+				print(await res.json(), { json: values.json === true, tty, profile });
 			} catch (error) {
 				process.exitCode = reportError(error);
 			}
 		},
 		parameters: {
-			// A tuple positional needs a statically known length; the number of
-			// path parameters is only known once `op` is read at runtime, so this
-			// is stricli's "array" shape instead, pinned to exactly that count.
+			// A tuple, one parameter per path segment — `op` is read once, when
+			// this command is built (`app.ts` calls `genericCommand` per
+			// operation), so the length is already fixed by then. A tuple over
+			// the old shared "array" parameter is what lets each position offer
+			// its own completions: a run's positional proposes cached run ids,
+			// a smith's proposes smiths, never one one-size-fits-all list.
+			// `func`'s rest parameter is declared `...args: string[]`, an
+			// unbounded array, because its true length is only known once `op`
+			// is read — so stricli's own conditional type for a "tuple"
+			// positional (which needs that length in the *type*, not just the
+			// value) can never match it structurally. The cast is the same
+			// bargain `flags as never` below already makes: correct at runtime
+			// (stricli itself only reads `.length` off `parameters`), wider than
+			// the static types can express for a command built from data.
 			positional: {
-				kind: "array",
-				parameter: {
-					brief:
-						op.pathParams.map((p) => p.description ?? p.name).join(", ") ||
-						op.id,
+				kind: "tuple",
+				parameters: op.pathParams.map((p) => ({
+					brief: p.description ?? p.name,
 					parse: String,
-					placeholder: op.pathParams[0]?.name,
-				},
-				minimum: op.pathParams.length,
-				maximum: op.pathParams.length,
-			},
+					placeholder: p.name,
+					proposeCompletions: (partial: string) =>
+						proposeIdCompletions(resourceForParam(op, p.name), partial),
+				})),
+			} as never,
 			flags: flags as never,
 		},
 		docs: {

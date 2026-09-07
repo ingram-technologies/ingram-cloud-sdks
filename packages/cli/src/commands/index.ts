@@ -1,3 +1,4 @@
+import { shellCommands } from "./completion";
 import { loginCommand, logoutCommand } from "./login";
 import { projectCommands } from "./project";
 import { versionCommand } from "./version";
@@ -10,5 +11,6 @@ export function extraCommands(apiVersion: string): Leaf[] {
 		{ id: "logout", command: logoutCommand },
 		{ id: "version", command: versionCommand(apiVersion) },
 		...projectCommands(apiVersion),
+		...shellCommands(),
 	];
 }

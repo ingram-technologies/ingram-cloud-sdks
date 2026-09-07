@@ -59,6 +59,7 @@ export function projectCommands(apiVersion: string) {
 			flags: { json?: boolean; profile?: string },
 		) {
 			try {
+				const profile = flags.profile ?? "default";
 				const session = openSession({ profile: flags.profile, apiVersion });
 				const path = "/organization/projects";
 				// Keyset-paginated; an org past the first page must not see a
@@ -83,7 +84,11 @@ export function projectCommands(apiVersion: string) {
 				}
 				print(
 					{ data: rows },
-					{ json: flags.json === true, tty: process.stdout.isTTY === true },
+					{
+						json: flags.json === true,
+						tty: process.stdout.isTTY === true,
+						profile,
+					},
 				);
 			} catch (error) {
 				process.exitCode = reportError(error);

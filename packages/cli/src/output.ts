@@ -1,3 +1,5 @@
+import { recordSeen } from "./ids";
+
 /**
  * How a response reaches the reader.
  *
@@ -59,8 +61,14 @@ export function renderObject(value: Record<string, unknown>, indent = ""): strin
 	return lines.join("\n");
 }
 
-/** Write a response the way this destination wants it. */
-export function print(value: unknown, opts: { json: boolean; tty: boolean }): void {
+/** Write a response the way this destination wants it. `profile`, when
+ *  given, also feeds the id cache (`recordSeen`) — omit it only for a
+ *  response that never carries an id worth remembering. */
+export function print(
+	value: unknown,
+	opts: { json: boolean; tty: boolean; profile?: string },
+): void {
+	if (opts.profile) recordSeen(opts.profile, value);
 	if (opts.json || !opts.tty) {
 		process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 		return;

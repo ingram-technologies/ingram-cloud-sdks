@@ -124,7 +124,7 @@ describe("genericCommand", () => {
 		});
 		const { out, exitCode } = await invoke(
 			del,
-			["smt_1", "--yes", "--json"],
+			["smt_1CeiMLuPbyEaUASpW5BbxU", "--yes", "--json"],
 			fetchImpl as unknown as typeof fetch,
 		);
 		expect(out).toBe("");
@@ -142,7 +142,11 @@ describe("genericCommand", () => {
 			path: "/v1/smiths/{pid}",
 			pathParams: [{ name: "pid", in: "path", schema: { type: "string" } }],
 		});
-		await invoke(del, ["smt_1"], fetchImpl as unknown as typeof fetch);
+		await invoke(
+			del,
+			["smt_1CeiMLuPbyEaUASpW5BbxU"],
+			fetchImpl as unknown as typeof fetch,
+		);
 		expect(fetchImpl).toHaveBeenCalledTimes(1);
 	});
 
