@@ -49,7 +49,10 @@ const DIM = "\x1b[2m";
 const RESET = "\x1b[0m";
 const dim = (s: string, tty: boolean) => (tty ? `${DIM}${s}${RESET}` : s);
 
-interface SseFrame {
+/** One SSE frame, transport-level: `chat.ts` reuses this reader against the
+ *  same `text/event-stream` bodies rather than re-parsing them; `render.ts`'s
+ *  `RenderFrame` is the structural subset it actually needs. */
+export interface SseFrame {
 	id?: string;
 	event: string;
 	data: string;
@@ -71,7 +74,7 @@ function parseSseBlock(raw: string): SseFrame | null {
 
 /** One block per yield, read as the body arrives — never buffered whole, so
  *  `message.delta` prints as it lands rather than only once the run finishes. */
-async function* readSse(res: Response): AsyncGenerator<SseFrame> {
+export async function* readSse(res: Response): AsyncGenerator<SseFrame> {
 	const body = res.body;
 	if (!body) return;
 	const reader = body.getReader();
