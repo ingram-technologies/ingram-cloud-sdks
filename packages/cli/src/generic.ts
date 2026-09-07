@@ -114,27 +114,39 @@ export function genericCommand(
 				const query = queryFromFlags(op, values);
 				const path = fillPath(op, ids).replace(/^\/v1/, "");
 
+				const token = session.token(path);
+
 				if (values["all-pages"] && op.method === "get") {
 					const rows: unknown[] = [];
 					let cursor: string | undefined;
-					do {
+					for (;;) {
 						const page = await session.ic.json<{
 							data?: unknown[];
 							next_cursor?: string | null;
 							has_more?: boolean;
 						}>("GET", path, {
+							token,
 							query: { ...query, ...(cursor ? { cursor } : {}) },
 						});
 						rows.push(...(page.data ?? []));
-						cursor = page.has_more
+						const next = page.has_more
 							? (page.next_cursor ?? undefined)
 							: undefined;
-					} while (cursor);
+						if (!next) break;
+						// A server bug returning the same cursor twice would otherwise
+						// loop forever, re-fetching one page and growing rows without end.
+						if (next === cursor)
+							throw new Error(
+								`${path}: the next page's cursor did not advance.`,
+							);
+						cursor = next;
+					}
 					print({ data: rows }, { json: values.json === true, tty });
 					return;
 				}
 
 				const res = await session.ic.request(op.method.toUpperCase(), path, {
+					token,
 					query,
 					...(body && Object.keys(body).length ? { body } : {}),
 				});
