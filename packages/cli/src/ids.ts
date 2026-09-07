@@ -115,14 +115,24 @@ export function cachePath(
 	return join(dir, `${profile}-ids.json`);
 }
 
-/** A read failure — no file yet, corrupt JSON, no permission — is an empty
- *  cache, never an error: the cache is an optimisation, not a dependency. */
+const isCacheEntry = (v: unknown): v is CacheEntry =>
+	!!v &&
+	typeof v === "object" &&
+	typeof (v as CacheEntry).id === "string" &&
+	typeof (v as CacheEntry).resource === "string" &&
+	typeof (v as CacheEntry).seen_at === "number";
+
+/** A read failure — no file yet, corrupt JSON, no permission, or a shape a
+ *  future or older `ic` version wrote differently — is an empty cache, never
+ *  an error: the cache is an optimisation, not a dependency. A malformed
+ *  entry surfacing as a `pickPrefixMatch`/`proposeIdCompletions` crash later
+ *  would defeat that guarantee just as surely as throwing here would. */
 export function readCache(profile: string, env: Env = process.env): CacheEntry[] {
 	try {
 		const parsed: unknown = JSON.parse(
 			readFileSync(cachePath(profile, env), "utf8"),
 		);
-		return Array.isArray(parsed) ? (parsed as CacheEntry[]) : [];
+		return Array.isArray(parsed) ? parsed.filter(isCacheEntry) : [];
 	} catch {
 		return [];
 	}
@@ -183,7 +193,6 @@ const RESOURCES: Record<string, ResourceRule> = {
 	"/v1/smiths/{pid}/model_keys": { resource: "provider", literal: true },
 	"/v1/agents": { resource: "agent" },
 	"/v1/agents/{aid}/ui": { resource: "UI template", literal: true },
-	"/v1/agents/{aid}/versions": { resource: "agent version" },
 	"/v1/approvals": { resource: "approval" },
 	"/v1/budgets": { resource: "budget" },
 	"/v1/catalog": { resource: "catalog entry", literal: true },
@@ -215,10 +224,18 @@ const RESOURCES: Record<string, ResourceRule> = {
 	"/v1/vector_stores/{vsId}/files": { resource: "vector store file" },
 };
 
-/** Every prefix minted by the API's own `newId()` (`api/src/ids.ts`) that a
- *  command in this tree can meet, for `recordSeen`'s classification — not
- *  used for validation, since an `id`-shaped value is always accepted as-is
- *  regardless of which resource it names. */
+/** Every prefix minted by the API's own `newId()` (`api/src/ids.ts`) that
+ *  names exactly one resource, for `recordSeen`'s classification — not used
+ *  for validation, since an `id`-shaped value is always accepted as-is
+ *  regardless of which resource it names.
+ *
+ *  `tok` is deliberately absent: `api/src/tokens.ts` mints both a project
+ *  token and a tenant token as `newId("tok")`, with nothing in the id itself
+ *  telling them apart. Guessing which one a cached `tok_…` id is would let a
+ *  prefix lookup for one silently return the other; leaving it unlabelled
+ *  means `resolveRef`'s cache filter (keyed on the resource string) never
+ *  matches a `tok_…` entry, so a token prefix always falls back to a live,
+ *  correctly-scoped scan instead. */
 const PREFIX_RESOURCE: Record<string, string> = {
 	smt: "smith",
 	agt: "agent",
@@ -232,14 +249,12 @@ const PREFIX_RESOURCE: Record<string, string> = {
 	dep: "deployment",
 	whk: "webhook",
 	whd: "webhook delivery",
-	dlv: "webhook delivery",
 	file: "file",
 	skl: "skill",
 	vs: "vector store",
 	vsfb: "file batch",
 	sch: "schedule",
 	iev: "inbound event",
-	tok: "tenant token",
 	bgt: "budget",
 	app: "app",
 };

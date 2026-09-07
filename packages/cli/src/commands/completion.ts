@@ -66,6 +66,6 @@ const installCommand = buildInstallCommand("ic", {
 export function shellCommands(): Leaf[] {
 	return [
 		{ id: "shell.completion", command: installCommand },
-		{ id: "complete", command: completeCommand },
+		{ id: "complete", command: completeCommand, hidden: true },
 	];
 }

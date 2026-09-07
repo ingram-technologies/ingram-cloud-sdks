@@ -12,6 +12,10 @@ import type { Command, CommandContext, RouteMap } from "@stricli/core";
 export interface Leaf {
 	id: string;
 	command: Command<CommandContext>;
+	/** Absent from `--help` and completion listings — a machine's entry point
+	 *  (bash's `complete -F` target, say), not a command a person types. Still
+	 *  reachable by name; only its visibility changes. */
+	hidden?: boolean;
 }
 
 interface Node {
@@ -26,6 +30,9 @@ export function buildTree(
 	rootBrief: string,
 ): RouteMap<CommandContext> {
 	const root: Node = { children: new Map() };
+	const hiddenCommands = new Set(
+		leaves.filter((l) => l.hidden).map((l) => l.command),
+	);
 
 	for (const leaf of leaves) {
 		const segs = leaf.id.split(".");
@@ -58,9 +65,12 @@ export function buildTree(
 			string,
 			RouteMap<CommandContext> | Command<CommandContext>
 		> = {};
-		for (const [name, child] of node.children)
+		const hideRoute: Record<string, boolean> = {};
+		for (const [name, child] of node.children) {
 			routes[name] = isNode(child) ? finish(child, name) : child;
-		return buildRouteMap({ routes, docs: { brief } });
+			if (!isNode(child) && hiddenCommands.has(child)) hideRoute[name] = true;
+		}
+		return buildRouteMap({ routes, docs: { brief, hideRoute } });
 	};
 
 	return finish(root, rootBrief);
