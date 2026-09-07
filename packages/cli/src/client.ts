@@ -8,31 +8,33 @@ import type { Profile } from "./config";
  *
  * The token is chosen per request rather than per client, because a single
  * command can touch both tiers — `ic project use` lists projects with the
- * organization key and mints a project token with it. The SDK takes a
- * function for exactly this.
+ * organization key and mints a project token with it. `RequestOptions.token`
+ * is the SDK's own per-call override, so `token(path)` picks the tier and the
+ * caller passes it alongside the path it already has — no shared mutable
+ * state to route between concurrent calls on one session.
  */
 export interface Session {
 	profile: Profile;
 	ic: IngramCloud;
 	/** The version the bundled snapshot was taken under. */
 	apiVersion: string;
+	/** The bearer token for a given `/v1` path, org key or project token. */
+	token: (path: string) => string;
 }
 
 export function openSession(opts: { profile?: string; apiVersion: string }): Session {
 	const profile = activeProfile(opts.profile);
-	let path = "/";
 	const ic = new IngramCloud({
 		baseURL: profile.base_url,
 		apiVersion: opts.apiVersion,
-		token: () => tokenFor(profile, path),
+		// A session always names its token per call via `token(path)`; this is
+		// only reached if some future call site forgets to.
+		token: () => tokenFor(profile, "/"),
 	});
-	// The SDK asks for the token immediately before each request, so recording
-	// the path on the way in is enough to route it. Wrapping `request` keeps
-	// that in one place instead of every call site passing a token.
-	const inner = ic.request.bind(ic);
-	ic.request = ((method: string, p: string, o?: object) => {
-		path = p;
-		return inner(method, p, o);
-	}) as typeof ic.request;
-	return { profile, ic, apiVersion: opts.apiVersion };
+	return {
+		profile,
+		ic,
+		apiVersion: opts.apiVersion,
+		token: (path) => tokenFor(profile, path),
+	};
 }
