@@ -55,4 +55,28 @@ describe("buildTree", () => {
 			),
 		).toThrow(/agents\.ui/);
 	});
+
+	it("refuses the same id registered twice, so a duplicate operation is not silently dropped", () => {
+		expect(() =>
+			buildTree(
+				[
+					{ id: "smiths.list", command: stub("x") },
+					{ id: "smiths.list", command: stub("y") },
+				],
+				"x",
+			),
+		).toThrow(/smiths\.list/);
+	});
+
+	it("refuses to build a tree from no leaves, since stricli refuses an empty route map", () => {
+		expect(() => buildTree([], "x")).toThrow(/at least one route/);
+	});
+
+	it("puts a dotless id at the root, with no group", () => {
+		const root = buildTree(
+			[{ id: "version", command: stub("Print version") }],
+			"x",
+		);
+		expect(paths(root)).toEqual(["ic version"]);
+	});
 });
