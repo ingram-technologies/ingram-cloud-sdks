@@ -244,10 +244,21 @@ async function resolveApprovals(
 			const r = (await rl.question("reason (optional): ")).trim();
 			if (r) reason = r;
 		} else if (current.elicitation) {
-			content = await promptElicitation(
-				rl,
-				current.elicitation as unknown as Elicitation,
-			);
+			try {
+				content = await promptElicitation(
+					rl,
+					current.elicitation as unknown as Elicitation,
+				);
+			} catch (error) {
+				// A bad answer (blank required field, an unparsable number) leaves
+				// the run paused server-side with nothing local tracking it once
+				// this throws — say how to resume it by hand, the same way
+				// oneShotTurn does for a pause it can't handle interactively.
+				process.stderr.write(
+					`Run ${rid} is still paused for approval ${current.approvalId}. Resolve with: ic api post smiths/${sid}/runs/${rid}/submit -f -\n`,
+				);
+				throw error;
+			}
 		}
 		setLive(rid);
 		const stop = spinner("resuming…", io.tty);
