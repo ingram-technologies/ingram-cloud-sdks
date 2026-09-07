@@ -26,6 +26,21 @@
         "ai": "^7.0.0",
       },
     },
+    "packages/cli": {
+      "name": "@ingram-cloud/cli",
+      "version": "0.1.0",
+      "bin": {
+        "ic": "./dist/bin.js",
+      },
+      "dependencies": {
+        "@ingram-cloud/sdk": "^1.12.0",
+        "@stricli/auto-complete": "^1.3.0",
+        "@stricli/core": "^1.3.0",
+      },
+      "devDependencies": {
+        "vitest": "^4.1.10",
+      },
+    },
     "packages/eve": {
       "name": "@ingram-cloud/eve",
       "version": "3.0.0",
@@ -56,7 +71,7 @@
     },
     "packages/pulumi": {
       "name": "@ingram-cloud/pulumi",
-      "version": "2.1.1",
+      "version": "2.2.0",
       "devDependencies": {
         "@pulumi/pulumi": "^3.260.0",
       },
@@ -153,6 +168,8 @@
     "@hono/node-server": ["@hono/node-server@2.1.1", "", { "peerDependencies": { "hono": "^4" } }, "sha512-ELuehkj5VCBdgEw9zs+ivkKwyzzUCSQuE96YmiPvn1ECBoZCczbFXJLeEGMTYjphP6gydh4pHMqEYPVMYUVgQg=="],
 
     "@ingram-cloud/ai-sdk": ["@ingram-cloud/ai-sdk@workspace:packages/ai-sdk"],
+
+    "@ingram-cloud/cli": ["@ingram-cloud/cli@workspace:packages/cli"],
 
     "@ingram-cloud/eve": ["@ingram-cloud/eve@workspace:packages/eve"],
 
@@ -403,6 +420,10 @@
     "@smithy/util-utf8": ["@smithy/util-utf8@2.3.0", "", { "dependencies": { "@smithy/util-buffer-from": "^2.2.0", "tslib": "^2.6.2" } }, "sha512-R8Rdn8Hy72KKcebgLiv8jQcQkXoLMOGGv5uI1/k0l+snqkOzQ1R0ChUBCxWMlBsFMekWjq0wRudIweFs7sKT5A=="],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
+
+    "@stricli/auto-complete": ["@stricli/auto-complete@1.3.0", "", { "dependencies": { "@stricli/core": "^1.3.0" }, "bin": { "auto-complete": "dist/bin/cli.js" } }, "sha512-egN+fdP2USbP08DkhSH+y9XsiXSrJMgbR1E5SuOD2kqI4AckufhOIKokDzmzmUT6yMa7j0jmWu29phT/jXwzqQ=="],
+
+    "@stricli/core": ["@stricli/core@1.3.0", "", {}, "sha512-LnBe2HntygaLDU5trtjiC3J4C/YkmIZuM0XB52IF4qaLqJH09kgD1fnZiS2gaYUnt0nAN2a+1b4PSOBcfPrN4Q=="],
 
     "@tufjs/canonical-json": ["@tufjs/canonical-json@2.0.0", "", {}, "sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA=="],
 
