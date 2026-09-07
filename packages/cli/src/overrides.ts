@@ -1,5 +1,21 @@
 import type { Command, CommandContext } from "@stricli/core";
 
+import {
+	agentsUiContentCommand,
+	agentsUiPutCommand,
+	filesContentCommand,
+	filesUploadCommand,
+} from "./commands/files";
+import {
+	compatStreamCommand,
+	runEventsCommand,
+	runStreamCommand,
+} from "./commands/runs";
+import {
+	skillsCreateCommand,
+	skillsVersionsContentCommand,
+	skillsVersionsCreateCommand,
+} from "./commands/skills";
 import type { Operation } from "./spec";
 
 /**
@@ -16,4 +32,22 @@ export type OverrideFactory = (
 	apiVersion: string,
 ) => Command<CommandContext>;
 
-export const OVERRIDES: Record<string, OverrideFactory> = {};
+export const OVERRIDES: Record<string, OverrideFactory> = {
+	// 4 multipart uploads
+	"files.upload": filesUploadCommand,
+	"skills.create": skillsCreateCommand,
+	"skills.versions.create": skillsVersionsCreateCommand,
+	"agents.ui.put": agentsUiPutCommand,
+
+	// 3 byte downloads
+	"files.content": filesContentCommand,
+	"skills.versions.content": skillsVersionsContentCommand,
+	"agents.ui.content": agentsUiContentCommand,
+
+	// 5 streams
+	"smiths.runs.create": runStreamCommand,
+	"smiths.runs.events": runEventsCommand,
+	"smiths.runs.replay": runStreamCommand,
+	"completions.create": compatStreamCommand,
+	"responses.create": compatStreamCommand,
+};
