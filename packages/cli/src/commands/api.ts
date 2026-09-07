@@ -48,8 +48,16 @@ export function apiCommand(apiVersion: string): Command<CommandContext> {
 					...(body !== undefined ? { body } : {}),
 				});
 				if (res.status === 204) return;
-				const text = await res.text();
-				process.stdout.write(text.endsWith("\n") ? text : `${text}\n`);
+				const contentType = res.headers.get("content-type") ?? "";
+				if (/^(text\/|application\/(json|.*\+json))/i.test(contentType)) {
+					const text = await res.text();
+					process.stdout.write(text.endsWith("\n") ? text : `${text}\n`);
+					return;
+				}
+				// "Unchanged" means bytes, not text: res.text() UTF-8-decodes,
+				// which corrupts a genuinely binary response — this command must
+				// reach any /v1 path, including one that returns one.
+				process.stdout.write(new Uint8Array(await res.arrayBuffer()));
 			} catch (error) {
 				process.exitCode = reportError(error);
 			}
