@@ -40,7 +40,7 @@ const COMMON = {
 
 /** `filename="…"` (plain or RFC 5987 `filename*=`) out of a `Content-Disposition`
  *  header — the server's own name for the bytes, when it sent one. */
-function filenameFromDisposition(header: string | null): string | null {
+export function filenameFromDisposition(header: string | null): string | null {
 	if (!header) return null;
 	const star = /filename\*=(?:UTF-8'')?([^;]+)/i.exec(header);
 	if (star?.[1]) {
@@ -51,7 +51,16 @@ function filenameFromDisposition(header: string | null): string | null {
 		}
 	}
 	const plain = /filename="?([^";]+)"?/i.exec(header);
-	return plain?.[1]?.trim() ?? null;
+	if (!plain?.[1]) return null;
+	// The plain filename= param is never itself percent-encoded per RFC 6266,
+	// but this API's files route sends one that is (encodeURIComponent, not
+	// filename*=) — decode it, falling back to the raw value for a server
+	// that sends a genuinely unencoded name with a stray % in it.
+	try {
+		return decodeURIComponent(plain[1].trim());
+	} catch {
+		return plain[1].trim();
+	}
 }
 
 /**
@@ -61,7 +70,7 @@ function filenameFromDisposition(header: string | null): string | null {
  * it — it gets the file saved under the server's suggested name (or
  * `fallbackName` when the response named none) and told where to find it.
  */
-function deliverDownload(
+export function deliverDownload(
 	bytes: Uint8Array,
 	opts: {
 		output?: string;
@@ -253,18 +262,16 @@ export function agentsUiPutCommand(
 
 				const path = fillPath(op, [aid]).replace(/^\/v1/, "");
 				const html = readFileSync(filePath, "utf8");
-				const form = new FormData();
-				form.append(
-					"file",
-					new Blob([html], { type: "text/html" }),
-					`${name}.html`,
+				// The SDK's own ic.agents.ui.put already builds this exact
+				// multipart shape — reuse it rather than a second copy that could
+				// drift from the SDK's if the sidecar shape ever changes.
+				const result = await session.ic.agents.ui.put(
+					aid,
+					html,
+					meta as never,
+					{ token: session.token(path) },
 				);
-				form.append("metadata", JSON.stringify(meta));
-				const res = await session.ic.request(op.method.toUpperCase(), path, {
-					token: session.token(path),
-					rawBody: form,
-				});
-				print(await res.json(), { json: values.json === true, tty, profile });
+				print(result, { json: values.json === true, tty, profile });
 			} catch (error) {
 				process.exitCode = reportError(error);
 			}

@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, join, relative, sep } from "node:path";
 
 import type { SkillBundle, SkillFileInput } from "@ingram-cloud/sdk/client";
@@ -6,6 +6,7 @@ import { buildCommand } from "@stricli/core";
 import type { Command, CommandContext } from "@stricli/core";
 
 import { openSession } from "../client";
+import { deliverDownload, filenameFromDisposition } from "./files";
 import { reportError } from "../errors";
 import { proposeIdCompletions, resolveRef, resourceForParam } from "../ids";
 import { print } from "../output";
@@ -177,12 +178,6 @@ export function skillsVersionsCreateCommand(
 	});
 }
 
-/** `filename="…"` out of a `Content-Disposition` header, when the server sent one. */
-function filenameFromDisposition(header: string | null): string | null {
-	const m = header && /filename="?([^";]+)"?/i.exec(header);
-	return m?.[1]?.trim() ?? null;
-}
-
 /** `skills.versions.content` — `GET /v1/skills/{id}/versions/{v}/content`,
  *  one file with `--path`, else the whole version as a zip. */
 export function skillsVersionsContentCommand(
@@ -221,22 +216,16 @@ export function skillsVersionsContentCommand(
 					{ token: session.token(path) },
 				);
 				const bytes = new Uint8Array(await res.arrayBuffer());
-				const suggested = filenameFromDisposition(
-					res.headers.get("content-disposition"),
-				);
-				const fallback = filePath
-					? basename(filePath)
-					: `${id}-v${version}.zip`;
-				const output = values.output as string | undefined;
-				const target = output ?? (tty ? (suggested ?? fallback) : null);
-				if (target === null) {
-					process.stdout.write(bytes);
-					return;
-				}
-				writeFileSync(target, bytes);
-				process.stderr.write(
-					`Saved ${bytes.length} bytes to ${target}. Use -o <path> to choose the name, or pipe/redirect for the raw bytes on stdout.\n`,
-				);
+				deliverDownload(bytes, {
+					output: values.output as string | undefined,
+					tty,
+					suggestedName: filenameFromDisposition(
+						res.headers.get("content-disposition"),
+					),
+					fallbackName: filePath
+						? basename(filePath)
+						: `${id}-v${version}.zip`,
+				});
 			} catch (error) {
 				process.exitCode = reportError(error);
 			}

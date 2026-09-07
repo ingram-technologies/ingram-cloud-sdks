@@ -94,8 +94,11 @@ async function* readSse(res: Response): AsyncGenerator<SseFrame> {
 	if (rest) yield rest;
 }
 
+// `run.started` opens every stream, not closes one — it must not print the
+// same dimmed banner a real terminal frame gets.
 const isTerminalRunEvent = (event: string) =>
-	event.startsWith("run.") || event === "approval.required";
+	(event.startsWith("run.") && event !== "run.started") ||
+	event === "approval.required";
 
 /**
  * Pump the native `{v:1}` envelope — `smiths.runs.create`/`.replay` (live) and
@@ -156,7 +159,16 @@ async function pumpCompatStream(
 			continue;
 		}
 		if (data.error) {
+			// Chat Completions' error shape: { error: {...} } nested under the
+			// frame's data.
 			opts.write(dim(`\n[error: ${JSON.stringify(data.error)}]\n`, opts.tty));
+			continue;
+		}
+		if (frame.event === "error") {
+			// The Responses API's own error frame is flat — { type, code,
+			// message, param } — not nested under an `error` key, so it never
+			// hits the branch above; without this it streamed silently.
+			opts.write(dim(`\n[error: ${JSON.stringify(data)}]\n`, opts.tty));
 			continue;
 		}
 		const choices = data.choices as
@@ -175,7 +187,8 @@ async function pumpCompatStream(
 		}
 		if (
 			frame.event === "response.completed" ||
-			frame.event === "response.incomplete"
+			frame.event === "response.incomplete" ||
+			frame.event === "response.failed"
 		)
 			opts.write(dim(`\n[${frame.event}]\n`, opts.tty));
 	}
