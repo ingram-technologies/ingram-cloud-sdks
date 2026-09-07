@@ -18,9 +18,7 @@
 				"properties": {
 					"ok": {
 						"type": "boolean",
-						"enum": [
-							true
-						]
+						"enum": [true]
 					},
 					"service": {
 						"type": "string"
@@ -29,11 +27,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"ok",
-					"service",
-					"commit"
-				]
+				"required": ["ok", "service", "commit"]
 			},
 			"ReadyOut": {
 				"type": "object",
@@ -51,16 +45,10 @@
 								"type": "string"
 							}
 						},
-						"required": [
-							"db"
-						]
+						"required": ["db"]
 					}
 				},
-				"required": [
-					"ok",
-					"service",
-					"checks"
-				]
+				"required": ["ok", "service", "checks"]
 			},
 			"CatalogListOut": {
 				"type": "object",
@@ -72,9 +60,7 @@
 						}
 					}
 				},
-				"required": [
-					"data"
-				]
+				"required": ["data"]
 			},
 			"CatalogEntryOut": {
 				"type": "object",
@@ -105,11 +91,7 @@
 								"type": "string"
 							}
 						},
-						"required": [
-							"kind",
-							"provider",
-							"client_mode"
-						]
+						"required": ["kind", "provider", "client_mode"]
 					},
 					"scopes": {
 						"type": "array",
@@ -136,9 +118,7 @@
 									"type": "string"
 								}
 							},
-							"required": [
-								"match"
-							]
+							"required": ["match"]
 						}
 					},
 					"logo_url": {
@@ -335,17 +315,10 @@
 								]
 							}
 						},
-						"required": [
-							"message",
-							"type",
-							"param",
-							"code"
-						]
+						"required": ["message", "type", "param", "code"]
 					}
 				},
-				"required": [
-					"error"
-				]
+				"required": ["error"]
 			},
 			"ApprovalListOut": {
 				"type": "object",
@@ -364,10 +337,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"ApprovalOut": {
 				"type": "object",
@@ -411,10 +381,7 @@
 								}
 							}
 						},
-						"required": [
-							"message",
-							"requested_schema"
-						]
+						"required": ["message", "requested_schema"]
 					},
 					"status": {
 						"type": "string"
@@ -501,9 +468,7 @@
 						}
 					}
 				},
-				"required": [
-					"name"
-				]
+				"required": ["name"]
 			},
 			"ProjectListOut": {
 				"type": "object",
@@ -522,10 +487,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"ProjectTokenOut": {
 				"type": "object",
@@ -553,14 +515,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"id",
-					"token",
-					"scope",
-					"sub",
-					"scopes",
-					"expires_at"
-				]
+				"required": ["id", "token", "scope", "sub", "scopes", "expires_at"]
 			},
 			"ProjectTokenIn": {
 				"type": "object",
@@ -595,10 +550,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"AppInstallOut": {
 				"type": "object",
@@ -669,13 +621,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"id",
-					"name",
-					"external_ids",
-					"metadata",
-					"created_at"
-				]
+				"required": ["id", "name", "external_ids", "metadata", "created_at"]
 			},
 			"CustomerCreate": {
 				"type": "object",
@@ -696,9 +642,7 @@
 						}
 					}
 				},
-				"required": [
-					"name"
-				]
+				"required": ["name"]
 			},
 			"CustomerListOut": {
 				"type": "object",
@@ -717,11 +661,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"next_cursor",
-					"has_more"
-				]
+				"required": ["data", "next_cursor", "has_more"]
 			},
 			"CustomerPatch": {
 				"type": "object",
@@ -754,12 +694,7 @@
 					},
 					"scope": {
 						"type": "string",
-						"enum": [
-							"tenant",
-							"agent",
-							"smith",
-							"customer"
-						]
+						"enum": ["tenant", "agent", "smith", "customer"]
 					},
 					"scope_id": {
 						"type": "string",
@@ -776,24 +711,14 @@
 					},
 					"action": {
 						"type": "string",
-						"enum": [
-							"warn",
-							"block"
-						]
+						"enum": ["warn", "block"]
 					},
 					"created_at": {
 						"type": "string",
 						"nullable": true
 					}
 				},
-				"required": [
-					"id",
-					"scope",
-					"period",
-					"limit",
-					"currency",
-					"action"
-				]
+				"required": ["id", "scope", "period", "limit", "currency", "action"]
 			},
 			"BudgetIn": {
 				"type": "object",
@@ -817,10 +742,7 @@
 						"default": "monthly"
 					}
 				},
-				"required": [
-					"scope",
-					"limit"
-				]
+				"required": ["scope", "limit"]
 			},
 			"BudgetListOut": {
 				"type": "object",
@@ -839,10 +761,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"BudgetStatusOut": {
 				"type": "object",
@@ -852,12 +771,7 @@
 					},
 					"scope": {
 						"type": "string",
-						"enum": [
-							"tenant",
-							"agent",
-							"smith",
-							"customer"
-						]
+						"enum": ["tenant", "agent", "smith", "customer"]
 					},
 					"scope_id": {
 						"type": "string",
@@ -874,10 +788,7 @@
 					},
 					"action": {
 						"type": "string",
-						"enum": [
-							"warn",
-							"block"
-						]
+						"enum": ["warn", "block"]
 					},
 					"created_at": {
 						"type": "string",
@@ -939,11 +850,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"currency",
-					"balance_cents",
-					"stripe_customer"
-				]
+				"required": ["currency", "balance_cents", "stripe_customer"]
 			},
 			"LedgerListOut": {
 				"type": "object",
@@ -962,11 +869,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"next_cursor",
-					"has_more"
-				]
+				"required": ["data", "next_cursor", "has_more"]
 			},
 			"LedgerEntryOut": {
 				"type": "object",
@@ -1087,10 +990,7 @@
 									"type": "string"
 								}
 							},
-							"required": [
-								"project_id",
-								"name"
-							]
+							"required": ["project_id", "name"]
 						}
 					},
 					"points": {
@@ -1100,13 +1000,7 @@
 						}
 					}
 				},
-				"required": [
-					"currency",
-					"from",
-					"to",
-					"projects",
-					"points"
-				]
+				"required": ["currency", "from", "to", "projects", "points"]
 			},
 			"OrgUsageSeriesPoint": {
 				"type": "object",
@@ -1121,11 +1015,7 @@
 						"type": "integer"
 					}
 				},
-				"required": [
-					"day",
-					"project_id",
-					"drawn_cents"
-				]
+				"required": ["day", "project_id", "drawn_cents"]
 			},
 			"CheckoutOut": {
 				"type": "object",
@@ -1134,9 +1024,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"url"
-				]
+				"required": ["url"]
 			},
 			"CheckoutIn": {
 				"type": "object",
@@ -1148,10 +1036,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"amount_cents",
-					"return_url"
-				]
+				"required": ["amount_cents", "return_url"]
 			},
 			"SetupOut": {
 				"type": "object",
@@ -1160,9 +1045,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"url"
-				]
+				"required": ["url"]
 			},
 			"SetupIn": {
 				"type": "object",
@@ -1171,9 +1054,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"return_url"
-				]
+				"required": ["return_url"]
 			},
 			"RedeemOut": {
 				"type": "object",
@@ -1185,10 +1066,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"amount_cents",
-					"currency"
-				]
+				"required": ["amount_cents", "currency"]
 			},
 			"RedeemIn": {
 				"type": "object",
@@ -1197,9 +1075,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"code"
-				]
+				"required": ["code"]
 			},
 			"ConfirmOut": {
 				"type": "object",
@@ -1211,10 +1087,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"credited",
-					"payment_status"
-				]
+				"required": ["credited", "payment_status"]
 			},
 			"ConfirmIn": {
 				"type": "object",
@@ -1223,9 +1096,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"session_id"
-				]
+				"required": ["session_id"]
 			},
 			"AutoreloadOut": {
 				"type": "object",
@@ -1240,11 +1111,7 @@
 						"type": "integer"
 					}
 				},
-				"required": [
-					"enabled",
-					"threshold_cents",
-					"amount_cents"
-				]
+				"required": ["enabled", "threshold_cents", "amount_cents"]
 			},
 			"ReloadOut": {
 				"type": "object",
@@ -1256,10 +1123,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"credited",
-					"payment_status"
-				]
+				"required": ["credited", "payment_status"]
 			},
 			"ReloadIn": {
 				"type": "object",
@@ -1276,23 +1140,17 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"url"
-				]
+				"required": ["url"]
 			},
 			"StripeWebhookAck": {
 				"type": "object",
 				"properties": {
 					"received": {
 						"type": "boolean",
-						"enum": [
-							true
-						]
+						"enum": [true]
 					}
 				},
-				"required": [
-					"received"
-				]
+				"required": ["received"]
 			},
 			"ScheduleOut": {
 				"type": "object",
@@ -1385,9 +1243,7 @@
 						"default": true
 					}
 				},
-				"required": [
-					"cron"
-				]
+				"required": ["cron"]
 			},
 			"ScheduleListOut": {
 				"type": "object",
@@ -1406,10 +1262,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"SchedulePatch": {
 				"type": "object",
@@ -1457,16 +1310,10 @@
 					},
 					"status": {
 						"type": "string",
-						"enum": [
-							"queued"
-						]
+						"enum": ["queued"]
 					}
 				},
-				"required": [
-					"schedule_id",
-					"delivery_id",
-					"status"
-				]
+				"required": ["schedule_id", "delivery_id", "status"]
 			},
 			"ConnectionOut": {
 				"type": "object",
@@ -1532,10 +1379,7 @@
 						}
 					}
 				},
-				"required": [
-					"provider",
-					"credential"
-				]
+				"required": ["provider", "credential"]
 			},
 			"Credential": {
 				"type": "object",
@@ -1578,10 +1422,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"ConnectionPatch": {
 				"type": "object",
@@ -1627,10 +1468,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"authorize_url",
-					"provider"
-				]
+				"required": ["authorize_url", "provider"]
 			},
 			"AuthorizeIn": {
 				"type": "object",
@@ -1647,23 +1485,17 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"provider"
-				]
+				"required": ["provider"]
 			},
 			"ConnectionCallbackOut": {
 				"type": "object",
 				"properties": {
 					"status": {
 						"type": "string",
-						"enum": [
-							"ok"
-						]
+						"enum": ["ok"]
 					}
 				},
-				"required": [
-					"status"
-				]
+				"required": ["status"]
 			},
 			"ClientMetadataDocument": {
 				"type": "object",
@@ -1721,9 +1553,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"conversation"
-						]
+						"enum": ["conversation"]
 					},
 					"created_at": {
 						"type": "integer"
@@ -1774,9 +1604,7 @@
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -1796,13 +1624,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"object",
-					"data",
-					"first_id",
-					"last_id",
-					"has_more"
-				]
+				"required": ["object", "data", "first_id", "last_id", "has_more"]
 			},
 			"ConversationUpdate": {
 				"type": "object",
@@ -1826,31 +1648,21 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"conversation.deleted"
-						]
+						"enum": ["conversation.deleted"]
 					},
 					"deleted": {
 						"type": "boolean",
-						"enum": [
-							true
-						]
+						"enum": [true]
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"deleted"
-				]
+				"required": ["id", "object", "deleted"]
 			},
 			"ConversationItemListOut": {
 				"type": "object",
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -1870,13 +1682,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"object",
-					"data",
-					"first_id",
-					"last_id",
-					"has_more"
-				]
+				"required": ["object", "data", "first_id", "last_id", "has_more"]
 			},
 			"ConversationItem": {
 				"type": "object",
@@ -1918,10 +1724,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"id",
-					"type"
-				]
+				"required": ["id", "type"]
 			},
 			"DeploymentCreatedOut": {
 				"type": "object",
@@ -2002,19 +1805,13 @@
 				"properties": {
 					"type": {
 						"type": "string",
-						"enum": [
-							"smith",
-							"agent"
-						]
+						"enum": ["smith", "agent"]
 					},
 					"id": {
 						"type": "string"
 					}
 				},
-				"required": [
-					"type",
-					"id"
-				]
+				"required": ["type", "id"]
 			},
 			"DeploymentKind": {
 				"type": "string",
@@ -2067,10 +1864,7 @@
 						}
 					}
 				},
-				"required": [
-					"target",
-					"kind"
-				]
+				"required": ["target", "kind"]
 			},
 			"DeploymentListOut": {
 				"type": "object",
@@ -2089,10 +1883,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"DeploymentOut": {
 				"type": "object",
@@ -2180,10 +1971,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"InboundEventOut": {
 				"type": "object",
@@ -2369,9 +2157,7 @@
 						"exclusiveMinimum": true
 					}
 				},
-				"required": [
-					"skill_id"
-				]
+				"required": ["skill_id"]
 			},
 			"AgentVariable": {
 				"type": "object",
@@ -2391,9 +2177,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"name"
-				]
+				"required": ["name"]
 			},
 			"UiResource": {
 				"type": "object",
@@ -2426,10 +2210,7 @@
 						"$ref": "#/components/schemas/UiResourceTool"
 					}
 				},
-				"required": [
-					"name",
-					"content_hash"
-				]
+				"required": ["name", "content_hash"]
 			},
 			"UiCsp": {
 				"type": "object",
@@ -2485,16 +2266,11 @@
 						"type": "array",
 						"items": {
 							"type": "string",
-							"enum": [
-								"model",
-								"app"
-							]
+							"enum": ["model", "app"]
 						}
 					}
 				},
-				"required": [
-					"description"
-				]
+				"required": ["description"]
 			},
 			"AgentIn": {
 				"type": "object",
@@ -2558,9 +2334,7 @@
 						}
 					}
 				},
-				"required": [
-					"name"
-				]
+				"required": ["name"]
 			},
 			"AgentListOut": {
 				"type": "object",
@@ -2579,10 +2353,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"AgentPatch": {
 				"type": "object",
@@ -2661,10 +2432,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"AgentVersionOut": {
 				"type": "object",
@@ -2743,13 +2511,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"version",
-					"snapshot",
-					"created_by",
-					"note",
-					"created_at"
-				]
+				"required": ["version", "snapshot", "created_by", "note", "created_at"]
 			},
 			"PublishIn": {
 				"type": "object",
@@ -2773,9 +2535,7 @@
 						"default": 100
 					}
 				},
-				"required": [
-					"version"
-				]
+				"required": ["version"]
 			},
 			"ImportIn": {
 				"type": "object",
@@ -2787,10 +2547,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"from_smith",
-					"name"
-				]
+				"required": ["from_smith", "name"]
 			},
 			"AttachOut": {
 				"type": "object",
@@ -2810,20 +2567,14 @@
 									}
 								}
 							},
-							"required": [
-								"smith_id",
-								"override_keys"
-							]
+							"required": ["smith_id", "override_keys"]
 						}
 					},
 					"count": {
 						"type": "integer"
 					}
 				},
-				"required": [
-					"attached",
-					"count"
-				]
+				"required": ["attached", "count"]
 			},
 			"AttachIn": {
 				"type": "object",
@@ -2851,9 +2602,7 @@
 						}
 					}
 				},
-				"required": [
-					"data"
-				]
+				"required": ["data"]
 			},
 			"SmithOut": {
 				"type": "object",
@@ -2930,11 +2679,7 @@
 					},
 					"config_source": {
 						"type": "string",
-						"enum": [
-							"agent",
-							"override",
-							"custom"
-						]
+						"enum": ["agent", "override", "custom"]
 					},
 					"agent_id": {
 						"type": "string",
@@ -3125,10 +2870,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"SmithPatch": {
 				"type": "object",
@@ -3220,9 +2962,7 @@
 						}
 					}
 				},
-				"required": [
-					"data"
-				]
+				"required": ["data"]
 			},
 			"ModelKeyOut": {
 				"type": "object",
@@ -3272,12 +3012,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"provider",
-					"configured",
-					"base_url",
-					"workspace_id"
-				]
+				"required": ["provider", "configured", "base_url", "workspace_id"]
 			},
 			"ModelKeyIn": {
 				"type": "object",
@@ -3294,9 +3029,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"api_key"
-				]
+				"required": ["api_key"]
 			},
 			"RevisionListOut": {
 				"type": "object",
@@ -3315,10 +3048,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"SmithRevisionOut": {
 				"type": "object",
@@ -3386,10 +3116,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"version",
-					"snapshot"
-				]
+				"required": ["version", "snapshot"]
 			},
 			"RestoreIn": {
 				"type": "object",
@@ -3408,9 +3135,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"skill"
-						]
+						"enum": ["skill"]
 					},
 					"name": {
 						"type": "string"
@@ -3443,9 +3168,7 @@
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -3454,10 +3177,7 @@
 						}
 					}
 				},
-				"required": [
-					"object",
-					"data"
-				]
+				"required": ["object", "data"]
 			},
 			"SkillUpdateIn": {
 				"type": "object",
@@ -3468,9 +3188,7 @@
 						"exclusiveMinimum": true
 					}
 				},
-				"required": [
-					"default_version"
-				]
+				"required": ["default_version"]
 			},
 			"SkillVersion": {
 				"type": "object",
@@ -3566,12 +3284,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"path",
-					"size",
-					"sha256",
-					"media_type"
-				]
+				"required": ["path", "size", "sha256", "media_type"]
 			},
 			"SkillReference": {
 				"type": "object",
@@ -3583,19 +3296,14 @@
 						"type": "integer"
 					}
 				},
-				"required": [
-					"agent_id",
-					"version"
-				]
+				"required": ["agent_id", "version"]
 			},
 			"SkillVersionListOut": {
 				"type": "object",
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -3604,10 +3312,7 @@
 						}
 					}
 				},
-				"required": [
-					"object",
-					"data"
-				]
+				"required": ["object", "data"]
 			},
 			"RunListOut": {
 				"type": "object",
@@ -3626,10 +3331,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"RunOut": {
 				"type": "object",
@@ -3752,10 +3454,7 @@
 						]
 					}
 				},
-				"required": [
-					"role",
-					"content"
-				]
+				"required": ["role", "content"]
 			},
 			"RunWarning": {
 				"type": "object",
@@ -3767,10 +3466,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"code",
-					"message"
-				]
+				"required": ["code", "message"]
 			},
 			"RunUsage": {
 				"type": "object",
@@ -3789,11 +3485,7 @@
 						"type": "number"
 					}
 				},
-				"required": [
-					"input_tokens",
-					"output_tokens",
-					"total_tokens"
-				]
+				"required": ["input_tokens", "output_tokens", "total_tokens"]
 			},
 			"Actor": {
 				"type": "object",
@@ -3801,11 +3493,7 @@
 				"properties": {
 					"kind": {
 						"type": "string",
-						"enum": [
-							"smith",
-							"tenant",
-							"operator"
-						]
+						"enum": ["smith", "tenant", "operator"]
 					},
 					"id": {
 						"type": "string"
@@ -3818,11 +3506,7 @@
 						"default": ""
 					}
 				},
-				"required": [
-					"kind",
-					"id",
-					"token_id"
-				]
+				"required": ["kind", "id", "token_id"]
 			},
 			"RunEventOut": {
 				"type": "object",
@@ -3844,30 +3528,20 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"seq",
-					"type",
-					"data",
-					"created_at"
-				]
+				"required": ["seq", "type", "data", "created_at"]
 			},
 			"RunStreamFrame": {
 				"type": "object",
 				"properties": {
 					"v": {
 						"type": "number",
-						"enum": [
-							1
-						]
+						"enum": [1]
 					},
 					"run_id": {
 						"type": "string"
 					}
 				},
-				"required": [
-					"v",
-					"run_id"
-				],
+				"required": ["v", "run_id"],
 				"additionalProperties": {
 					"nullable": true
 				}
@@ -3922,15 +3596,10 @@
 					},
 					"status": {
 						"type": "string",
-						"enum": [
-							"cancelled"
-						]
+						"enum": ["cancelled"]
 					}
 				},
-				"required": [
-					"id",
-					"status"
-				]
+				"required": ["id", "status"]
 			},
 			"Submit": {
 				"type": "object",
@@ -3976,9 +3645,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"kind"
-				]
+				"required": ["kind"]
 			},
 			"FileOut": {
 				"type": "object",
@@ -3988,9 +3655,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"file"
-						]
+						"enum": ["file"]
 					},
 					"bytes": {
 						"type": "integer"
@@ -4006,9 +3671,7 @@
 					},
 					"status": {
 						"type": "string",
-						"enum": [
-							"processed"
-						]
+						"enum": ["processed"]
 					},
 					"status_details": {
 						"nullable": true
@@ -4030,9 +3693,7 @@
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -4052,13 +3713,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"object",
-					"data",
-					"first_id",
-					"last_id",
-					"has_more"
-				]
+				"required": ["object", "data", "first_id", "last_id", "has_more"]
 			},
 			"FileDeleted": {
 				"type": "object",
@@ -4068,22 +3723,14 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"file"
-						]
+						"enum": ["file"]
 					},
 					"deleted": {
 						"type": "boolean",
-						"enum": [
-							true
-						]
+						"enum": [true]
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"deleted"
-				]
+				"required": ["id", "object", "deleted"]
 			},
 			"VectorStoreOut": {
 				"type": "object",
@@ -4093,9 +3740,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"vector_store"
-						]
+						"enum": ["vector_store"]
 					},
 					"created_at": {
 						"type": "integer"
@@ -4112,10 +3757,7 @@
 					},
 					"status": {
 						"type": "string",
-						"enum": [
-							"in_progress",
-							"completed"
-						]
+						"enum": ["in_progress", "completed"]
 					},
 					"file_counts": {
 						"type": "object",
@@ -4216,23 +3858,17 @@
 						"properties": {
 							"type": {
 								"type": "string",
-								"enum": [
-									"auto"
-								]
+								"enum": ["auto"]
 							}
 						},
-						"required": [
-							"type"
-						]
+						"required": ["type"]
 					},
 					{
 						"type": "object",
 						"properties": {
 							"type": {
 								"type": "string",
-								"enum": [
-									"static"
-								]
+								"enum": ["static"]
 							},
 							"static": {
 								"type": "object",
@@ -4253,10 +3889,7 @@
 								]
 							}
 						},
-						"required": [
-							"type",
-							"static"
-						]
+						"required": ["type", "static"]
 					}
 				]
 			},
@@ -4265,9 +3898,7 @@
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -4287,13 +3918,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"object",
-					"data",
-					"first_id",
-					"last_id",
-					"has_more"
-				]
+				"required": ["object", "data", "first_id", "last_id", "has_more"]
 			},
 			"VectorStorePatch": {
 				"type": "object",
@@ -4323,22 +3948,14 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"vector_store.deleted"
-						]
+						"enum": ["vector_store.deleted"]
 					},
 					"deleted": {
 						"type": "boolean",
-						"enum": [
-							true
-						]
+						"enum": [true]
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"deleted"
-				]
+				"required": ["id", "object", "deleted"]
 			},
 			"VectorStoreFileOut": {
 				"type": "object",
@@ -4348,9 +3965,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"vector_store.file"
-						]
+						"enum": ["vector_store.file"]
 					},
 					"usage_bytes": {
 						"type": "integer"
@@ -4363,12 +3978,7 @@
 					},
 					"status": {
 						"type": "string",
-						"enum": [
-							"in_progress",
-							"completed",
-							"failed",
-							"cancelled"
-						]
+						"enum": ["in_progress", "completed", "failed", "cancelled"]
 					},
 					"last_error": {
 						"type": "object",
@@ -4387,10 +3997,7 @@
 								"type": "string"
 							}
 						},
-						"required": [
-							"code",
-							"message"
-						]
+						"required": ["code", "message"]
 					},
 					"chunking_strategy": {
 						"$ref": "#/components/schemas/ChunkingStrategyOut"
@@ -4431,9 +4038,7 @@
 				"properties": {
 					"type": {
 						"type": "string",
-						"enum": [
-							"static"
-						]
+						"enum": ["static"]
 					},
 					"static": {
 						"type": "object",
@@ -4445,16 +4050,10 @@
 								"type": "integer"
 							}
 						},
-						"required": [
-							"max_chunk_size_tokens",
-							"chunk_overlap_tokens"
-						]
+						"required": ["max_chunk_size_tokens", "chunk_overlap_tokens"]
 					}
 				},
-				"required": [
-					"type",
-					"static"
-				]
+				"required": ["type", "static"]
 			},
 			"VectorStoreFileIn": {
 				"type": "object",
@@ -4484,18 +4083,14 @@
 						"$ref": "#/components/schemas/ChunkingStrategyIn"
 					}
 				},
-				"required": [
-					"file_id"
-				]
+				"required": ["file_id"]
 			},
 			"VectorStoreFileListOut": {
 				"type": "object",
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -4515,22 +4110,14 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"object",
-					"data",
-					"first_id",
-					"last_id",
-					"has_more"
-				]
+				"required": ["object", "data", "first_id", "last_id", "has_more"]
 			},
 			"VectorStoreFileContentOut": {
 				"type": "object",
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"vector_store.file_content.page"
-						]
+						"enum": ["vector_store.file_content.page"]
 					},
 					"data": {
 						"type": "array",
@@ -4539,36 +4126,24 @@
 							"properties": {
 								"type": {
 									"type": "string",
-									"enum": [
-										"text"
-									]
+									"enum": ["text"]
 								},
 								"text": {
 									"type": "string"
 								}
 							},
-							"required": [
-								"type",
-								"text"
-							]
+							"required": ["type", "text"]
 						}
 					},
 					"has_more": {
 						"type": "boolean",
-						"enum": [
-							false
-						]
+						"enum": [false]
 					},
 					"next_page": {
 						"nullable": true
 					}
 				},
-				"required": [
-					"object",
-					"data",
-					"has_more",
-					"next_page"
-				]
+				"required": ["object", "data", "has_more", "next_page"]
 			},
 			"VectorStoreFileUpdate": {
 				"type": "object",
@@ -4592,9 +4167,7 @@
 						}
 					}
 				},
-				"required": [
-					"attributes"
-				]
+				"required": ["attributes"]
 			},
 			"VectorStoreFileDeleted": {
 				"type": "object",
@@ -4604,22 +4177,14 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"vector_store.file.deleted"
-						]
+						"enum": ["vector_store.file.deleted"]
 					},
 					"deleted": {
 						"type": "boolean",
-						"enum": [
-							true
-						]
+						"enum": [true]
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"deleted"
-				]
+				"required": ["id", "object", "deleted"]
 			},
 			"VectorStoreFileBatchOut": {
 				"type": "object",
@@ -4629,9 +4194,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"vector_store.files_batch"
-						]
+						"enum": ["vector_store.files_batch"]
 					},
 					"created_at": {
 						"type": "integer"
@@ -4641,12 +4204,7 @@
 					},
 					"status": {
 						"type": "string",
-						"enum": [
-							"in_progress",
-							"completed",
-							"cancelled",
-							"failed"
-						]
+						"enum": ["in_progress", "completed", "cancelled", "failed"]
 					},
 					"file_counts": {
 						"type": "object",
@@ -4747,9 +4305,7 @@
 									"$ref": "#/components/schemas/ChunkingStrategyIn"
 								}
 							},
-							"required": [
-								"file_id"
-							]
+							"required": ["file_id"]
 						},
 						"minItems": 1,
 						"maxItems": 2000
@@ -4761,9 +4317,7 @@
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"vector_store.search_results.page"
-						]
+						"enum": ["vector_store.search_results.page"]
 					},
 					"search_query": {
 						"type": "array",
@@ -4785,13 +4339,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"object",
-					"search_query",
-					"data",
-					"has_more",
-					"next_page"
-				]
+				"required": ["object", "search_query", "data", "has_more", "next_page"]
 			},
 			"VectorStoreSearchResult": {
 				"type": "object",
@@ -4830,28 +4378,17 @@
 							"properties": {
 								"type": {
 									"type": "string",
-									"enum": [
-										"text"
-									]
+									"enum": ["text"]
 								},
 								"text": {
 									"type": "string"
 								}
 							},
-							"required": [
-								"type",
-								"text"
-							]
+							"required": ["type", "text"]
 						}
 					}
 				},
-				"required": [
-					"file_id",
-					"filename",
-					"score",
-					"attributes",
-					"content"
-				]
+				"required": ["file_id", "filename", "score", "attributes", "content"]
 			},
 			"VectorStoreSearchIn": {
 				"type": "object",
@@ -4884,9 +4421,7 @@
 						"$ref": "#/components/schemas/VectorStoreRankingOptions"
 					}
 				},
-				"required": [
-					"query"
-				]
+				"required": ["query"]
 			},
 			"VectorStoreFilter": {
 				"type": "object",
@@ -4946,9 +4481,7 @@
 						}
 					}
 				},
-				"required": [
-					"type"
-				]
+				"required": ["type"]
 			},
 			"VectorStoreRankingOptions": {
 				"type": "object",
@@ -4970,10 +4503,7 @@
 								"minimum": 0
 							}
 						},
-						"required": [
-							"embedding_weight",
-							"text_weight"
-						]
+						"required": ["embedding_weight", "text_weight"]
 					}
 				}
 			},
@@ -4996,13 +4526,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"id",
-					"title",
-					"greeting",
-					"requires_password",
-					"status"
-				]
+				"required": ["id", "title", "greeting", "requires_password", "status"]
 			},
 			"HostedChatIn": {
 				"type": "object",
@@ -5025,19 +4549,14 @@
 						"description": "Required when `requires_password`."
 					}
 				},
-				"required": [
-					"visitor_id",
-					"message"
-				]
+				"required": ["visitor_id", "message"]
 			},
 			"OpenAIModelListOut": {
 				"type": "object",
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -5046,10 +4565,7 @@
 						}
 					}
 				},
-				"required": [
-					"object",
-					"data"
-				]
+				"required": ["object", "data"]
 			},
 			"OpenAIModelOut": {
 				"type": "object",
@@ -5059,9 +4575,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"model"
-						]
+						"enum": ["model"]
 					},
 					"created": {
 						"type": "number"
@@ -5070,12 +4584,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"created",
-					"owned_by"
-				]
+				"required": ["id", "object", "created", "owned_by"]
 			},
 			"ChatCompletionChunk": {
 				"type": "object",
@@ -5085,9 +4594,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"chat.completion.chunk"
-						]
+						"enum": ["chat.completion.chunk"]
 					},
 					"created": {
 						"type": "number"
@@ -5104,22 +4611,14 @@
 									"type": "number"
 								}
 							},
-							"required": [
-								"index"
-							],
+							"required": ["index"],
 							"additionalProperties": {
 								"nullable": true
 							}
 						}
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"created",
-					"model",
-					"choices"
-				],
+				"required": ["id", "object", "created", "model", "choices"],
 				"additionalProperties": {
 					"nullable": true
 				}
@@ -5132,9 +4631,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"chat.completion"
-						]
+						"enum": ["chat.completion"]
 					},
 					"created": {
 						"type": "number"
@@ -5151,22 +4648,14 @@
 									"type": "number"
 								}
 							},
-							"required": [
-								"index"
-							],
+							"required": ["index"],
 							"additionalProperties": {
 								"nullable": true
 							}
 						}
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"created",
-					"model",
-					"choices"
-				],
+				"required": ["id", "object", "created", "model", "choices"],
 				"additionalProperties": {
 					"nullable": true
 				}
@@ -5179,9 +4668,7 @@
 						"description": "e.g. `response.output_text.delta`."
 					}
 				},
-				"required": [
-					"type"
-				],
+				"required": ["type"],
 				"additionalProperties": {
 					"nullable": true
 				}
@@ -5194,9 +4681,7 @@
 					},
 					"object": {
 						"type": "string",
-						"enum": [
-							"response"
-						]
+						"enum": ["response"]
 					},
 					"created_at": {
 						"type": "number"
@@ -5213,22 +4698,14 @@
 									"type": "string"
 								}
 							},
-							"required": [
-								"type"
-							],
+							"required": ["type"],
 							"additionalProperties": {
 								"nullable": true
 							}
 						}
 					}
 				},
-				"required": [
-					"id",
-					"object",
-					"created_at",
-					"model",
-					"output"
-				],
+				"required": ["id", "object", "created_at", "model", "output"],
 				"additionalProperties": {
 					"nullable": true
 				}
@@ -5238,9 +4715,7 @@
 				"properties": {
 					"object": {
 						"type": "string",
-						"enum": [
-							"list"
-						]
+						"enum": ["list"]
 					},
 					"data": {
 						"type": "array",
@@ -5249,9 +4724,7 @@
 							"properties": {
 								"object": {
 									"type": "string",
-									"enum": [
-										"embedding"
-									]
+									"enum": ["embedding"]
 								},
 								"index": {
 									"type": "number"
@@ -5263,11 +4736,7 @@
 									}
 								}
 							},
-							"required": [
-								"object",
-								"index",
-								"embedding"
-							]
+							"required": ["object", "index", "embedding"]
 						}
 					},
 					"model": {
@@ -5283,18 +4752,10 @@
 								"type": "number"
 							}
 						},
-						"required": [
-							"prompt_tokens",
-							"total_tokens"
-						]
+						"required": ["prompt_tokens", "total_tokens"]
 					}
 				},
-				"required": [
-					"object",
-					"data",
-					"model",
-					"usage"
-				]
+				"required": ["object", "data", "model", "usage"]
 			},
 			"WorkingMemoryOut": {
 				"type": "object",
@@ -5303,9 +4764,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"content"
-				]
+				"required": ["content"]
 			},
 			"WorkingMemorySet": {
 				"type": "object",
@@ -5314,9 +4773,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"content"
-				]
+				"required": ["content"]
 			},
 			"RecallOut": {
 				"type": "object",
@@ -5328,9 +4785,7 @@
 						}
 					}
 				},
-				"required": [
-					"data"
-				]
+				"required": ["data"]
 			},
 			"RecallHit": {
 				"type": "object",
@@ -5345,11 +4800,7 @@
 						"type": "number"
 					}
 				},
-				"required": [
-					"thread_id",
-					"content",
-					"score"
-				]
+				"required": ["thread_id", "content", "score"]
 			},
 			"RecallBody": {
 				"type": "object",
@@ -5362,9 +4813,7 @@
 						"default": 10
 					}
 				},
-				"required": [
-					"query"
-				]
+				"required": ["query"]
 			},
 			"McpServerOut": {
 				"type": "object",
@@ -5463,10 +4912,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"kind",
-					"provider"
-				]
+				"required": ["kind", "provider"]
 			},
 			"ApprovalRule": {
 				"type": "object",
@@ -5478,9 +4924,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"match"
-				]
+				"required": ["match"]
 			},
 			"McpTool": {
 				"type": "object",
@@ -5499,12 +4943,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"name",
-					"description",
-					"requires_approval",
-					"enabled"
-				]
+				"required": ["name", "description", "requires_approval", "enabled"]
 			},
 			"McpServerIn": {
 				"type": "object",
@@ -5540,9 +4979,7 @@
 									"type": "string"
 								}
 							},
-							"required": [
-								"match"
-							],
+							"required": ["match"],
 							"additionalProperties": {
 								"nullable": true
 							}
@@ -5589,10 +5026,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"OAuthProtectedResourceMetadata": {
 				"type": "object",
@@ -5718,19 +5152,14 @@
 									"type": "string"
 								}
 							},
-							"required": [
-								"kid",
-								"alg"
-							],
+							"required": ["kid", "alg"],
 							"additionalProperties": {
 								"nullable": true
 							}
 						}
 					}
 				},
-				"required": [
-					"keys"
-				]
+				"required": ["keys"]
 			},
 			"OAuthClientRegistrationOut": {
 				"type": "object",
@@ -5786,10 +5215,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"error",
-					"error_description"
-				]
+				"required": ["error", "error_description"]
 			},
 			"OAuthTokenOut": {
 				"type": "object",
@@ -5810,21 +5236,14 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"access_token",
-					"token_type",
-					"scope"
-				]
+				"required": ["access_token", "token_type", "scope"]
 			},
 			"AuthorizeRequestOut": {
 				"type": "object",
 				"properties": {
 					"kind": {
 						"type": "string",
-						"enum": [
-							"connector",
-							"app"
-						]
+						"enum": ["connector", "app"]
 					},
 					"client_id": {
 						"type": "string"
@@ -5866,9 +5285,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"redirect_url"
-				]
+				"required": ["redirect_url"]
 			},
 			"AuthorizeCompleteIn": {
 				"type": "object",
@@ -5906,9 +5323,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"sub"
-				]
+				"required": ["sub"]
 			},
 			"TraceListOut": {
 				"type": "object",
@@ -5927,10 +5342,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"TraceOut": {
 				"type": "object",
@@ -6253,12 +5665,7 @@
 				"properties": {
 					"group_by": {
 						"type": "string",
-						"enum": [
-							"app",
-							"smith",
-							"model",
-							"customer"
-						]
+						"enum": ["app", "smith", "model", "customer"]
 					},
 					"totals": {
 						"type": "object",
@@ -6360,19 +5767,11 @@
 									"type": "number"
 								}
 							},
-							"required": [
-								"meter",
-								"quantity",
-								"events"
-							]
+							"required": ["meter", "quantity", "events"]
 						}
 					}
 				},
-				"required": [
-					"group_by",
-					"totals",
-					"groups"
-				]
+				"required": ["group_by", "totals", "groups"]
 			},
 			"UsageEventListOut": {
 				"type": "object",
@@ -6391,11 +5790,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"next_cursor",
-					"has_more"
-				]
+				"required": ["data", "next_cursor", "has_more"]
 			},
 			"UsageEventOut": {
 				"type": "object",
@@ -6448,9 +5843,7 @@
 						"type": "integer"
 					}
 				},
-				"required": [
-					"accepted"
-				]
+				"required": ["accepted"]
 			},
 			"TraceIngestIn": {
 				"type": "object",
@@ -6501,9 +5894,7 @@
 						}
 					}
 				},
-				"required": [
-					"data"
-				]
+				"required": ["data"]
 			},
 			"ProviderOut": {
 				"type": "object",
@@ -6557,10 +5948,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"provider",
-					"configured"
-				]
+				"required": ["provider", "configured"]
 			},
 			"ProviderIn": {
 				"type": "object",
@@ -6610,10 +5998,7 @@
 						}
 					}
 				},
-				"required": [
-					"data",
-					"providers"
-				]
+				"required": ["data", "providers"]
 			},
 			"ModelOut": {
 				"type": "object",
@@ -6633,19 +6018,10 @@
 					"source": {
 						"type": "string",
 						"nullable": true,
-						"enum": [
-							"byok",
-							"hosted",
-							null
-						]
+						"enum": ["byok", "hosted", null]
 					}
 				},
-				"required": [
-					"id",
-					"provider",
-					"label",
-					"available"
-				]
+				"required": ["id", "provider", "label", "available"]
 			},
 			"ModelProviderOut": {
 				"type": "object",
@@ -6663,11 +6039,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"id",
-					"label",
-					"base_url"
-				]
+				"required": ["id", "label", "base_url"]
 			},
 			"SandboxSecretListOut": {
 				"type": "object",
@@ -6679,9 +6051,7 @@
 						}
 					}
 				},
-				"required": [
-					"data"
-				]
+				"required": ["data"]
 			},
 			"SandboxSecretOut": {
 				"type": "object",
@@ -6694,10 +6064,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"name",
-					"updated_at"
-				]
+				"required": ["name", "updated_at"]
 			},
 			"SandboxSecretConfiguredOut": {
 				"type": "object",
@@ -6709,10 +6076,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"name",
-					"configured"
-				]
+				"required": ["name", "configured"]
 			},
 			"SandboxSecretIn": {
 				"type": "object",
@@ -6721,9 +6085,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"value"
-				]
+				"required": ["value"]
 			},
 			"HostedToolsListOut": {
 				"type": "object",
@@ -6735,9 +6097,7 @@
 						}
 					}
 				},
-				"required": [
-					"data"
-				]
+				"required": ["data"]
 			},
 			"HostedToolOut": {
 				"type": "object",
@@ -6752,11 +6112,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"name",
-					"title",
-					"description"
-				]
+				"required": ["name", "title", "description"]
 			},
 			"WebhookCreateOut": {
 				"type": "object",
@@ -6780,13 +6136,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"id",
-					"url",
-					"events",
-					"active",
-					"secret"
-				]
+				"required": ["id", "url", "events", "active", "secret"]
 			},
 			"WebhookIn": {
 				"type": "object",
@@ -6806,9 +6156,7 @@
 						"default": true
 					}
 				},
-				"required": [
-					"url"
-				]
+				"required": ["url"]
 			},
 			"WebhookListOut": {
 				"type": "object",
@@ -6827,10 +6175,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"WebhookOut": {
 				"type": "object",
@@ -6855,13 +6200,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"id",
-					"url",
-					"events",
-					"active",
-					"created_at"
-				]
+				"required": ["id", "url", "events", "active", "created_at"]
 			},
 			"WebhookIdOut": {
 				"type": "object",
@@ -6870,9 +6209,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"id"
-				]
+				"required": ["id"]
 			},
 			"WebhookPatch": {
 				"type": "object",
@@ -6908,11 +6245,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"id",
-					"secret",
-					"previous_secret_expires_at"
-				]
+				"required": ["id", "secret", "previous_secret_expires_at"]
 			},
 			"WebhookRotateIn": {
 				"type": "object",
@@ -6932,9 +6265,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"delivered"
-				]
+				"required": ["delivered"]
 			},
 			"WebhookDeliveryListOut": {
 				"type": "object",
@@ -6953,10 +6284,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"WebhookDeliveryOut": {
 				"type": "object",
@@ -7027,11 +6355,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"delivery_id",
-					"delivered",
-					"status"
-				]
+				"required": ["delivery_id", "delivered", "status"]
 			},
 			"EventListOut": {
 				"type": "object",
@@ -7050,10 +6374,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"EventOut": {
 				"type": "object",
@@ -7121,14 +6442,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"id",
-					"token",
-					"scope",
-					"sub",
-					"scopes",
-					"expires_at"
-				]
+				"required": ["id", "token", "scope", "sub", "scopes", "expires_at"]
 			},
 			"TokenIn": {
 				"type": "object",
@@ -7178,10 +6492,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"has_more"
-				]
+				"required": ["data", "has_more"]
 			},
 			"TokenOut": {
 				"type": "object",
@@ -7271,18 +6582,11 @@
 									"type": "integer"
 								}
 							},
-							"required": [
-								"date",
-								"runs",
-								"total_tokens"
-							]
+							"required": ["date", "runs", "total_tokens"]
 						}
 					}
 				},
-				"required": [
-					"totals",
-					"series"
-				]
+				"required": ["totals", "series"]
 			},
 			"TelegramBotOut": {
 				"type": "object",
@@ -7303,9 +6607,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"configured"
-				]
+				"required": ["configured"]
 			},
 			"TelegramBotIn": {
 				"type": "object",
@@ -7318,23 +6620,17 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"bot_token"
-				]
+				"required": ["bot_token"]
 			},
 			"WebhookAck": {
 				"type": "object",
 				"properties": {
 					"ok": {
 						"type": "boolean",
-						"enum": [
-							true
-						]
+						"enum": [true]
 					}
 				},
-				"required": [
-					"ok"
-				]
+				"required": ["ok"]
 			},
 			"WhatsAppConfigOut": {
 				"type": "object",
@@ -7357,9 +6653,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"configured"
-				]
+				"required": ["configured"]
 			},
 			"WhatsAppConfigIn": {
 				"type": "object",
@@ -7398,9 +6692,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"configured"
-				]
+				"required": ["configured"]
 			},
 			"EmailConfigIn": {
 				"type": "object",
@@ -7446,11 +6738,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"data",
-					"next_cursor",
-					"has_more"
-				]
+				"required": ["data", "next_cursor", "has_more"]
 			},
 			"SuppressionEntry": {
 				"type": "object",
@@ -7466,11 +6754,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"address",
-					"reason",
-					"created_at"
-				]
+				"required": ["address", "reason", "created_at"]
 			},
 			"SuppressionOut": {
 				"type": "object",
@@ -7482,10 +6766,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"address",
-					"reason"
-				]
+				"required": ["address", "reason"]
 			},
 			"SuppressionIn": {
 				"type": "object",
@@ -7497,9 +6778,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"address"
-				]
+				"required": ["address"]
 			},
 			"SlackAppOut": {
 				"type": "object",
@@ -7529,9 +6808,7 @@
 						"$ref": "#/components/schemas/SlackFactoryStatus"
 					}
 				},
-				"required": [
-					"configured"
-				]
+				"required": ["configured"]
 			},
 			"SlackFactoryStatus": {
 				"type": "object",
@@ -7540,9 +6817,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"configured"
-				]
+				"required": ["configured"]
 			},
 			"SlackAppIn": {
 				"type": "object",
@@ -7598,10 +6873,7 @@
 						}
 					}
 				},
-				"required": [
-					"config_token",
-					"manifest_template"
-				]
+				"required": ["config_token", "manifest_template"]
 			},
 			"SlackEventAck": {
 				"anyOf": [
@@ -7615,9 +6887,7 @@
 								"type": "string"
 							}
 						},
-						"required": [
-							"challenge"
-						]
+						"required": ["challenge"]
 					}
 				]
 			},
@@ -7640,9 +6910,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"configured"
-				]
+				"required": ["configured"]
 			},
 			"DiscordAppIn": {
 				"type": "object",
@@ -7657,11 +6925,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"application_id",
-					"public_key",
-					"bot_token"
-				]
+				"required": ["application_id", "public_key", "bot_token"]
 			},
 			"SandboxClaimOut": {
 				"type": "object",
@@ -7676,10 +6940,7 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"command_id",
-					"command"
-				]
+				"required": ["command_id", "command"]
 			},
 			"SandboxResultOut": {
 				"type": "object",
@@ -7688,9 +6949,7 @@
 						"type": "boolean"
 					}
 				},
-				"required": [
-					"ok"
-				]
+				"required": ["ok"]
 			},
 			"SandboxResultIn": {
 				"type": "object",
@@ -7717,12 +6976,7 @@
 						"default": 0
 					}
 				},
-				"required": [
-					"command_id",
-					"stdout",
-					"stderr",
-					"return_code"
-				]
+				"required": ["command_id", "stdout", "stderr", "return_code"]
 			},
 			"SandboxOutputOut": {
 				"type": "object",
@@ -7740,12 +6994,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"file_id",
-					"filename",
-					"bytes",
-					"media_type"
-				]
+				"required": ["file_id", "filename", "bytes", "media_type"]
 			},
 			"SandboxSkillsOut": {
 				"type": "object",
@@ -7776,25 +7025,15 @@
 												"type": "string"
 											}
 										},
-										"required": [
-											"path",
-											"url"
-										]
+										"required": ["path", "url"]
 									}
 								}
 							},
-							"required": [
-								"name",
-								"version",
-								"dir",
-								"files"
-							]
+							"required": ["name", "version", "dir", "files"]
 						}
 					}
 				},
-				"required": [
-					"skills"
-				]
+				"required": ["skills"]
 			},
 			"SandboxSkillErrorsIn": {
 				"type": "object",
@@ -7812,16 +7051,11 @@
 									"type": "string"
 								}
 							},
-							"required": [
-								"skill",
-								"error"
-							]
+							"required": ["skill", "error"]
 						}
 					}
 				},
-				"required": [
-					"failures"
-				]
+				"required": ["failures"]
 			}
 		},
 		"parameters": {}
@@ -7829,9 +7063,7 @@
 	"paths": {
 		"/health": {
 			"get": {
-				"tags": [
-					"Operations"
-				],
+				"tags": ["Operations"],
 				"security": [],
 				"operationId": "health",
 				"summary": "Liveness — the process is up",
@@ -7852,9 +7084,7 @@
 		},
 		"/ready": {
 			"get": {
-				"tags": [
-					"Operations"
-				],
+				"tags": ["Operations"],
 				"security": [],
 				"operationId": "ready",
 				"summary": "Readiness — this replica can serve",
@@ -7885,9 +7115,7 @@
 		},
 		"/metrics": {
 			"get": {
-				"tags": [
-					"Operations"
-				],
+				"tags": ["Operations"],
 				"security": [],
 				"operationId": "metrics",
 				"summary": "Prometheus metrics",
@@ -7918,9 +7146,7 @@
 		},
 		"/openapi.json": {
 			"get": {
-				"tags": [
-					"Operations"
-				],
+				"tags": ["Operations"],
 				"security": [],
 				"operationId": "openapi",
 				"summary": "This document",
@@ -7947,9 +7173,7 @@
 			"get": {
 				"operationId": "catalog.list",
 				"summary": "List catalog integration presets",
-				"tags": [
-					"Catalog"
-				],
+				"tags": ["Catalog"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -7993,9 +7217,7 @@
 			"get": {
 				"operationId": "catalog.get",
 				"summary": "Get a catalog integration preset",
-				"tags": [
-					"Catalog"
-				],
+				"tags": ["Catalog"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8059,9 +7281,7 @@
 			"get": {
 				"operationId": "approvals.list",
 				"summary": "List approvals",
-				"tags": [
-					"Approvals"
-				],
+				"tags": ["Approvals"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8149,9 +7369,7 @@
 			"get": {
 				"operationId": "approvals.get",
 				"summary": "Get an approval",
-				"tags": [
-					"Approvals"
-				],
+				"tags": ["Approvals"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8215,9 +7433,7 @@
 			"post": {
 				"operationId": "organization.projects.create",
 				"summary": "Create a project",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8278,9 +7494,7 @@
 			"get": {
 				"operationId": "organization.projects.list",
 				"summary": "List projects",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8360,9 +7574,7 @@
 			"get": {
 				"operationId": "organization.projects.get",
 				"summary": "Get a project",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8424,9 +7636,7 @@
 			"delete": {
 				"operationId": "organization.projects.delete",
 				"summary": "Archive a project",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8473,9 +7683,7 @@
 			"post": {
 				"operationId": "organization.projects.tokens.create",
 				"summary": "Mint a project token",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8548,9 +7756,7 @@
 			"delete": {
 				"operationId": "organization.projects.tokens.delete",
 				"summary": "Revoke a project token",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8615,9 +7821,7 @@
 			"get": {
 				"operationId": "organization.apps.list",
 				"summary": "List linked apps",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8690,9 +7894,7 @@
 				"operationId": "organization.apps.delete",
 				"summary": "Disconnect a linked app",
 				"description": "Revokes every token the app holds. The project stays.",
-				"tags": [
-					"Projects"
-				],
+				"tags": ["Projects"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8749,9 +7951,7 @@
 			"post": {
 				"operationId": "customers.create",
 				"summary": "Create a customer",
-				"tags": [
-					"Customers"
-				],
+				"tags": ["Customers"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8812,9 +8012,7 @@
 			"get": {
 				"operationId": "customers.list",
 				"summary": "List customers",
-				"tags": [
-					"Customers"
-				],
+				"tags": ["Customers"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8886,9 +8084,7 @@
 			"get": {
 				"operationId": "customers.get",
 				"summary": "Get a customer",
-				"tags": [
-					"Customers"
-				],
+				"tags": ["Customers"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -8950,9 +8146,7 @@
 			"patch": {
 				"operationId": "customers.update",
 				"summary": "Update a customer",
-				"tags": [
-					"Customers"
-				],
+				"tags": ["Customers"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9033,9 +8227,7 @@
 			"delete": {
 				"operationId": "customers.delete",
 				"summary": "Archive a customer",
-				"tags": [
-					"Customers"
-				],
+				"tags": ["Customers"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9092,9 +8284,7 @@
 			"post": {
 				"operationId": "budgets.create",
 				"summary": "Create a budget",
-				"tags": [
-					"Budgets"
-				],
+				"tags": ["Budgets"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9165,9 +8355,7 @@
 			"get": {
 				"operationId": "budgets.list",
 				"summary": "List budgets",
-				"tags": [
-					"Budgets"
-				],
+				"tags": ["Budgets"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9239,9 +8427,7 @@
 			"get": {
 				"operationId": "budgets.get",
 				"summary": "Get a budget",
-				"tags": [
-					"Budgets"
-				],
+				"tags": ["Budgets"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9303,9 +8489,7 @@
 			"patch": {
 				"operationId": "budgets.update",
 				"summary": "Update a budget",
-				"tags": [
-					"Budgets"
-				],
+				"tags": ["Budgets"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9386,9 +8570,7 @@
 			"delete": {
 				"operationId": "budgets.delete",
 				"summary": "Delete a budget",
-				"tags": [
-					"Budgets"
-				],
+				"tags": ["Budgets"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9445,9 +8627,7 @@
 			"get": {
 				"operationId": "budgets.status",
 				"summary": "Get a budget's month-to-date status",
-				"tags": [
-					"Budgets"
-				],
+				"tags": ["Budgets"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9511,9 +8691,7 @@
 			"get": {
 				"operationId": "organization.billing.balance",
 				"summary": "Get the organization's credit balance",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9557,9 +8735,7 @@
 			"get": {
 				"operationId": "organization.billing.ledger.list",
 				"summary": "List recent credit ledger entries",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9585,10 +8761,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"credit",
-								"debit"
-							]
+							"enum": ["credit", "debit"]
 						},
 						"required": false,
 						"name": "direction",
@@ -9643,9 +8816,7 @@
 			"get": {
 				"operationId": "organization.billing.usage.list",
 				"summary": "Per-project draw from the org wallet for a month",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9700,9 +8871,7 @@
 			"get": {
 				"operationId": "organization.billing.usage.series.list",
 				"summary": "Daily per-project draw over a rolling window",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9758,9 +8927,7 @@
 			"post": {
 				"operationId": "organization.billing.checkout",
 				"summary": "Start a credit top-up (embedded Stripe Checkout)",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9823,9 +8990,7 @@
 			"post": {
 				"operationId": "organization.billing.setup",
 				"summary": "Add a card to unlock the welcome credit",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9888,9 +9053,7 @@
 			"post": {
 				"operationId": "organization.billing.redeem",
 				"summary": "Redeem a one-time credit code",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -9973,9 +9136,7 @@
 			"post": {
 				"operationId": "organization.billing.confirm",
 				"summary": "Confirm + credit a returning Checkout Session",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10038,9 +9199,7 @@
 			"get": {
 				"operationId": "organization.billing.autoreload.get",
 				"summary": "Get the organization's auto-reload settings",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10082,9 +9241,7 @@
 			"put": {
 				"operationId": "organization.billing.autoreload.put",
 				"summary": "Set the organization's auto-reload settings",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10147,9 +9304,7 @@
 			"post": {
 				"operationId": "organization.billing.reload",
 				"summary": "Charge the saved card to top up now",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10222,9 +9377,7 @@
 			"get": {
 				"operationId": "organization.billing.portal",
 				"summary": "Open the Stripe billing portal",
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10286,9 +9439,7 @@
 		},
 		"/v1/stripe/webhook": {
 			"post": {
-				"tags": [
-					"Billing"
-				],
+				"tags": ["Billing"],
 				"security": [],
 				"operationId": "stripe.webhook",
 				"summary": "Stripe webhook receiver (provider → us)",
@@ -10332,9 +9483,7 @@
 			"post": {
 				"operationId": "smiths.schedules.create",
 				"summary": "Create a schedule",
-				"tags": [
-					"Schedules"
-				],
+				"tags": ["Schedules"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10405,9 +9554,7 @@
 			"get": {
 				"operationId": "smiths.schedules.list",
 				"summary": "List a smith's schedules",
-				"tags": [
-					"Schedules"
-				],
+				"tags": ["Schedules"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10497,9 +9644,7 @@
 			"patch": {
 				"operationId": "smiths.schedules.update",
 				"summary": "Update a schedule",
-				"tags": [
-					"Schedules"
-				],
+				"tags": ["Schedules"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10588,9 +9733,7 @@
 			"delete": {
 				"operationId": "smiths.schedules.delete",
 				"summary": "Delete a schedule",
-				"tags": [
-					"Schedules"
-				],
+				"tags": ["Schedules"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10655,9 +9798,7 @@
 			"post": {
 				"operationId": "smiths.schedules.run",
 				"summary": "Fire a schedule immediately",
-				"tags": [
-					"Schedules"
-				],
+				"tags": ["Schedules"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10729,9 +9870,7 @@
 			"post": {
 				"operationId": "smiths.connections.create",
 				"summary": "Create a connection",
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10802,9 +9941,7 @@
 			"get": {
 				"operationId": "smiths.connections.list",
 				"summary": "List a smith's connections",
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10902,9 +10039,7 @@
 			"get": {
 				"operationId": "smiths.connections.get",
 				"summary": "Get a connection",
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -10974,9 +10109,7 @@
 			"patch": {
 				"operationId": "smiths.connections.update",
 				"summary": "Update a connection",
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11065,9 +10198,7 @@
 			"delete": {
 				"operationId": "smiths.connections.delete",
 				"summary": "Delete a connection",
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11132,9 +10263,7 @@
 			"post": {
 				"operationId": "smiths.connections.refresh",
 				"summary": "Force a token refresh",
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11216,9 +10345,7 @@
 			"post": {
 				"operationId": "smiths.connections.authorize",
 				"summary": "Mint an OAuth authorize URL",
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11289,9 +10416,7 @@
 		},
 		"/v1/oauth/callback": {
 			"get": {
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [],
 				"operationId": "oauth.callback",
 				"summary": "Connector OAuth callback (browser redirect)",
@@ -11371,9 +10496,7 @@
 		},
 		"/oauth/client-metadata.json": {
 			"get": {
-				"tags": [
-					"Connections"
-				],
+				"tags": ["Connections"],
 				"security": [],
 				"operationId": "oauth.client",
 				"summary": "Ingram Cloud's OAuth client registration (Client ID Metadata Document)",
@@ -11396,9 +10519,7 @@
 			"post": {
 				"operationId": "conversations.create",
 				"summary": "Create a conversation",
-				"tags": [
-					"Conversations"
-				],
+				"tags": ["Conversations"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11459,9 +10580,7 @@
 			"get": {
 				"operationId": "conversations.list",
 				"summary": "List conversations",
-				"tags": [
-					"Conversations"
-				],
+				"tags": ["Conversations"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11541,9 +10660,7 @@
 			"get": {
 				"operationId": "conversations.get",
 				"summary": "Get a conversation",
-				"tags": [
-					"Conversations"
-				],
+				"tags": ["Conversations"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11605,9 +10722,7 @@
 			"post": {
 				"operationId": "conversations.update",
 				"summary": "Update a conversation",
-				"tags": [
-					"Conversations"
-				],
+				"tags": ["Conversations"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11678,9 +10793,7 @@
 			"delete": {
 				"operationId": "conversations.delete",
 				"summary": "Delete a conversation",
-				"tags": [
-					"Conversations"
-				],
+				"tags": ["Conversations"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11744,9 +10857,7 @@
 			"get": {
 				"operationId": "conversations.items.list",
 				"summary": "List items in a conversation",
-				"tags": [
-					"Conversations"
-				],
+				"tags": ["Conversations"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11834,9 +10945,7 @@
 			"post": {
 				"operationId": "deployments.create",
 				"summary": "Create a deployment",
-				"tags": [
-					"Deployments"
-				],
+				"tags": ["Deployments"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11917,9 +11026,7 @@
 			"get": {
 				"operationId": "deployments.list",
 				"summary": "List deployments",
-				"tags": [
-					"Deployments"
-				],
+				"tags": ["Deployments"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -11929,10 +11036,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"smith",
-								"agent"
-							]
+							"enum": ["smith", "agent"]
 						},
 						"required": false,
 						"name": "target_type",
@@ -12011,9 +11115,7 @@
 			"get": {
 				"operationId": "deployments.get",
 				"summary": "Get a deployment",
-				"tags": [
-					"Deployments"
-				],
+				"tags": ["Deployments"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12075,9 +11177,7 @@
 			"patch": {
 				"operationId": "deployments.update",
 				"summary": "Update a deployment",
-				"tags": [
-					"Deployments"
-				],
+				"tags": ["Deployments"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12168,9 +11268,7 @@
 			"delete": {
 				"operationId": "deployments.delete",
 				"summary": "Delete a deployment",
-				"tags": [
-					"Deployments"
-				],
+				"tags": ["Deployments"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12227,9 +11325,7 @@
 			"get": {
 				"operationId": "inbound.list",
 				"summary": "List inbound events",
-				"tags": [
-					"Deployments"
-				],
+				"tags": ["Deployments"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12325,9 +11421,7 @@
 			"get": {
 				"operationId": "inbound.get",
 				"summary": "Get an inbound event",
-				"tags": [
-					"Deployments"
-				],
+				"tags": ["Deployments"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12391,9 +11485,7 @@
 			"post": {
 				"operationId": "agents.create",
 				"summary": "Create an agent",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12464,9 +11556,7 @@
 			"get": {
 				"operationId": "agents.list",
 				"summary": "List agents",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12538,9 +11628,7 @@
 			"get": {
 				"operationId": "agents.get",
 				"summary": "Get an agent",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12602,9 +11690,7 @@
 			"patch": {
 				"operationId": "agents.update",
 				"summary": "Update an agent's draft",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12685,9 +11771,7 @@
 			"delete": {
 				"operationId": "agents.delete",
 				"summary": "Archive an agent",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12754,9 +11838,7 @@
 			"get": {
 				"operationId": "agents.versions.list",
 				"summary": "List an agent's published versions",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12834,9 +11916,7 @@
 			"post": {
 				"operationId": "agents.versions.create",
 				"summary": "Publish the draft as the next version",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -12919,9 +11999,7 @@
 			"post": {
 				"operationId": "agents.rollout",
 				"summary": "Roll out a version to smiths",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13004,9 +12082,7 @@
 			"post": {
 				"operationId": "agents.import",
 				"summary": "Import a smith's config into a new agent",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13089,9 +12165,7 @@
 			"post": {
 				"operationId": "agents.attach",
 				"summary": "Attach existing smiths to an agent",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13182,9 +12256,7 @@
 		},
 		"/v1/agents/{aid}/ui": {
 			"post": {
-				"tags": [
-					"Agents"
-				],
+				"tags": ["Agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13219,10 +12291,7 @@
 										"description": "JSON: `{ name, csp?, permissions?, tool? }`."
 									}
 								},
-								"required": [
-									"file",
-									"metadata"
-								]
+								"required": ["file", "metadata"]
 							}
 						}
 					}
@@ -13283,9 +12352,7 @@
 			"get": {
 				"operationId": "agents.ui.list",
 				"summary": "List an agent's UI templates",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13349,9 +12416,7 @@
 			"get": {
 				"operationId": "agents.ui.get",
 				"summary": "Retrieve a UI template",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13421,9 +12486,7 @@
 			"delete": {
 				"operationId": "agents.ui.delete",
 				"summary": "Delete a UI template",
-				"tags": [
-					"agents"
-				],
+				"tags": ["agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13486,9 +12549,7 @@
 		},
 		"/v1/agents/{aid}/ui/{name}/content": {
 			"get": {
-				"tags": [
-					"Agents"
-				],
+				"tags": ["Agents"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13575,9 +12636,7 @@
 			"post": {
 				"operationId": "smiths.create",
 				"summary": "Create a smith",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13668,9 +12727,7 @@
 			"get": {
 				"operationId": "smiths.list",
 				"summary": "List smiths",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13774,9 +12831,7 @@
 			"get": {
 				"operationId": "smiths.get",
 				"summary": "Get a smith",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13838,9 +12893,7 @@
 			"patch": {
 				"operationId": "smiths.update",
 				"summary": "Update a smith",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13931,9 +12984,7 @@
 			"delete": {
 				"operationId": "smiths.delete",
 				"summary": "Archive a smith",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -13990,9 +13041,7 @@
 			"get": {
 				"operationId": "smiths.models.keys.list",
 				"summary": "List a smith's model keys",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14056,9 +13105,7 @@
 			"put": {
 				"operationId": "smiths.models.keys.put",
 				"summary": "Set a smith's model key",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14147,9 +13194,7 @@
 			"delete": {
 				"operationId": "smiths.models.keys.delete",
 				"summary": "Delete a smith's model key",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14214,9 +13259,7 @@
 			"get": {
 				"operationId": "smiths.revisions.list",
 				"summary": "List a smith's config revisions",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14296,9 +13339,7 @@
 			"post": {
 				"operationId": "smiths.revisions.restore",
 				"summary": "Restore a smith config revision",
-				"tags": [
-					"Smiths"
-				],
+				"tags": ["Smiths"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14390,9 +13431,7 @@
 				"operationId": "skills.create",
 				"summary": "Upload a skill",
 				"description": "Multipart. Every file of the bundle rides `files[]`, with its relative path as the part filename. Creates the skill and version 1.",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14478,9 +13517,7 @@
 			"get": {
 				"operationId": "skills.list",
 				"summary": "List skills",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14524,9 +13561,7 @@
 			"get": {
 				"operationId": "skills.get",
 				"summary": "Get a skill",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14588,9 +13623,7 @@
 			"post": {
 				"operationId": "skills.update",
 				"summary": "Move the default version",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14671,9 +13704,7 @@
 			"delete": {
 				"operationId": "skills.delete",
 				"summary": "Delete a skill",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14741,9 +13772,7 @@
 				"operationId": "skills.versions.create",
 				"summary": "Publish a new version",
 				"description": "Multipart, exactly as `POST /v1/skills`. `default_version` is unchanged.",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14839,9 +13868,7 @@
 			"get": {
 				"operationId": "skills.versions.list",
 				"summary": "List a skill's versions",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14906,9 +13933,7 @@
 				"operationId": "skills.versions.get",
 				"summary": "Get one version",
 				"description": "Includes the file list with sizes and content hashes.",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -14978,9 +14003,7 @@
 			"delete": {
 				"operationId": "skills.versions.delete",
 				"summary": "Delete one version",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15056,9 +14079,7 @@
 				"operationId": "skills.versions.content",
 				"summary": "Download a version's bytes",
 				"description": "With `?path=`, one file. Without it, the whole version as a zip — the same shape `POST /v1/skills` accepts, so a version round-trips.",
-				"tags": [
-					"Skills"
-				],
+				"tags": ["Skills"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15139,9 +14160,7 @@
 			"get": {
 				"operationId": "runs.list",
 				"summary": "List runs (tenant feed)",
-				"tags": [
-					"Runs"
-				],
+				"tags": ["Runs"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15246,9 +14265,7 @@
 			"get": {
 				"operationId": "smiths.runs.list",
 				"summary": "List a smith's runs",
-				"tags": [
-					"Runs"
-				],
+				"tags": ["Runs"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15343,9 +14360,7 @@
 				}
 			},
 			"post": {
-				"tags": [
-					"Runs"
-				],
+				"tags": ["Runs"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15446,9 +14461,7 @@
 			"get": {
 				"operationId": "smiths.runs.get",
 				"summary": "Get a run",
-				"tags": [
-					"Runs"
-				],
+				"tags": ["Runs"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15518,9 +14531,7 @@
 		},
 		"/v1/smiths/{pid}/runs/{rid}/events": {
 			"get": {
-				"tags": [
-					"Runs"
-				],
+				"tags": ["Runs"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15603,9 +14614,7 @@
 		},
 		"/v1/smiths/{pid}/runs/{rid}/replay": {
 			"post": {
-				"tags": [
-					"Runs"
-				],
+				"tags": ["Runs"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15702,9 +14711,7 @@
 		},
 		"/v1/smiths/{pid}/runs/{rid}/submit": {
 			"post": {
-				"tags": [
-					"Runs"
-				],
+				"tags": ["Runs"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15813,9 +14820,7 @@
 		},
 		"/v1/files": {
 			"post": {
-				"tags": [
-					"Files"
-				],
+				"tags": ["Files"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15839,9 +14844,7 @@
 										"description": "OpenAI-compatible purpose."
 									}
 								},
-								"required": [
-									"file"
-								]
+								"required": ["file"]
 							}
 						}
 					}
@@ -15892,9 +14895,7 @@
 			"get": {
 				"operationId": "files.list",
 				"summary": "List files",
-				"tags": [
-					"Files"
-				],
+				"tags": ["Files"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -15930,10 +14931,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"asc",
-								"desc"
-							]
+							"enum": ["asc", "desc"]
 						},
 						"required": false,
 						"name": "order",
@@ -15988,9 +14986,7 @@
 			"get": {
 				"operationId": "files.get",
 				"summary": "Retrieve a file",
-				"tags": [
-					"Files"
-				],
+				"tags": ["Files"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16052,9 +15048,7 @@
 			"delete": {
 				"operationId": "files.delete",
 				"summary": "Delete a file",
-				"tags": [
-					"Files"
-				],
+				"tags": ["Files"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16116,9 +15110,7 @@
 		},
 		"/v1/files/{id}/content": {
 			"get": {
-				"tags": [
-					"Files"
-				],
+				"tags": ["Files"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16197,9 +15189,7 @@
 			"post": {
 				"operationId": "vectors.create",
 				"summary": "Create a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16270,9 +15260,7 @@
 			"get": {
 				"operationId": "vectors.list",
 				"summary": "List vector stores",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16292,10 +15280,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"asc",
-								"desc"
-							]
+							"enum": ["asc", "desc"]
 						},
 						"required": false,
 						"name": "order",
@@ -16366,9 +15351,7 @@
 			"get": {
 				"operationId": "vectors.get",
 				"summary": "Retrieve a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16430,9 +15413,7 @@
 			"post": {
 				"operationId": "vectors.update",
 				"summary": "Modify a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16513,9 +15494,7 @@
 			"delete": {
 				"operationId": "vectors.delete",
 				"summary": "Delete a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16579,9 +15558,7 @@
 			"post": {
 				"operationId": "vectors.files.create",
 				"summary": "Attach a file to a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16672,9 +15649,7 @@
 			"get": {
 				"operationId": "vectors.files.list",
 				"summary": "List files in a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16702,10 +15677,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"asc",
-								"desc"
-							]
+							"enum": ["asc", "desc"]
 						},
 						"required": false,
 						"name": "order",
@@ -16730,12 +15702,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"in_progress",
-								"completed",
-								"failed",
-								"cancelled"
-							]
+							"enum": ["in_progress", "completed", "failed", "cancelled"]
 						},
 						"required": false,
 						"name": "filter",
@@ -16800,9 +15767,7 @@
 			"get": {
 				"operationId": "vectors.files.get",
 				"summary": "Retrieve a vector store file",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16872,9 +15837,7 @@
 			"post": {
 				"operationId": "vectors.files.update",
 				"summary": "Update a vector store file's attributes",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -16963,9 +15926,7 @@
 			"delete": {
 				"operationId": "vectors.files.delete",
 				"summary": "Detach a file from a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17037,9 +15998,7 @@
 			"get": {
 				"operationId": "vectors.files.content",
 				"summary": "Retrieve a vector store file's parsed content",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17111,9 +16070,7 @@
 			"post": {
 				"operationId": "vectors.batches.create",
 				"summary": "Attach a batch of files",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17206,9 +16163,7 @@
 			"get": {
 				"operationId": "vectors.batches.get",
 				"summary": "Retrieve a file batch",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17280,9 +16235,7 @@
 			"post": {
 				"operationId": "vectors.batches.cancel",
 				"summary": "Cancel a file batch",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17354,9 +16307,7 @@
 			"get": {
 				"operationId": "vectors.batches.files.list",
 				"summary": "List files in a file batch",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17392,10 +16343,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"asc",
-								"desc"
-							]
+							"enum": ["asc", "desc"]
 						},
 						"required": false,
 						"name": "order",
@@ -17420,12 +16368,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"in_progress",
-								"completed",
-								"failed",
-								"cancelled"
-							]
+							"enum": ["in_progress", "completed", "failed", "cancelled"]
 						},
 						"required": false,
 						"name": "filter",
@@ -17490,9 +16433,7 @@
 			"post": {
 				"operationId": "vectors.search",
 				"summary": "Search a vector store",
-				"tags": [
-					"Vector stores"
-				],
+				"tags": ["Vector stores"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17583,9 +16524,7 @@
 		},
 		"/v1/hosted/{depId}": {
 			"get": {
-				"tags": [
-					"Hosted pages"
-				],
+				"tags": ["Hosted pages"],
 				"security": [],
 				"operationId": "hosted.get",
 				"summary": "Public metadata for a hosted agent page",
@@ -17625,9 +16564,7 @@
 		},
 		"/v1/hosted/{depId}/chat": {
 			"post": {
-				"tags": [
-					"Hosted pages"
-				],
+				"tags": ["Hosted pages"],
 				"security": [],
 				"operationId": "hosted.chat",
 				"summary": "Send a visitor's turn and stream the reply",
@@ -17697,9 +16634,7 @@
 		},
 		"/v1/models": {
 			"get": {
-				"tags": [
-					"OpenAI-compatible"
-				],
+				"tags": ["OpenAI-compatible"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17744,9 +16679,7 @@
 		},
 		"/v1/models/{model}": {
 			"get": {
-				"tags": [
-					"OpenAI-compatible"
-				],
+				"tags": ["OpenAI-compatible"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17811,9 +16744,7 @@
 		},
 		"/v1/chat/completions": {
 			"post": {
-				"tags": [
-					"OpenAI-compatible"
-				],
+				"tags": ["OpenAI-compatible"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -17845,9 +16776,7 @@
 															"type": "string"
 														}
 													},
-													"required": [
-														"role"
-													],
+													"required": ["role"],
 													"additionalProperties": {}
 												}
 											},
@@ -17875,9 +16804,7 @@
 															"type": "string"
 														}
 													},
-													"required": [
-														"type"
-													],
+													"required": ["type"],
 													"additionalProperties": {}
 												}
 											},
@@ -17974,9 +16901,7 @@
 		},
 		"/v1/responses": {
 			"post": {
-				"tags": [
-					"OpenAI-compatible"
-				],
+				"tags": ["OpenAI-compatible"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18030,9 +16955,7 @@
 															"type": "string"
 														}
 													},
-													"required": [
-														"type"
-													],
+													"required": ["type"],
 													"additionalProperties": {}
 												}
 											},
@@ -18041,10 +16964,7 @@
 												"type": "object",
 												"properties": {
 													"effort": {
-														"type": [
-															"string",
-															"null"
-														]
+														"type": ["string", "null"]
 													}
 												},
 												"additionalProperties": {}
@@ -18141,9 +17061,7 @@
 		},
 		"/v1/responses/{id}": {
 			"get": {
-				"tags": [
-					"OpenAI-compatible"
-				],
+				"tags": ["OpenAI-compatible"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18208,9 +17126,7 @@
 		},
 		"/v1/responses/{id}/cancel": {
 			"post": {
-				"tags": [
-					"OpenAI-compatible"
-				],
+				"tags": ["OpenAI-compatible"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18275,9 +17191,7 @@
 		},
 		"/v1/embeddings": {
 			"post": {
-				"tags": [
-					"OpenAI-compatible"
-				],
+				"tags": ["OpenAI-compatible"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18315,9 +17229,7 @@
 												"type": "string"
 											}
 										},
-										"required": [
-											"input"
-										]
+										"required": ["input"]
 									}
 								}
 							}
@@ -18372,9 +17284,7 @@
 			"get": {
 				"operationId": "smiths.memory.get",
 				"summary": "Read a smith's working memory",
-				"tags": [
-					"Memory"
-				],
+				"tags": ["Memory"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18436,9 +17346,7 @@
 			"put": {
 				"operationId": "smiths.memory.put",
 				"summary": "Replace a smith's working memory",
-				"tags": [
-					"Memory"
-				],
+				"tags": ["Memory"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18521,9 +17429,7 @@
 			"post": {
 				"operationId": "smiths.memory.recall",
 				"summary": "Recall relevant past messages",
-				"tags": [
-					"Memory"
-				],
+				"tags": ["Memory"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18606,9 +17512,7 @@
 			"put": {
 				"operationId": "tenant.mcp.put",
 				"summary": "Register or replace an MCP server",
-				"tags": [
-					"MCP"
-				],
+				"tags": ["MCP"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18679,9 +17583,7 @@
 			"get": {
 				"operationId": "tenant.mcp.get",
 				"summary": "Get a registered MCP server",
-				"tags": [
-					"MCP"
-				],
+				"tags": ["MCP"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18743,9 +17645,7 @@
 			"delete": {
 				"operationId": "tenant.mcp.delete",
 				"summary": "Delete a registered MCP server",
-				"tags": [
-					"MCP"
-				],
+				"tags": ["MCP"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18802,9 +17702,7 @@
 			"get": {
 				"operationId": "tenant.mcp.list",
 				"summary": "List registered MCP servers",
-				"tags": [
-					"MCP"
-				],
+				"tags": ["MCP"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18876,9 +17774,7 @@
 			"post": {
 				"operationId": "tenant.mcp.refresh",
 				"summary": "Re-run tool discovery for an MCP server",
-				"tags": [
-					"MCP"
-				],
+				"tags": ["MCP"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -18950,9 +17846,7 @@
 		},
 		"/v1/deployments/{depId}/mcp": {
 			"post": {
-				"tags": [
-					"MCP"
-				],
+				"tags": ["MCP"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -19055,9 +17949,7 @@
 		},
 		"/.well-known/oauth-protected-resource/v1/deployments/{depId}/mcp": {
 			"get": {
-				"tags": [
-					"Connector OAuth"
-				],
+				"tags": ["Connector OAuth"],
 				"security": [],
 				"operationId": "oauth.discovery.resource",
 				"summary": "Protected-resource metadata for an MCP deployment (RFC 9728)",
@@ -19097,9 +17989,7 @@
 		},
 		"/.well-known/oauth-authorization-server": {
 			"get": {
-				"tags": [
-					"Connector OAuth"
-				],
+				"tags": ["Connector OAuth"],
 				"security": [],
 				"operationId": "oauth.discovery.server",
 				"summary": "Authorization-server metadata (RFC 8414)",
@@ -19119,9 +18009,7 @@
 		},
 		"/.well-known/jwks.json": {
 			"get": {
-				"tags": [
-					"Connector OAuth"
-				],
+				"tags": ["Connector OAuth"],
 				"security": [],
 				"operationId": "oauth.discovery.keys",
 				"summary": "The signing keys for every minted token",
@@ -19141,9 +18029,7 @@
 		},
 		"/oauth/register": {
 			"post": {
-				"tags": [
-					"Connector OAuth"
-				],
+				"tags": ["Connector OAuth"],
 				"security": [],
 				"operationId": "oauth.register",
 				"summary": "Register a host as a public client (RFC 7591)",
@@ -19167,9 +18053,7 @@
 												"type": "string"
 											}
 										},
-										"required": [
-											"redirect_uris"
-										]
+										"required": ["redirect_uris"]
 									}
 								}
 							}
@@ -19202,9 +18086,7 @@
 		},
 		"/oauth/authorize": {
 			"get": {
-				"tags": [
-					"Connector OAuth"
-				],
+				"tags": ["Connector OAuth"],
 				"security": [],
 				"operationId": "oauth.authorize",
 				"summary": "The consent page (browser endpoint)",
@@ -19213,9 +18095,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"code"
-							],
+							"enum": ["code"],
 							"description": "Required; only `code` is supported."
 						},
 						"required": false,
@@ -19276,9 +18156,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"enum": [
-								"S256"
-							],
+							"enum": ["S256"],
 							"description": "Required; only `S256` is supported."
 						},
 						"required": false,
@@ -19330,9 +18208,7 @@
 				}
 			},
 			"post": {
-				"tags": [
-					"Connector OAuth"
-				],
+				"tags": ["Connector OAuth"],
 				"security": [],
 				"operationId": "oauth.consent",
 				"summary": "Submit consent (browser endpoint)",
@@ -19381,9 +18257,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"connect_token"
-								]
+								"required": ["connect_token"]
 							}
 						}
 					}
@@ -19425,9 +18299,7 @@
 		},
 		"/oauth/token": {
 			"post": {
-				"tags": [
-					"Connector OAuth"
-				],
+				"tags": ["Connector OAuth"],
 				"security": [],
 				"operationId": "oauth.token",
 				"summary": "Exchange a code, or rotate a refresh token (RFC 6749)",
@@ -19441,10 +18313,7 @@
 									"grant_type": {
 										"description": "Required; anything else answers `unsupported_grant_type`.",
 										"type": "string",
-										"enum": [
-											"authorization_code",
-											"refresh_token"
-										]
+										"enum": ["authorization_code", "refresh_token"]
 									},
 									"client_id": {
 										"description": "Required.",
@@ -19513,9 +18382,7 @@
 			"get": {
 				"operationId": "oauth.requests.get",
 				"summary": "Read a pending delegated authorize request",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -19580,9 +18447,7 @@
 				"operationId": "oauth.requests.complete",
 				"summary": "Complete a delegated authorize request",
 				"description": "A connector request (tenant-admin token) names the smith the end-user authorized. An app request (organization token) links the app to that organization: its project is created or adopted by the app's name, and the code it mints exchanges for that project's token.",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -19665,9 +18530,7 @@
 			"post": {
 				"operationId": "oauth.requests.decline",
 				"summary": "Decline a delegated authorize request",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -19731,9 +18594,7 @@
 			"get": {
 				"operationId": "traces.list",
 				"summary": "List traces",
-				"tags": [
-					"Observability"
-				],
+				"tags": ["Observability"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -19845,9 +18706,7 @@
 			"get": {
 				"operationId": "traces.get",
 				"summary": "Get a trace with its spans",
-				"tags": [
-					"Observability"
-				],
+				"tags": ["Observability"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -19911,9 +18770,7 @@
 			"get": {
 				"operationId": "runs.trace",
 				"summary": "Get the trace for a run",
-				"tags": [
-					"Observability"
-				],
+				"tags": ["Observability"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -19977,9 +18834,7 @@
 			"get": {
 				"operationId": "usage.list",
 				"summary": "Usage breakdown (tokens, cost, meters)",
-				"tags": [
-					"Observability"
-				],
+				"tags": ["Observability"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20083,9 +18938,7 @@
 			"get": {
 				"operationId": "usage.events.list",
 				"summary": "List billable usage events",
-				"tags": [
-					"Observability"
-				],
+				"tags": ["Observability"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20195,9 +19048,7 @@
 			"post": {
 				"operationId": "usage.events.create",
 				"summary": "Record a billable usage event",
-				"tags": [
-					"Observability"
-				],
+				"tags": ["Observability"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20270,9 +19121,7 @@
 			"post": {
 				"operationId": "traces.ingest",
 				"summary": "Ingest externally-pushed spans",
-				"tags": [
-					"Observability"
-				],
+				"tags": ["Observability"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20335,9 +19184,7 @@
 			"get": {
 				"operationId": "tenant.providers.list",
 				"summary": "List OAuth client providers",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20381,9 +19228,7 @@
 			"get": {
 				"operationId": "tenant.providers.get",
 				"summary": "Get an OAuth client provider",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20445,9 +19290,7 @@
 			"put": {
 				"operationId": "tenant.providers.put",
 				"summary": "Configure an OAuth client provider",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20518,9 +19361,7 @@
 			"delete": {
 				"operationId": "tenant.providers.delete",
 				"summary": "Delete an OAuth client provider",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20577,9 +19418,7 @@
 			"get": {
 				"operationId": "tenant.models.list",
 				"summary": "List the model catalog",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20623,9 +19462,7 @@
 			"get": {
 				"operationId": "tenant.models.keys.list",
 				"summary": "List BYOK model keys",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20669,9 +19506,7 @@
 			"put": {
 				"operationId": "tenant.models.keys.put",
 				"summary": "Set a BYOK model key",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20742,9 +19577,7 @@
 			"delete": {
 				"operationId": "tenant.models.keys.delete",
 				"summary": "Delete a BYOK model key",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20802,9 +19635,7 @@
 				"operationId": "tenant.sandbox.secrets.list",
 				"summary": "List sandbox secrets (names only)",
 				"description": "The environment a `run_command` box is launched with. Values are never echoed — a secret leaves storage only into a box's environment.",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20849,9 +19680,7 @@
 				"operationId": "tenant.sandbox.secrets.put",
 				"summary": "Set a sandbox secret",
 				"description": "Sealed at rest and decrypted only when a box launches. Every box this tenant launches carries every secret, so scope each credential to one purpose and keep it short-lived — a box runs model-generated commands.",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20923,9 +19752,7 @@
 			"delete": {
 				"operationId": "tenant.sandbox.secrets.delete",
 				"summary": "Delete a sandbox secret",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -20983,9 +19810,7 @@
 			"get": {
 				"operationId": "tenant.tools.list",
 				"summary": "List the hosted-tool catalog",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21029,9 +19854,7 @@
 			"post": {
 				"operationId": "tenant.webhooks.create",
 				"summary": "Create a webhook",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21092,9 +19915,7 @@
 			"get": {
 				"operationId": "tenant.webhooks.list",
 				"summary": "List webhooks",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21166,9 +19987,7 @@
 			"patch": {
 				"operationId": "tenant.webhooks.update",
 				"summary": "Update a webhook",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21249,9 +20068,7 @@
 			"delete": {
 				"operationId": "tenant.webhooks.delete",
 				"summary": "Delete a webhook",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21308,9 +20125,7 @@
 			"post": {
 				"operationId": "tenant.webhooks.rotate",
 				"summary": "Rotate a webhook's signing secret",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21393,9 +20208,7 @@
 			"post": {
 				"operationId": "tenant.webhooks.test",
 				"summary": "Fire a test webhook delivery",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21459,9 +20272,7 @@
 			"get": {
 				"operationId": "tenant.webhooks.deliveries.list",
 				"summary": "List a webhook's delivery attempts",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21551,9 +20362,7 @@
 			"post": {
 				"operationId": "tenant.webhooks.deliveries.redeliver",
 				"summary": "Redeliver a webhook delivery",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21625,9 +20434,7 @@
 			"get": {
 				"operationId": "events.list",
 				"summary": "Poll the event feed",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21723,9 +20530,7 @@
 			"post": {
 				"operationId": "tenant.tokens.create",
 				"summary": "Mint a token",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21786,9 +20591,7 @@
 			"get": {
 				"operationId": "tenant.tokens.list",
 				"summary": "List tokens",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21860,9 +20663,7 @@
 			"delete": {
 				"operationId": "tenant.tokens.delete",
 				"summary": "Revoke a token",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21919,9 +20720,7 @@
 			"get": {
 				"operationId": "tenant.usage",
 				"summary": "Aggregated token usage",
-				"tags": [
-					"Tenant"
-				],
+				"tags": ["Tenant"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -21965,9 +20764,7 @@
 			"put": {
 				"operationId": "tenant.telegram.put",
 				"summary": "Configure the tenant's Telegram bot",
-				"tags": [
-					"Telegram"
-				],
+				"tags": ["Telegram"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22028,9 +20825,7 @@
 			"get": {
 				"operationId": "tenant.telegram.list",
 				"summary": "Get the tenant's Telegram bot status",
-				"tags": [
-					"Telegram"
-				],
+				"tags": ["Telegram"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22072,9 +20867,7 @@
 			"delete": {
 				"operationId": "tenant.telegram.delete",
 				"summary": "Remove the tenant's Telegram bot",
-				"tags": [
-					"Telegram"
-				],
+				"tags": ["Telegram"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22119,9 +20912,7 @@
 		},
 		"/v1/telegram/webhook/{tenant}": {
 			"post": {
-				"tags": [
-					"Telegram"
-				],
+				"tags": ["Telegram"],
 				"security": [],
 				"operationId": "telegram.webhook",
 				"summary": "Inbound Telegram updates (provider → us)",
@@ -22175,9 +20966,7 @@
 			"put": {
 				"operationId": "tenant.whatsapp.put",
 				"summary": "Register the tenant's WhatsApp number",
-				"tags": [
-					"WhatsApp"
-				],
+				"tags": ["WhatsApp"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22238,9 +21027,7 @@
 			"get": {
 				"operationId": "tenant.whatsapp.list",
 				"summary": "Get the tenant's WhatsApp config status",
-				"tags": [
-					"WhatsApp"
-				],
+				"tags": ["WhatsApp"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22282,9 +21069,7 @@
 			"delete": {
 				"operationId": "tenant.whatsapp.delete",
 				"summary": "Remove the tenant's WhatsApp config",
-				"tags": [
-					"WhatsApp"
-				],
+				"tags": ["WhatsApp"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22329,9 +21114,7 @@
 		},
 		"/v1/whatsapp/webhook": {
 			"get": {
-				"tags": [
-					"WhatsApp"
-				],
+				"tags": ["WhatsApp"],
 				"security": [],
 				"operationId": "whatsapp.verify",
 				"summary": "Meta's webhook verify handshake (provider → us)",
@@ -22386,9 +21169,7 @@
 				}
 			},
 			"post": {
-				"tags": [
-					"WhatsApp"
-				],
+				"tags": ["WhatsApp"],
 				"security": [],
 				"operationId": "whatsapp.webhook",
 				"summary": "Inbound WhatsApp messages (provider → us)",
@@ -22432,9 +21213,7 @@
 			"put": {
 				"operationId": "tenant.email.put",
 				"summary": "Configure the tenant's email sending",
-				"tags": [
-					"Email"
-				],
+				"tags": ["Email"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22495,9 +21274,7 @@
 			"get": {
 				"operationId": "tenant.email.list",
 				"summary": "Get the tenant's email config status",
-				"tags": [
-					"Email"
-				],
+				"tags": ["Email"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22539,9 +21316,7 @@
 			"delete": {
 				"operationId": "tenant.email.delete",
 				"summary": "Remove the tenant's email config",
-				"tags": [
-					"Email"
-				],
+				"tags": ["Email"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22588,9 +21363,7 @@
 			"get": {
 				"operationId": "tenant.email.suppressions.list",
 				"summary": "List the tenant's suppressed addresses",
-				"tags": [
-					"Email"
-				],
+				"tags": ["Email"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22660,9 +21433,7 @@
 			"post": {
 				"operationId": "tenant.email.suppressions.create",
 				"summary": "Suppress an address",
-				"tags": [
-					"Email"
-				],
+				"tags": ["Email"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22725,9 +21496,7 @@
 			"delete": {
 				"operationId": "tenant.email.suppressions.delete",
 				"summary": "Remove a suppressed address",
-				"tags": [
-					"Email"
-				],
+				"tags": ["Email"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22782,9 +21551,7 @@
 		},
 		"/v1/email/inbound/{tenant}": {
 			"post": {
-				"tags": [
-					"Email"
-				],
+				"tags": ["Email"],
 				"security": [],
 				"operationId": "email.inbound",
 				"summary": "Inbound email (provider → us)",
@@ -22838,9 +21605,7 @@
 			"put": {
 				"operationId": "tenant.slack.put",
 				"summary": "Configure the tenant's Slack posture",
-				"tags": [
-					"Slack"
-				],
+				"tags": ["Slack"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22901,9 +21666,7 @@
 			"get": {
 				"operationId": "tenant.slack.list",
 				"summary": "Get the tenant's Slack posture",
-				"tags": [
-					"Slack"
-				],
+				"tags": ["Slack"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22945,9 +21708,7 @@
 			"delete": {
 				"operationId": "tenant.slack.delete",
 				"summary": "Remove the tenant's Slack posture",
-				"tags": [
-					"Slack"
-				],
+				"tags": ["Slack"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -22992,9 +21753,7 @@
 		},
 		"/v1/slack/oauth/{tenant}": {
 			"get": {
-				"tags": [
-					"Slack"
-				],
+				"tags": ["Slack"],
 				"security": [],
 				"operationId": "slack.oauth.get",
 				"summary": "Slack install callback (browser redirect)",
@@ -23062,9 +21821,7 @@
 		},
 		"/v1/slack/events/{tenant}": {
 			"post": {
-				"tags": [
-					"Slack"
-				],
+				"tags": ["Slack"],
 				"security": [],
 				"operationId": "slack.events",
 				"summary": "Slack Events API receiver (provider → us)",
@@ -23116,9 +21873,7 @@
 		},
 		"/v1/slack/interactivity/{tenant}": {
 			"post": {
-				"tags": [
-					"Slack"
-				],
+				"tags": ["Slack"],
 				"security": [],
 				"operationId": "slack.interactivity",
 				"summary": "Slack interactivity receiver (provider → us)",
@@ -23145,9 +21900,7 @@
 										"description": "A JSON-encoded interaction."
 									}
 								},
-								"required": [
-									"payload"
-								]
+								"required": ["payload"]
 							}
 						}
 					}
@@ -23180,9 +21933,7 @@
 			"put": {
 				"operationId": "tenant.discord.put",
 				"summary": "Configure the tenant's Discord app",
-				"tags": [
-					"Discord"
-				],
+				"tags": ["Discord"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -23243,9 +21994,7 @@
 			"get": {
 				"operationId": "tenant.discord.list",
 				"summary": "Get the tenant's Discord app status",
-				"tags": [
-					"Discord"
-				],
+				"tags": ["Discord"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -23287,9 +22036,7 @@
 			"delete": {
 				"operationId": "tenant.discord.delete",
 				"summary": "Remove the tenant's Discord app",
-				"tags": [
-					"Discord"
-				],
+				"tags": ["Discord"],
 				"security": [
 					{
 						"bearerAuth": []
@@ -23334,9 +22081,7 @@
 		},
 		"/v1/discord/webhook/{tenant}": {
 			"post": {
-				"tags": [
-					"Discord"
-				],
+				"tags": ["Discord"],
 				"security": [],
 				"operationId": "discord.webhook",
 				"summary": "Discord Interactions Endpoint (provider → us)",
@@ -23392,9 +22137,7 @@
 		},
 		"/internal/sandbox/{sbxId}/claim": {
 			"post": {
-				"tags": [
-					"Sandbox (internal)"
-				],
+				"tags": ["Sandbox (internal)"],
 				"security": [],
 				"operationId": "internal.sandbox.claim",
 				"summary": "Claim the next queued command (called by the sandbox)",
@@ -23435,9 +22178,7 @@
 		},
 		"/internal/sandbox/{sbxId}/result": {
 			"post": {
-				"tags": [
-					"Sandbox (internal)"
-				],
+				"tags": ["Sandbox (internal)"],
 				"security": [],
 				"operationId": "internal.sandbox.result.create",
 				"summary": "Report a command's result (called by the sandbox)",
@@ -23497,9 +22238,7 @@
 		},
 		"/internal/sandbox/{sbxId}/outputs": {
 			"post": {
-				"tags": [
-					"Sandbox (internal)"
-				],
+				"tags": ["Sandbox (internal)"],
 				"security": [],
 				"operationId": "internal.sandbox.outputs.create",
 				"summary": "Store a file the command left in $OUTPUT_DIR (called by the sandbox)",
@@ -23528,10 +22267,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"file",
-									"command_id"
-								]
+								"required": ["file", "command_id"]
 							}
 						}
 					}
@@ -23592,9 +22328,7 @@
 		},
 		"/internal/sandbox/{sbxId}/skills": {
 			"get": {
-				"tags": [
-					"Sandbox (internal)"
-				],
+				"tags": ["Sandbox (internal)"],
 				"security": [],
 				"operationId": "internal.sandbox.skills.list",
 				"summary": "The run's skill bundles, as presigned URLs",
@@ -23635,9 +22369,7 @@
 		},
 		"/internal/sandbox/{sbxId}/skills/errors": {
 			"post": {
-				"tags": [
-					"Sandbox (internal)"
-				],
+				"tags": ["Sandbox (internal)"],
 				"security": [],
 				"operationId": "internal.sandbox.skills.errors.create",
 				"summary": "Report skills the box could not restore",

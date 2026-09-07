@@ -7,7 +7,12 @@ import { openSession } from "./client.js";
 import { reportError } from "./errors.js";
 import { proposeIdCompletions, resolveRef, resourceForParam } from "./ids.js";
 import { print } from "./output.js";
-import { bodyFromFlags, fillPath, flagsForOperation, queryFromFlags } from "./params.js";
+import {
+	bodyFromFlags,
+	fillPath,
+	flagsForOperation,
+	queryFromFlags,
+} from "./params.js";
 import type { Operation } from "./spec.js";
 
 /**
