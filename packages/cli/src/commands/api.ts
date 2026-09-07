@@ -3,8 +3,8 @@ import { readFileSync } from "node:fs";
 import { buildCommand } from "@stricli/core";
 import type { Command, CommandContext } from "@stricli/core";
 
-import { openSession } from "../client";
-import { reportError } from "../errors";
+import { openSession } from "../client.js";
+import { reportError } from "../errors.js";
 
 /**
  * The escape hatch: any `/v1` path, including one with no command of its own

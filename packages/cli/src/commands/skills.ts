@@ -5,13 +5,13 @@ import type { SkillBundle, SkillFileInput } from "@ingram-cloud/sdk/client";
 import { buildCommand } from "@stricli/core";
 import type { Command, CommandContext } from "@stricli/core";
 
-import { openSession } from "../client";
-import { deliverDownload, filenameFromDisposition } from "./files";
-import { reportError } from "../errors";
-import { proposeIdCompletions, resolveRef, resourceForParam } from "../ids";
-import { print } from "../output";
-import { fillPath } from "../params";
-import type { Operation } from "../spec";
+import { openSession } from "../client.js";
+import { deliverDownload, filenameFromDisposition } from "./files.js";
+import { reportError } from "../errors.js";
+import { proposeIdCompletions, resolveRef, resourceForParam } from "../ids.js";
+import { print } from "../output.js";
+import { fillPath } from "../params.js";
+import type { Operation } from "../spec.js";
 
 /**
  * A skill bundle upload and its zip download — `/v1/skills` and

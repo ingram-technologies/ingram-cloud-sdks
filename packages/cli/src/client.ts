@@ -1,7 +1,7 @@
 import { IngramCloud } from "@ingram-cloud/sdk/client";
 
-import { activeProfile, tokenFor } from "./config";
-import type { Profile } from "./config";
+import { activeProfile, tokenFor } from "./config.js";
+import type { Profile } from "./config.js";
 
 /**
  * One authenticated client per invocation.

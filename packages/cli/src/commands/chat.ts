@@ -3,15 +3,15 @@ import { createInterface } from "node:readline/promises";
 import { buildCommand } from "@stricli/core";
 import type { Command, CommandContext } from "@stricli/core";
 
-import type { Session } from "../client";
-import { openSession } from "../client";
-import { reportError } from "../errors";
-import { resolveRef } from "../ids";
-import type { RenderResult } from "../render";
-import { renderFrames } from "../render";
-import { loadSpec, operations } from "../spec";
-import type { Operation } from "../spec";
-import { readSse } from "./runs";
+import type { Session } from "../client.js";
+import { openSession } from "../client.js";
+import { reportError } from "../errors.js";
+import { resolveRef } from "../ids.js";
+import type { RenderResult } from "../render.js";
+import { renderFrames } from "../render.js";
+import { loadSpec, operations } from "../spec.js";
+import type { Operation } from "../spec.js";
+import { readSse } from "./runs.js";
 
 /**
  * `ic chat` — a terminal REPL against one smith, reusing `readSse` (`./runs`)

@@ -4,11 +4,11 @@ import { ICError } from "@ingram-cloud/sdk/client";
 import { buildCommand } from "@stricli/core";
 import type { CommandContext } from "@stricli/core";
 
-import { openSession } from "../client";
-import type { Session } from "../client";
-import { loadConfig, saveConfig } from "../config";
-import { reportError } from "../errors";
-import { print } from "../output";
+import { openSession } from "../client.js";
+import type { Session } from "../client.js";
+import { loadConfig, saveConfig } from "../config.js";
+import { reportError } from "../errors.js";
+import { print } from "../output.js";
 
 /**
  * Choosing a project is choosing a tenant: a project *is* the isolation

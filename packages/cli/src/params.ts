@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import type { Operation, SpecSchema } from "./spec";
+import type { Operation, SpecSchema } from "./spec.js";
 
 /**
  * The bridge between an OpenAPI operation and a command's arguments.

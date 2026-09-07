@@ -1,4 +1,4 @@
-import { recordSeen } from "./ids";
+import { recordSeen } from "./ids.js";
 
 /**
  * How a response reaches the reader.

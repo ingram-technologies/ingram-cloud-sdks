@@ -1,10 +1,10 @@
-import { apiCommand } from "./api";
-import { chatCommand } from "./chat";
-import { shellCommands } from "./completion";
-import { loginCommand, logoutCommand } from "./login";
-import { projectCommands } from "./project";
-import { versionCommand } from "./version";
-import type { Leaf } from "../tree";
+import { apiCommand } from "./api.js";
+import { chatCommand } from "./chat.js";
+import { shellCommands } from "./completion.js";
+import { loginCommand, logoutCommand } from "./login.js";
+import { projectCommands } from "./project.js";
+import { versionCommand } from "./version.js";
+import type { Leaf } from "../tree.js";
 
 /** The commands that are not `/v1` operations. */
 export function extraCommands(apiVersion: string): Leaf[] {
