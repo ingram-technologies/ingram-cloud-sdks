@@ -44,9 +44,11 @@ export function buildTree(
 			node = next;
 		}
 		const clash = node.children.get(name);
-		if (clash && isNode(clash))
+		if (clash)
 			throw new Error(
-				`${[...walked, name].join(".")} is both a command and a group of commands.`,
+				isNode(clash)
+					? `${[...walked, name].join(".")} is both a command and a group of commands.`
+					: `${[...walked, name].join(".")} is registered twice.`,
 			);
 		node.children.set(name, leaf.command);
 	}
