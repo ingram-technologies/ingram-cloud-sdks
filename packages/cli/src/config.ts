@@ -48,6 +48,15 @@ export function configPath(
 	return join(dir, "config.json");
 }
 
+/**
+ * Where the console lives. `IC_CONSOLE_BASE` points `ic login` at a local or
+ * staging console — the same variable the API reads to build a hosted page's
+ * URL, so one name means "this stack's console" everywhere.
+ */
+export function consoleBase(env: Env = process.env): string {
+	return env.IC_CONSOLE_BASE ?? DEFAULT_CONSOLE_URL;
+}
+
 export function loadConfig(env: Env = process.env): Config {
 	let raw: string;
 	try {

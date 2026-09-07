@@ -7,12 +7,7 @@ import { spawn } from "node:child_process";
 import { buildCommand } from "@stricli/core";
 import type { CommandContext } from "@stricli/core";
 
-import {
-	DEFAULT_BASE_URL,
-	DEFAULT_CONSOLE_URL,
-	loadConfig,
-	saveConfig,
-} from "../config.js";
+import { DEFAULT_BASE_URL, consoleBase, loadConfig, saveConfig } from "../config.js";
 import { openSession } from "../client.js";
 import { reportError } from "../errors.js";
 
@@ -158,7 +153,7 @@ export const loginCommand = buildCommand({
 		flags: { browser: boolean; profile?: string; console?: string },
 	) {
 		try {
-			const consoleUrl = flags.console ?? DEFAULT_CONSOLE_URL;
+			const consoleUrl = flags.console ?? consoleBase();
 			const verifier = newVerifier();
 			const challenge = challengeFor(verifier);
 			const state = b64url(randomBytes(16));
@@ -228,7 +223,7 @@ export const loginCommand = buildCommand({
 			console: {
 				kind: "parsed",
 				parse: String,
-				brief: "Console base URL",
+				brief: "Console base URL (else IC_CONSOLE_BASE)",
 				optional: true,
 			},
 		},
