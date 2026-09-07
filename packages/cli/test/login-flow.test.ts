@@ -41,6 +41,7 @@ describe("redeem", () => {
 				expect(String(url)).toBe("https://console.test/api/cli/token");
 				sentBody = JSON.parse(String(init?.body));
 				return jsonResponse({
+					id: "tok_org",
 					token: "org_tok",
 					organization_id: "org_1",
 					expires_at: "2027-01-01T00:00:00Z",
@@ -50,6 +51,7 @@ describe("redeem", () => {
 		const granted = await redeem("https://console.test", "code_1", "verifier_1");
 		expect(sentBody).toEqual({ code: "code_1", verifier: "verifier_1" });
 		expect(granted).toEqual({
+			id: "tok_org",
 			token: "org_tok",
 			organization_id: "org_1",
 			expires_at: "2027-01-01T00:00:00Z",
@@ -100,6 +102,7 @@ describe("logoutCommand", () => {
 					default: {
 						base_url: "https://x.test",
 						org_key: "org_tok",
+						org_key_id: "tok_org",
 						project: {
 							id: "proj_1",
 							name: "acme",
@@ -120,9 +123,12 @@ describe("logoutCommand", () => {
 			run(buildApplication(logoutCommand, { name: "ic" }), [], { process }),
 		);
 
-		expect(fetchImpl).toHaveBeenCalledTimes(1);
+		expect(fetchImpl).toHaveBeenCalledTimes(2);
 		expect(String(fetchImpl.mock.calls[0]?.[0])).toContain(
 			"/v1/tenant/tokens/tok_1",
+		);
+		expect(String(fetchImpl.mock.calls[1]?.[0])).toContain(
+			"/v1/organization/keys/tok_org",
 		);
 		expect(loadConfig(env).profiles.default).toBeUndefined();
 		expect(lines.some((l) => l.includes("Signed out"))).toBe(true);
@@ -136,6 +142,7 @@ describe("logoutCommand", () => {
 					default: {
 						base_url: "https://x.test",
 						org_key: "org_tok",
+						org_key_id: "tok_org",
 						project: {
 							id: "proj_1",
 							name: "acme",
@@ -158,6 +165,7 @@ describe("logoutCommand", () => {
 
 		expect(loadConfig(env).profiles.default).toBeUndefined();
 		expect(lines.some((l) => l.includes("Could not revoke"))).toBe(true);
+		expect(lines.some((l) => l.includes("http_500"))).toBe(true);
 	});
 
 	it("says so and does nothing when there is no stored login", async () => {

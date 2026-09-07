@@ -24,6 +24,8 @@ directory. `ic project use` picks one project (a tenant) and mints a
 project-scoped token for it — that token, not the organization key, is what
 every `/v1` command after this sends.
 
+`ic logout` revokes both stored credentials, then removes the local profile.
+
 ## The shape of the tree
 
 The tree mirrors the `/v1` surface: `ic <resource> <action> [args] [flags]`,

@@ -24,6 +24,8 @@ export interface Profile {
 	base_url: string;
 	org_id?: string;
 	org_key?: string;
+	/** The organization key's server-side revocation identifier. */
+	org_key_id?: string;
 	project?: Project;
 }
 

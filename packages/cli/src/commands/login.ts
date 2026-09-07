@@ -9,7 +9,7 @@ import type { CommandContext } from "@stricli/core";
 
 import { DEFAULT_BASE_URL, consoleBase, loadConfig, saveConfig } from "../config.js";
 import { openSession } from "../client.js";
-import { reportError } from "../errors.js";
+import { messageFor, reportError } from "../errors.js";
 
 /**
  * Sign in through the browser, so nobody pastes a key.
@@ -121,6 +121,7 @@ function awaitCode(state: string): Promise<{ port: number; code: Promise<string>
 }
 
 interface TokenResponse {
+	id: string;
 	token: string;
 	organization_id: string;
 	expires_at: string;
@@ -198,6 +199,7 @@ export const loginCommand = buildCommand({
 				base_url: config.profiles[name]?.base_url ?? DEFAULT_BASE_URL,
 				org_id: granted.organization_id,
 				org_key: granted.token,
+				org_key_id: granted.id,
 			};
 			saveConfig(config);
 			process.stderr.write(
@@ -240,9 +242,8 @@ export const logoutCommand = buildCommand({
 			process.stderr.write("Not signed in.\n");
 			return;
 		}
-		// Revoke what can be revoked. The organization key cannot be — the
-		// console has no server-side revocation for it yet — so say so rather
-		// than implying the credential is dead.
+		// Both credentials were registered when minted, so revocation reaches the
+		// API's `jti` check before the local profile is removed.
 		if (profile.project?.token_id) {
 			try {
 				const session = openSession({
@@ -253,17 +254,31 @@ export const logoutCommand = buildCommand({
 				await session.ic.request("DELETE", path, {
 					token: session.token(path),
 				});
-			} catch {
+			} catch (error) {
 				process.stderr.write(
-					"Could not revoke the project token; removing it locally.\n",
+					`Could not revoke the project token: ${messageFor(error)}; removing it locally.\n`,
+				);
+			}
+		}
+		if (profile.org_key_id) {
+			try {
+				const session = openSession({
+					profile: name,
+					apiVersion: "2026-05-01",
+				});
+				const path = `/organization/keys/${profile.org_key_id}`;
+				await session.ic.request("DELETE", path, {
+					token: session.token(path),
+				});
+			} catch (error) {
+				process.stderr.write(
+					`Could not revoke the organization key: ${messageFor(error)}; removing it locally.\n`,
 				);
 			}
 		}
 		delete config.profiles[name];
 		saveConfig(config);
-		process.stderr.write(
-			"Signed out. The organization key stays valid until it expires — the console cannot revoke one yet.\n",
-		);
+		process.stderr.write("Signed out.\n");
 	},
 	parameters: {
 		flags: {
