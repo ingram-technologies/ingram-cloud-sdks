@@ -21,7 +21,7 @@ import {
  *
  * The agent is the one the smith runs (resolved from the token/`smithId`), never
  * from the model id. The model id is the upstream inference LLM: pass `""` to use
- * the agent's configured model, or a model id like `gpt-5.6-sol` to override the LLM
+ * the agent's configured model, or a model id like `gpt-6.1-sol` to override the LLM
  * for that call.
  *
  * ```ts

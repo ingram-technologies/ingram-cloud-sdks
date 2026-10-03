@@ -45,7 +45,7 @@ Ingram Cloud directly.
 The agent a smith runs (instructions, tools, memory) is resolved from the
 smith, never from the model id. `modelId` is the upstream inference LLM for the
 turn: omit it to use the smith's configured model, or name one to override it
-(`ingramCloudModel({ apiKey, modelId: "gpt-5.6-sol" })`).
+(`ingramCloudModel({ apiKey, modelId: "gpt-6.1-sol" })`).
 
 `threadId` opts into Ingram Cloud's server-side memory.
 

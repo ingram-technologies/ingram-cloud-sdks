@@ -4,7 +4,7 @@ import type { LanguageModel } from "ai";
 export interface IngramCloudModelSettings extends IngramCloudSettings {
 	/**
 	 * The upstream LLM the smith runs this turn. Empty (the default) uses the
-	 * smith's own configured model; a model id like `"gpt-5.6-sol"` overrides the LLM
+	 * smith's own configured model; a model id like `"gpt-6.1-sol"` overrides the LLM
 	 * for that turn. Either way the **agent** — instructions, tools, memory — is
 	 * the one the smith runs, resolved from the token/`smithId`, never the model id.
 	 */

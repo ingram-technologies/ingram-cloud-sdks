@@ -15,7 +15,7 @@ export interface IngramProvider {
 	providerId: string;
 	/**
 	 * Build a model specifier for `useModel()`. `modelId` is the upstream LLM the
-	 * smith runs this turn — e.g. `provider.model("gpt-5.6-sol")` — and must be
+	 * smith runs this turn — e.g. `provider.model("gpt-6.1-sol")` — and must be
 	 * one of the ids declared in {@link IngramProviderSettings.models}.
 	 */
 	model(modelId: string): string;
@@ -45,11 +45,11 @@ export interface IngramProvider {
  *
  * const ingram = registerIngramCloud({
  *   apiKey: process.env.IC_SMITH_TOKEN!,
- *   models: { "gpt-5.6-sol": {} },
+ *   models: { "gpt-6.1-sol": {} },
  * });
  * // …then in agents/triage.ts:
  * export function Triage() {
- *   useModel(ingram.model("gpt-5.6-sol"));
+ *   useModel(ingram.model("gpt-6.1-sol"));
  *   return instructions;
  * }
  * ```

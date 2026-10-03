@@ -37,7 +37,7 @@ import { Triage } from "./agents/triage.js";
 // A per-smith token names exactly one smith; the agent is the one that smith runs.
 export const ingram = registerIngramCloud({
 	apiKey: process.env.IC_SMITH_TOKEN!,
-	models: { "gpt-5.6-sol": {} },
+	models: { "gpt-6.1-sol": {} },
 });
 
 const app = new Hono();
@@ -54,7 +54,7 @@ import { useModel } from "@flue/runtime";
 import { ingram } from "../app.js";
 
 export function Triage() {
-	useModel(ingram.model("gpt-5.6-sol"));
+	useModel(ingram.model("gpt-6.1-sol"));
 	return "Triage the incoming request.";
 }
 ```
@@ -63,7 +63,7 @@ export function Triage() {
 
 The agent a smith runs (instructions, tools, memory) is resolved from the
 smith, never from the model id. The model id is the upstream inference LLM for
-the turn: `ingram.model("gpt-5.6-sol")` runs the smith's agent on GPT-5.6 Sol.
+the turn: `ingram.model("gpt-6.1-sol")` runs the smith's agent on GPT-6.1 Sol.
 
 Flue requires a non-empty model id (`provider/model`), so unlike the raw
 OpenAI-compatible surface there is no "use the smith's configured model" form.
@@ -95,7 +95,7 @@ const ingramMcp = defineIngramMcp({
 });
 
 export function Assistant() {
-	useModel(ingram.model("gpt-5.6-sol"));
+	useModel(ingram.model("gpt-6.1-sol"));
 	useMcpConnection(ingramMcp); // tools named mcp__ingram__<tool>
 	return instructions;
 }

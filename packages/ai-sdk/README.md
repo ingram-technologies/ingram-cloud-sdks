@@ -35,7 +35,7 @@ import { streamText } from "ai";
 
 // A per-smith token names exactly one smith; the agent is the one that smith runs.
 // The model id is the inference LLM: "" uses the agent's configured model, or pass
-// a model id (e.g. "gpt-5.6-sol") to override the LLM for that call.
+// a model id (e.g. "gpt-6.1-sol") to override the LLM for that call.
 const ingram = createIngramCloud({ apiKey: process.env.IC_SMITH_TOKEN! });
 
 const result = streamText({
@@ -216,7 +216,7 @@ input item.
 
 The agent is chosen by the smith, not by an argument. The `model` argument is
 the inference LLM: `""` uses the agent's configured model; a model id (e.g.
-`gpt-5.6-sol`) overrides it for that call.
+`gpt-6.1-sol`) overrides it for that call.
 
 ## Native fallback
 

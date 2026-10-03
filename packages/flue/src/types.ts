@@ -96,12 +96,12 @@ export interface IngramMcpSettings {
  * `modelId` is the **upstream LLM** the smith runs for the turn — its agent
  * (instructions, tools, memory) is unchanged. Unlike the OpenAI-compatible
  * surface, Flue rejects an empty model id, so there is no "use the agent's
- * configured model" form here: name the model you want, e.g. `ingram/gpt-5.6-sol`.
+ * configured model" form here: name the model you want, e.g. `ingram/gpt-6.1-sol`.
  */
 export function ingramModelSpec(providerId: string, modelId: string): string {
 	if (!modelId) {
 		throw new Error(
-			`[ingram] A model id is required: Flue rejects "${providerId}/". Name the upstream LLM to run, e.g. "${providerId}/gpt-5.6-sol".`,
+			`[ingram] A model id is required: Flue rejects "${providerId}/". Name the upstream LLM to run, e.g. "${providerId}/gpt-6.1-sol".`,
 		);
 	}
 	return `${providerId}/${modelId}`;
