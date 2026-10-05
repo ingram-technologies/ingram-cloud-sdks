@@ -50,21 +50,34 @@ export const BudgetListOut = pageOut(BudgetOut, "BudgetListOut");
 
 // ── Request bodies ──────────────────────────────────────────────────────────
 
+/** The window a budget's spend accrues over. Only calendar months are computed. */
+export const BudgetPeriod = z.enum(["monthly"]);
+
+/** The fields every budget takes, whatever its scope. */
+const BudgetTerms = {
+	// The cap, in the platform billing currency (EUR by default).
+	limit: z.number().positive(),
+	action: BudgetAction.default("warn"),
+	period: BudgetPeriod.default("monthly"),
+};
+
+/** A new budget. A `tenant` budget caps the whole project and names no `scope_id`;
+ *  an `agent`, `smith` or `customer` budget names the id it caps. */
 export const BudgetIn = z
-	.object({
-		scope: z.string(),
-		scope_id: z.string().nullish(),
-		// The cap, in the platform billing currency (EUR by default).
-		limit: z.number(),
-		action: z.string().default("warn"),
-		period: z.string().default("monthly"),
-	})
+	.discriminatedUnion("scope", [
+		z.object({ scope: z.literal("tenant"), ...BudgetTerms }),
+		z.object({
+			scope: z.enum(["agent", "smith", "customer"]),
+			scope_id: z.string().trim().min(1),
+			...BudgetTerms,
+		}),
+	])
 	.meta({ id: "BudgetIn" });
 
 export const BudgetPatch = z
 	.object({
-		limit: z.number().nullish(),
-		action: z.string().nullish(),
+		limit: z.number().positive().nullish(),
+		action: BudgetAction.nullish(),
 	})
 	.meta({ id: "BudgetPatch" });
 
@@ -72,3 +85,5 @@ export const BudgetPatch = z
 
 export type ICBudget = z.infer<typeof BudgetOut>;
 export type ICBudgetStatus = z.infer<typeof BudgetStatusOut>;
+/** The body that creates a budget, as a caller writes it (defaults unapplied). */
+export type ICBudgetIn = z.input<typeof BudgetIn>;

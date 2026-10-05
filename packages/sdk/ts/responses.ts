@@ -59,7 +59,7 @@ export type {
 	ICOrgUsageProject,
 	ICOrgUsageSeries,
 } from "./zod/billing.js";
-export type { ICBudget, ICBudgetStatus } from "./zod/budgets.js";
+export type { ICBudget, ICBudgetIn, ICBudgetStatus } from "./zod/budgets.js";
 export type { ICCatalogEntry } from "./zod/catalog.js";
 export type { ICConnection } from "./zod/connections.js";
 export type { ICConversation, ICConversationItem } from "./zod/conversations.js";
