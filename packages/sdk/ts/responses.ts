@@ -69,6 +69,7 @@ export type {
 	ICDeploymentCreated,
 	ICInboundEvent,
 } from "./zod/deployments.js";
+export type { ICEvaluation } from "./zod/evaluate.js";
 export type { ICDiscordApp } from "./zod/discord.js";
 export type { ICEmailConfig } from "./zod/email.js";
 export type { ICFile, ICFileList } from "./zod/files.js";

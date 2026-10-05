@@ -20,6 +20,7 @@ export * from "./conversations.js";
 export * from "./deployments.js";
 export * from "./customers.js";
 export * from "./discord.js";
+export * from "./evaluate.js";
 export * from "./email.js";
 export * from "./files.js";
 export * from "./mcp.js";
