@@ -52,13 +52,9 @@ without a publish, as long as the range is kept current.
 
 ## Releasing
 
-Packages are released one at a time, by CI (`.github/workflows/release.yml`,
-npm trusted publishing):
-
-1. Bump `version` in the package's `package.json`.
-2. Update the version in the table above.
-3. Commit, tag the commit `<name>@<version>` (for example `sdk@1.6.0`) and push
-   the tag. The workflow builds, tests and publishes that package.
+Bump `version` in the package's `package.json` and its row in the table above,
+in the pull request. On merge to `main`, CI publishes each package version npm
+lacks and tags the commit `<dir>@<version>`. If the run fails, re-run it.
 
 ## License
 

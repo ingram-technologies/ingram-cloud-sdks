@@ -1,25 +1,16 @@
 name: Release
 
-# Publishes one package to npm via OIDC trusted publishing (`id-token: write`
-# plus the per-package trusted-publisher config on npmjs.com naming this
-# workflow; a publish E404 means that config is missing for the package).
-#
-# Cut a release: bump `version` in the package's package.json and the root
-# README table, commit, tag `<name>@<version>` (for example `sdk@1.6.0`) and push
-# the tag. Re-running for an existing tag: dispatch with the package name.
+# A push to main that changes a package.json publishes each version npm lacks and
+# tags the commit `<dir>@<version>`. Re-run a failed run to retry. npm trusted
+# publishing names this file per package: renaming it breaks publish.
 
 on:
     push:
-        tags: ["*@*"]
-    workflow_dispatch:
-        inputs:
-            package:
-                description: "Package directory under packages/ (sdk, ai-sdk, eve, flue, pulumi)"
-                required: true
-                type: string
+        branches: [main]
+        paths: [packages/*/package.json]
 
 permissions:
-    contents: read
+    contents: write
     id-token: write
 
 jobs:
@@ -28,40 +19,20 @@ jobs:
         steps:
             - uses: actions/checkout@v7
             - uses: oven-sh/setup-bun@v2
-              with:
-                  bun-version: latest
             - uses: actions/setup-node@v7
               with:
                   node-version: 24
                   registry-url: https://registry.npmjs.org
             - run: bun install --frozen-lockfile
-            - name: Resolve the package
-              id: pkg
+            - run: bun run ci
+            - name: Publish and tag
               run: |
-                  if [ -n "${{ inputs.package }}" ]; then
-                    name="${{ inputs.package }}"
-                  else
-                    name="${GITHUB_REF_NAME%@*}"
-                  fi
-                  [ -f "packages/$name/package.json" ] || { echo "no packages/$name"; exit 1; }
-                  version="$(node -p "require('./packages/$name/package.json').version")"
-                  if [ -z "${{ inputs.package }}" ] && [ "$name@$version" != "$GITHUB_REF_NAME" ]; then
-                    echo "tag $GITHUB_REF_NAME != $name@$version"; exit 1
-                  fi
-                  echo "dir=packages/$name" >> "$GITHUB_OUTPUT"
-            - run: bun run lint
-            # Workspace ranges resolve to sibling packages, whose dist/ a fresh
-            # checkout lacks — build them all so the package under test compiles.
-            - run: bun run build
-            # `bun run test` falls through to the system `test` binary when a package
-            # has no such script (pulumi), so check the script exists first.
-            - name: Test
-              run: |
-                  if node -e "process.exit(require('./package.json').scripts?.test ? 0 : 1)"; then
-                    bun run test
-                  else
-                    echo "no test script"
-                  fi
-              working-directory: ${{ steps.pkg.outputs.dir }}
-            - run: npm publish --provenance --access public
-              working-directory: ${{ steps.pkg.outputs.dir }}
+                  failed=0
+                  for package in packages/*; do
+                    name="$(jq -r .name "$package/package.json")"
+                    version="$(jq -r .version "$package/package.json")"
+                    tag="${package#packages/}@$version"
+                    [ -n "$(npm view "$name@$version" version)" ] || npm publish "$package" || { failed=1; continue; }
+                    git ls-remote --exit-code origin "refs/tags/$tag" > /dev/null || { git tag "$tag" && git push origin "$tag"; } || failed=1
+                  done
+                  exit "$failed"
