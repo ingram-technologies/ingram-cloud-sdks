@@ -20,10 +20,10 @@ import { z } from "zod";
 
 // ─── Feed / webhook event types (docs/events.md "Event type catalog") ────────
 // Only these reach the `/v1/events` feed and signed webhooks. Pure run-stream frames
-// — `run.started`, `message.delta`, `message.completed`, `run.cancelled` — ride the
-// live SSE stream and the per-run timeline only; they are NOT feed events (see
-// {@link STREAM_EVENTS}). `tool.executing` / `tool.completed` are both: a live frame
-// AND a feed event.
+// — `run.started`, `message.delta`, `message.completed`, `reasoning`, `run.restarted`,
+// `run.cancelled` — ride the live SSE stream and the per-run timeline only; they are
+// NOT feed events (see {@link STREAM_EVENTS}). `tool.executing` / `tool.completed` /
+// `approval.resolved` are both: a live frame AND a feed event.
 export const EVENT_TYPES = [
 	"run.paused",
 	"run.completed",
@@ -87,6 +87,9 @@ export const STREAM_EVENTS = [
 	"run.cancelled",
 	"run.duplicate",
 	"message.completed",
+	"reasoning",
+	"run.restarted",
+	"approval.resolved",
 ] as const;
 
 export const streamEventName = z.enum(STREAM_EVENTS);
