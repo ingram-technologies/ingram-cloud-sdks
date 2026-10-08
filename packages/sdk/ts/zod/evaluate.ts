@@ -1,7 +1,7 @@
 /**
  * Hand-authored Zod schemas for `POST /v1/evaluate`: typed questions about one
  * state, answered by a classifier model. The wire is the AI Gateway's
- * `/v1/evaluate`, whose fields are the AI SDK's `EvaluationModelV4`, so the keys
+ * `/v1/evaluate`, whose fields are the AI SDK's `DecisionModelV4`, so the keys
  * are camelCase on purpose.
  *
  * `.meta({ id })` names each recursive or shared part, so the emitted OpenAPI
@@ -109,6 +109,8 @@ export const EvaluateOut = z
 					probabilities: Probabilities.optional(),
 				}),
 				z.object({ type: z.literal("boolean"), probability: z.number() }),
+				// The model declined this question; any question type can get one.
+				z.object({ type: z.literal("refusal") }),
 			]),
 		),
 		usage: z.object({
