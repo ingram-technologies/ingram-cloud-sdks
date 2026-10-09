@@ -724,7 +724,9 @@ export class IngramCloud {
 					`/smiths/${enc(pid)}/runs/${enc(rid)}/replay`,
 					{ ...opts, body: {} },
 				),
-			/** The recorded run events (the SSE replay endpoint, parsed). */
+			/** The events recorded for a run so far (the SSE endpoint, parsed). Asks
+			 *  the API to close after them: left alone, the endpoint follows a run
+			 *  in flight until it finishes or pauses. */
 			events: async (
 				pid: string,
 				rid: string,
@@ -733,7 +735,7 @@ export class IngramCloud {
 				const res = await this.request(
 					"GET",
 					`/smiths/${enc(pid)}/runs/${enc(rid)}/events`,
-					opts,
+					{ ...opts, query: { follow: "false" } },
 				);
 				const text = await res.text();
 				const out: ICRunEvent[] = [];
