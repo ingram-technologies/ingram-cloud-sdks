@@ -30,10 +30,10 @@
       "name": "@ingram-cloud/cli",
       "version": "0.1.1",
       "bin": {
-        "ic": "./dist/bin.js",
+        "ic": "dist/bin.js",
       },
       "dependencies": {
-        "@ingram-cloud/sdk": "^1.12.0",
+        "@ingram-cloud/sdk": "^2.0.0",
         "@stricli/auto-complete": "^1.3.0",
         "@stricli/core": "^1.3.0",
       },
@@ -82,7 +82,7 @@
     },
     "packages/sdk": {
       "name": "@ingram-cloud/sdk",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "dependencies": {
         "zod": "^4.5.4",
       },
