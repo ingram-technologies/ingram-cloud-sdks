@@ -12,9 +12,9 @@
  * are documented IC extensions OpenAI omits (OpenAI has no title and no list
  * endpoint, both of which a console conversation list needs). `created_at`/
  * `updated_at` are unix-second integers like every OpenAI object, not the ISO
- * strings the native `ic_*` resources use. Items are read-only and reconstructed
- * from the conversation's runs — they accrue from `/v1/responses`, not a write
- * endpoint.
+ * strings the native `ic_*` resources use. Items are reconstructed from the
+ * conversation's runs, interleaved with the message items appended through
+ * OpenAI's `POST /v1/conversations/{id}/items` (a human operator's reply, say).
  */
 import { z } from "zod";
 import { oaiListOut } from "./_page.js";
@@ -26,7 +26,7 @@ export const ConversationOut = z
 		object: z.literal("conversation"),
 		/** Unix seconds, like every OpenAI object. */
 		created_at: z.number().int(),
-		/** Unix seconds of the last run in the conversation (IC extension). */
+		/** Unix seconds of the conversation's last activity (IC extension). */
 		updated_at: z.number().int(),
 		/** Auto-set from the first user turn of a Responses-API run that names this
 		 *  conversation; null until then. Set it yourself any time. IC extension. */
@@ -59,6 +59,9 @@ export const ConversationItem = z
 	.object({
 		id: z.string(),
 		type: z.string(),
+		/** Unix seconds: when the turn carrying it started, or when it was appended.
+		 *  IC extension. */
+		created_at: z.number().int(),
 		role: z.string().optional(),
 		status: z.string().optional(),
 		content: z.array(z.record(z.string(), z.unknown())).optional(),
@@ -84,6 +87,31 @@ export const ConversationCreate = z
 		metadata: z.record(z.string(), z.unknown()).optional(),
 	})
 	.meta({ id: "ConversationCreate" });
+
+/** One message to append — OpenAI's input message item. A string `content` is one
+ *  text part. */
+export const ConversationItemIn = z
+	.object({
+		type: z.literal("message").default("message"),
+		role: z.enum(["user", "assistant", "system", "developer"]),
+		content: z.union([
+			z.string().min(1),
+			z
+				.array(
+					z.object({
+						type: z.enum(["input_text", "output_text"]),
+						text: z.string(),
+					}),
+				)
+				.min(1),
+		]),
+	})
+	.meta({ id: "ConversationItemIn" });
+
+/** `POST /v1/conversations/{id}/items` — OpenAI's create-items body (up to 20). */
+export const ConversationItemsCreate = z
+	.object({ items: z.array(ConversationItemIn).min(1).max(20) })
+	.meta({ id: "ConversationItemsCreate" });
 
 /** Update body — set the title and/or merge metadata. */
 export const ConversationUpdate = z

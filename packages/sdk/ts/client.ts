@@ -114,7 +114,11 @@ import type {
 	ConnectionIn,
 	ConnectionPatch,
 } from "./zod/connections.js";
-import type { ConversationCreate, ConversationUpdate } from "./zod/conversations.js";
+import type {
+	ConversationCreate,
+	ConversationItemsCreate,
+	ConversationUpdate,
+} from "./zod/conversations.js";
 import type { CustomerCreate, CustomerPatch } from "./zod/customers.js";
 import type { DeploymentIn, DeploymentPatch } from "./zod/deployments.js";
 import type { DiscordAppIn } from "./zod/discord.js";
@@ -875,12 +879,18 @@ export class IngramCloud {
 		},
 	};
 
-	// ── Conversations (smith-scoped: pass `{ smith }` with a tenant token) ──
+	// ── Conversations (a smith's own, or project-wide with a tenant token and no `{ smith }`) ──
 
 	readonly conversations = {
-		/** OpenAI `list` envelope; page forward with `after: page.last_id`. */
+		/** OpenAI `list` envelope, most recent activity first; page forward with
+		 *  `after: page.last_id`. `agent_id` keeps the conversations of that agent's smiths. */
 		list: (
-			query?: { limit?: number; order?: "asc" | "desc"; after?: string },
+			query?: {
+				limit?: number;
+				order?: "asc" | "desc";
+				after?: string;
+				agent_id?: string;
+			},
 			opts?: RequestOptions,
 		) =>
 			this.json<ICOaiList<ICConversation>>("GET", "/conversations", {
@@ -908,13 +918,28 @@ export class IngramCloud {
 		/** The faithful transcript (message / function_call / mcp_call items). */
 		items: (
 			cnvId: string,
-			query?: { order?: "asc" | "desc"; limit?: number },
+			query?: { order?: "asc" | "desc"; limit?: number; after?: string },
 			opts?: RequestOptions,
 		) =>
 			this.data<ICConversationItem>("GET", `/conversations/${enc(cnvId)}/items`, {
 				...opts,
 				query,
 			}),
+		/** Append message items outside a run (OpenAI's create-items); the next turn
+		 *  sees them as history. */
+		createItems: (
+			cnvId: string,
+			body: z.input<typeof ConversationItemsCreate>,
+			opts?: RequestOptions,
+		) =>
+			this.data<ICConversationItem>(
+				"POST",
+				`/conversations/${enc(cnvId)}/items`,
+				{
+					...opts,
+					body,
+				},
+			),
 	};
 
 	// ── Approvals / events ──────────────────────────────────────────────────
