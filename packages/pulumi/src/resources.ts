@@ -14,7 +14,7 @@
  *     so declare these in the APP repo's Pulumi program, sourced from the app's
  *     own spec module. Never copy prompts into the infra repo.
  *   - **Integrations / tenant config** (`IcMcpServer`, `IcOauthProvider`,
- *     `IcTelegramBot`, `IcWhatsAppConfig`, `IcWebhook`, `IcModelKey`) —
+ *     `IcTelegramBot`, `IcWhatsAppNumber`, `IcWebhook`, `IcModelKey`) —
  *     tenant-level wiring; declare in the infra repo alongside DNS/DB/Vercel.
  *
  * Not modelled here, on purpose:
@@ -1562,7 +1562,7 @@ export class IcOauthProvider extends pulumi.dynamic.Resource {
 	}
 }
 
-// ─── WhatsApp number (PUT /v1/tenant/whatsapp) ───────────────────────────────
+// ─── WhatsApp number (PUT /v1/tenant/whatsapp/{phone_number_id}) ─────────────
 
 interface WhatsAppInputs {
 	baseUrl: string;
@@ -1573,23 +1573,20 @@ interface WhatsAppInputs {
 }
 
 const whatsappProvider = makePutResource<WhatsAppInputs>({
-	path: () => "/v1/tenant/whatsapp",
-	id: () => "whatsapp",
-	body: (i) => ({
-		phone_number_id: i.phoneNumberId,
-		access_token: i.accessToken,
-		waba_id: i.wabaId,
-	}),
+	path: (i) => `/v1/tenant/whatsapp/${encodeURIComponent(i.phoneNumberId)}`,
+	id: (i) => i.phoneNumberId,
+	body: (i) => ({ access_token: i.accessToken, waba_id: i.wabaId }),
 	outs: (_i, res) => ({
 		displayPhoneNumber: res.display_phone_number,
 		webhookUrl: res.webhook_url,
 	}),
 	diff: {
-		scalarKeys: ["phoneNumberId", "accessToken", "wabaId", "token", "baseUrl"],
+		replaceKeys: ["phoneNumberId"],
+		scalarKeys: ["accessToken", "wabaId", "token", "baseUrl"],
 	},
 });
 
-export interface IcWhatsAppConfigArgs {
+export interface IcWhatsAppNumberArgs {
 	baseUrl: pulumi.Input<string>;
 	token: pulumi.Input<string>;
 	phoneNumberId: pulumi.Input<string>;
@@ -1598,12 +1595,14 @@ export interface IcWhatsAppConfigArgs {
 	wabaId: pulumi.Input<string>;
 }
 
-export class IcWhatsAppConfig extends pulumi.dynamic.Resource {
-	public readonly displayPhoneNumber!: pulumi.Output<string>;
+/** One of the tenant's WhatsApp numbers. A tenant may register several; bind one to
+ *  an agent with a `whatsapp` deployment whose `address` is its `phoneNumberId`. */
+export class IcWhatsAppNumber extends pulumi.dynamic.Resource {
+	public readonly displayPhoneNumber!: pulumi.Output<string | null>;
 	public readonly webhookUrl!: pulumi.Output<string>;
 	constructor(
 		name: string,
-		args: IcWhatsAppConfigArgs,
+		args: IcWhatsAppNumberArgs,
 		opts?: pulumi.CustomResourceOptions,
 	) {
 		super(

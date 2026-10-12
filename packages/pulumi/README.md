@@ -20,7 +20,7 @@ pass. A typical split:
 app stack        IcAgent, IcWebPage, IcSkill — instructions come from the app's
                  own source.
 
-infra stack      IcMcpServer, IcOauthProvider, IcTelegramBot, IcWhatsAppConfig,
+infra stack      IcMcpServer, IcOauthProvider, IcTelegramBot, IcWhatsAppNumber,
                  IcEmail, IcWebhook, IcModelKey — tenant integration config. It can
                  read the app stack's outputs (agent ids, webhook secret) through
                  pulumi.StackReference and write them to the app's env.
@@ -162,7 +162,7 @@ const biller = new ic.IcAgent("biller", {
 });
 ```
 
-### IcMcpServer, IcOauthProvider, IcTelegramBot, IcWhatsAppConfig, IcEmail, IcWebhook, IcModelKey (infra stack)
+### IcMcpServer, IcOauthProvider, IcTelegramBot, IcWhatsAppNumber, IcEmail, IcWebhook, IcModelKey (infra stack)
 
 ```ts
 // Your own server (raw URL).

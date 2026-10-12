@@ -114,7 +114,7 @@ export type {
 	ICProvider,
 	ICAuthorizeRequest,
 } from "./zod/tenant.js";
-export type { ICWhatsAppConfig } from "./zod/whatsapp.js";
+export type { ICWhatsAppNumber } from "./zod/whatsapp.js";
 export type {
 	ICVectorStore,
 	ICVectorStoreFile,

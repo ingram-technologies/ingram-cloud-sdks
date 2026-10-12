@@ -1,7 +1,6 @@
 /**
- * Hand-authored Zod schemas for the `whatsapp` channel-config resource — the
- * wire's source of truth, replacing the loose generated shapes for this
- * resource.
+ * Hand-authored Zod schemas for the `whatsapp` number resource — the wire's
+ * source of truth, replacing the loose generated shapes for this resource.
  *
  * One source, three outputs: the API imports these into its `createRoute`
  * definitions (validation + emitted OpenAPI), and the consumer-facing `IC*`
@@ -13,42 +12,45 @@
  * `#/components/schemas/<id>` rather than inlining it.
  */
 import { z } from "zod";
+import { pageOut } from "./_page.js";
 
 /**
- * A tenant's WhatsApp number as hosted under Ingram Cloud's shared Meta app.
- * Secrets are never returned; the optional fields are present only once
- * `configured` is true. `display_phone_number` is the E.164 number Meta has on
- * file for the registered `phone_number_id`, and can be null until Meta reports
- * it. `webhook_url` is IC's single app-level webhook (informational — IC
- * subscribes the number to it for you).
+ * One of a tenant's WhatsApp numbers, hosted under Ingram Cloud's shared Meta
+ * app and keyed by Meta's `phone_number_id`. Secrets are never returned.
+ * `display_phone_number` is the number Meta has on file, null until Meta
+ * reports it. `webhook_url` is IC's single app-level webhook (informational —
+ * IC subscribes the number to it for you).
  */
-export const WhatsAppConfigOut = z
+export const WhatsAppNumberOut = z
 	.object({
-		configured: z.boolean(),
-		phone_number_id: z.string().optional(),
-		display_phone_number: z.string().nullable().optional(),
-		waba_id: z.string().nullable().optional(),
-		webhook_url: z.string().optional(),
+		phone_number_id: z.string(),
+		display_phone_number: z.string().nullable(),
+		waba_id: z.string(),
+		webhook_url: z.string(),
+		created_at: z.string(),
 	})
-	.meta({ id: "WhatsAppConfigOut" });
+	.meta({ id: "WhatsAppNumberOut" });
+
+export const WhatsAppNumberListOut = pageOut(
+	WhatsAppNumberOut,
+	"WhatsAppNumberListOut",
+);
 
 // ── Request bodies ──────────────────────────────────────────────────────────
 
 /**
- * Register (or rotate) a tenant's WhatsApp number. IC validates the token,
- * subscribes its shared app to the WABA so inbound flows to the app-level
- * webhook, and stores the mapping. All three fields are required; they're
- * optional at the shape layer so the handler returns its specific
- * `empty_config` code rather than a pre-handler `invalid_request`.
+ * Register (or rotate the token of) a WhatsApp number; the path carries its
+ * `phone_number_id`. IC validates the token can read the number, subscribes its
+ * shared app to the WABA so inbound flows to the app-level webhook, and stores
+ * the mapping.
  */
-export const WhatsAppConfigIn = z
+export const WhatsAppNumberIn = z
 	.object({
-		phone_number_id: z.string().optional(),
-		access_token: z.string().optional(),
-		waba_id: z.string().optional(),
+		access_token: z.string().min(1),
+		waba_id: z.string().min(1),
 	})
-	.meta({ id: "WhatsAppConfigIn" });
+	.meta({ id: "WhatsAppNumberIn" });
 
 // ── Inferred consumer-facing types (re-exported by ../responses) ─────────────
 
-export type ICWhatsAppConfig = z.infer<typeof WhatsAppConfigOut>;
+export type ICWhatsAppNumber = z.infer<typeof WhatsAppNumberOut>;

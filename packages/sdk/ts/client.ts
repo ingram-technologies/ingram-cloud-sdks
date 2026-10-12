@@ -81,7 +81,7 @@ import type {
 	ICVectorStoreSearchPage,
 	ICWebhook,
 	ICWebhookDelivery,
-	ICWhatsAppConfig,
+	ICWhatsAppNumber,
 	ICWorkingMemory,
 } from "./responses.js";
 import type {
@@ -159,7 +159,7 @@ import type {
 	WebhookRotateIn,
 	WebhookRotateOut,
 } from "./zod/tenant.js";
-import type { WhatsAppConfigIn } from "./zod/whatsapp.js";
+import type { WhatsAppNumberIn } from "./zod/whatsapp.js";
 
 export const DEFAULT_BASE_URL = "https://api.cloud.ingram.tech";
 
@@ -1521,15 +1521,27 @@ export class IngramCloud {
 		},
 
 		whatsapp: {
-			get: (opts?: RequestOptions) =>
-				this.json<ICWhatsAppConfig>("GET", "/tenant/whatsapp", opts),
-			put: (body: z.input<typeof WhatsAppConfigIn>, opts?: RequestOptions) =>
-				this.json<ICWhatsAppConfig>("PUT", "/tenant/whatsapp", {
-					...opts,
-					body,
-				}),
-			delete: (opts?: RequestOptions) =>
-				this.empty("DELETE", "/tenant/whatsapp", opts),
+			list: (query?: PageOpts, opts?: RequestOptions) =>
+				this.page<ICWhatsAppNumber>("/tenant/whatsapp", query, opts),
+			get: (phoneNumberId: string, opts?: RequestOptions) =>
+				this.json<ICWhatsAppNumber>(
+					"GET",
+					`/tenant/whatsapp/${enc(phoneNumberId)}`,
+					opts,
+				),
+			/** Register a number, or rotate its token. */
+			put: (
+				phoneNumberId: string,
+				body: z.input<typeof WhatsAppNumberIn>,
+				opts?: RequestOptions,
+			) =>
+				this.json<ICWhatsAppNumber>(
+					"PUT",
+					`/tenant/whatsapp/${enc(phoneNumberId)}`,
+					{ ...opts, body },
+				),
+			delete: (phoneNumberId: string, opts?: RequestOptions) =>
+				this.empty("DELETE", `/tenant/whatsapp/${enc(phoneNumberId)}`, opts),
 		},
 
 		email: {
