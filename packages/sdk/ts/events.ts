@@ -42,6 +42,7 @@ export const EVENT_TYPES = [
 	"slack.install",
 	"slack.uninstalled",
 	"email.send_failed",
+	"whatsapp.send_failed",
 	"webhook.test",
 ] as const;
 
