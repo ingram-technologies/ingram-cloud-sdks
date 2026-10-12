@@ -1,6 +1,6 @@
 {
 	"name": "@ingram-cloud/pulumi",
-	"version": "2.2.0",
+	"version": "3.0.0",
 	"description": "Pulumi dynamic resources for the Ingram Cloud /v1 API — projects, project tokens, agents, MCP servers, channels, webhooks, model keys.",
 	"keywords": [
 		"ingram",
