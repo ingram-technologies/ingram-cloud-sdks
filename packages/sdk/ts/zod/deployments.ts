@@ -101,9 +101,20 @@ export const DeploymentIn = z
 		provider: z.string().nullish(),
 		provider_metadata: z.record(z.string(), z.unknown()).optional(),
 		secrets: z.record(z.string(), z.unknown()).optional(),
+		/** Deferred binding. Its shape depends on `kind` and `mode`; the API parses
+		 *  it with the matching schema, such as {@link WhatsAppStartSetup}. */
 		setup: z.record(z.string(), z.unknown()).nullish(),
 	})
 	.meta({ id: "DeploymentIn" });
+
+/** `setup` for a whatsapp `start_token` deployment. `phone_number_id` names the
+ *  project number the wa.me link points at; omit it when the project has one. */
+export const WhatsAppStartSetup = z
+	.object({
+		mode: z.literal("start_token"),
+		phone_number_id: z.string().min(1).optional(),
+	})
+	.meta({ id: "WhatsAppStartSetup" });
 
 export const DeploymentPatch = z
 	.object({
