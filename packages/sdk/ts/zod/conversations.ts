@@ -15,6 +15,10 @@
  * strings the native `ic_*` resources use. Items are reconstructed from the
  * conversation's runs, interleaved with the message items appended through
  * OpenAI's `POST /v1/conversations/{id}/items` (a human operator's reply, say).
+ *
+ * The list sorts by `updated_at`, which moves, so `?after=<id>` cannot page it
+ * without skips or repeats. The list carries `next_cursor` (IC extension, null on
+ * the last page); pass it back as `?cursor=`. `?after=` is still accepted.
  */
 import { z } from "zod";
 import { oaiListOut } from "./_page.js";
@@ -37,8 +41,11 @@ export const ConversationOut = z
 	})
 	.meta({ id: "ConversationOut" });
 
-/** The conversation list, in OpenAI's `list` envelope (page with `?after=`). */
-export const ConversationListOut = oaiListOut(ConversationOut, "ConversationListOut");
+/** The conversation list: OpenAI's `list` envelope plus the opaque `next_cursor`
+ *  (IC extension, null on the last page). Page with `?cursor=`. */
+export const ConversationListOut = oaiListOut(ConversationOut, "ConversationListOut")
+	.extend({ next_cursor: z.string().nullable() })
+	.meta({ id: "ConversationListOut" });
 
 /** The delete acknowledgement, in OpenAI's `*.deleted` shape. */
 export const ConversationDeleted = z
@@ -124,4 +131,5 @@ export const ConversationUpdate = z
 // ── Inferred consumer-facing types (re-exported by ../responses) ─────────────
 
 export type ICConversation = z.infer<typeof ConversationOut>;
+export type ICConversationList = z.infer<typeof ConversationListOut>;
 export type ICConversationItem = z.infer<typeof ConversationItem>;
