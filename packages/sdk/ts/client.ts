@@ -38,6 +38,7 @@ import type {
 	ICConnection,
 	ICConversation,
 	ICConversationItem,
+	ICConversationList,
 	ICCustomer,
 	ICDeployment,
 	ICDeploymentCreated,
@@ -883,17 +884,16 @@ export class IngramCloud {
 
 	readonly conversations = {
 		/** OpenAI `list` envelope, most recent activity first; page forward with
-		 *  `after: page.last_id`. `agent_id` keeps the conversations of that agent's smiths. */
+		 *  `cursor: page.next_cursor`. `agent_id` keeps the conversations of that agent's smiths. */
 		list: (
-			query?: {
-				limit?: number;
+			query?: PageOpts & {
 				order?: "asc" | "desc";
 				after?: string;
 				agent_id?: string;
 			},
 			opts?: RequestOptions,
 		) =>
-			this.json<ICOaiList<ICConversation>>("GET", "/conversations", {
+			this.json<ICConversationList>("GET", "/conversations", {
 				...opts,
 				query,
 			}),

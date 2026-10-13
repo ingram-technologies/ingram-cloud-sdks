@@ -3,6 +3,7 @@
  * last activity and `after=<id>` cannot page a mutable key.
  */
 import { describe, expect, it } from "vitest";
+import { IngramCloud } from "../ts/client.js";
 import { ConversationListOut } from "../ts/zod/index.js";
 
 const page = {
@@ -39,5 +40,24 @@ describe("ConversationListOut", () => {
 	it("rejects a page without next_cursor", () => {
 		const { next_cursor: _, ...withoutCursor } = page;
 		expect(ConversationListOut.safeParse(withoutCursor).success).toBe(false);
+	});
+});
+
+describe("conversations.list", () => {
+	it("sends cursor and returns next_cursor", async () => {
+		const urls: string[] = [];
+		const ic = new IngramCloud({
+			baseURL: "https://x",
+			token: "t",
+			fetch: async (url) => {
+				urls.push(url);
+				return new Response(JSON.stringify(page));
+			},
+		});
+
+		const result = await ic.conversations.list({ cursor: "c1", limit: 1 });
+
+		expect(urls).toEqual(["https://x/v1/conversations?cursor=c1&limit=1"]);
+		expect(result.next_cursor).toBe("c2");
 	});
 });
