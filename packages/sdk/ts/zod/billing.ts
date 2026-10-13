@@ -147,6 +147,17 @@ export const AutoreloadOut = z
 /** Set the same shape you read back. */
 export const AutoreloadIn = AutoreloadOut;
 
+/** Billing alerts. When a usage charge leaves the balance at or below
+ *  `low_balance_cents` (and auto-reload didn't refill it), the org's owners and
+ *  admins get one email and a `credit.low` event is recorded; the next credit re-arms
+ *  it. Integer minor units of the billing currency; 0 turns the warning off. */
+export const AlertsOut = z
+	.object({ low_balance_cents: z.number().int() })
+	.meta({ id: "AlertsOut" });
+
+/** Set the same shape you read back. */
+export const AlertsIn = AlertsOut;
+
 /** `amount_cents` is optional — it defaults to the configured auto-reload amount. */
 export const ReloadIn = z
 	.object({ amount_cents: z.number().int().optional() })
@@ -166,3 +177,4 @@ export type ICOrgUsage = z.infer<typeof OrgUsageOut>;
 export type ICOrgUsageProject = z.infer<typeof OrgUsageProject>;
 export type ICOrgUsageSeries = z.infer<typeof OrgUsageSeriesOut>;
 export type ICAutoreload = z.infer<typeof AutoreloadOut>;
+export type ICAlerts = z.infer<typeof AlertsOut>;

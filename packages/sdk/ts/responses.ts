@@ -52,6 +52,7 @@ export type {
 } from "./zod/agents.js";
 export type { ICApproval } from "./zod/approvals.js";
 export type {
+	ICAlerts,
 	ICAutoreload,
 	ICBalance,
 	ICLedgerEntry,

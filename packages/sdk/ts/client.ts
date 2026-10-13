@@ -30,6 +30,7 @@ import type {
 	ICAgentVersion,
 	ICApproval,
 	ICAuthorizeRequest,
+	ICAlerts,
 	ICAutoreload,
 	ICBalance,
 	ICBudget,
@@ -95,6 +96,7 @@ import type {
 	UiResourceIn,
 } from "./zod/agents.js";
 import type {
+	AlertsIn,
 	AutoreloadIn,
 	CheckoutIn,
 	CheckoutOut,
@@ -1680,6 +1682,16 @@ export class IngramCloud {
 					),
 				put: (body: z.input<typeof AutoreloadIn>, opts?: RequestOptions) =>
 					this.json<ICAutoreload>("PUT", "/organization/billing/autoreload", {
+						...opts,
+						body,
+					}),
+			},
+			/** The low-balance warning threshold (`low_balance_cents`, 0 = off). */
+			alerts: {
+				get: (opts?: RequestOptions) =>
+					this.json<ICAlerts>("GET", "/organization/billing/alerts", opts),
+				put: (body: z.input<typeof AlertsIn>, opts?: RequestOptions) =>
+					this.json<ICAlerts>("PUT", "/organization/billing/alerts", {
 						...opts,
 						body,
 					}),

@@ -35,6 +35,7 @@ export const EVENT_TYPES = [
 	"connection.required",
 	"unbound_message",
 	"budget.threshold",
+	"credit.low",
 	"credit.exhausted",
 	"deployment.bound",
 	"deployment.inbound",
