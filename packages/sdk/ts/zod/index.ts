@@ -19,6 +19,7 @@ export * from "./connections.js";
 export * from "./conversations.js";
 export * from "./deployments.js";
 export * from "./customers.js";
+export * from "./decisions.js";
 export * from "./discord.js";
 export * from "./evaluate.js";
 export * from "./email.js";

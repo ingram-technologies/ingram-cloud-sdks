@@ -41,6 +41,7 @@ import type {
 	ICConversationItem,
 	ICConversationList,
 	ICCustomer,
+	ICDecision,
 	ICDeployment,
 	ICDeploymentCreated,
 	ICDiscordApp,
@@ -123,6 +124,7 @@ import type {
 	ConversationUpdate,
 } from "./zod/conversations.js";
 import type { CustomerCreate, CustomerPatch } from "./zod/customers.js";
+import type { DecisionsIn } from "./zod/decisions.js";
 import type { DeploymentIn, DeploymentPatch } from "./zod/deployments.js";
 import type { DiscordAppIn } from "./zod/discord.js";
 import type { EmailConfigIn } from "./zod/email.js";
@@ -1052,6 +1054,16 @@ export class IngramCloud {
 			body: { input: string | string[]; model?: string },
 			opts?: RequestOptions,
 		) => this.json<ICEmbeddingList>("POST", "/embeddings", { ...opts, body }),
+	};
+
+	// ── Decisions ───────────────────────────────────────────────────────────
+
+	/** Typed questions about one input on a classifier model, on OpenAI's
+	 *  Decisions API wire. Tenant compute: no smith, nothing stored. Answers
+	 *  come back in question order. */
+	readonly decisions = {
+		create: (body: z.input<typeof DecisionsIn>, opts?: RequestOptions) =>
+			this.json<ICDecision>("POST", "/decisions", { ...opts, body }),
 	};
 
 	// ── Observability ───────────────────────────────────────────────────────
