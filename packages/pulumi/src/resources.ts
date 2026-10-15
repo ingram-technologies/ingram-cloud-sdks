@@ -1434,7 +1434,13 @@ const telegramProvider = makePutResource<TelegramInputs>({
 		botId: res.bot_id,
 		webhookUrl: res.webhook_url,
 	}),
-	diff: { scalarKeys: ["botToken", "token", "baseUrl"] },
+	// The token is write-only, so refresh can only see whether a bot is set at
+	// all. An unconfigured tenant reads back as a missing botToken, which diffs
+	// and makes the next `up` PUT it again instead of reporting a clean state.
+	readProps: (_i, res) => (res.configured ? {} : { botToken: undefined }),
+	// A fixed-path singleton: create-before-delete would PUT the new config and
+	// then DELETE the same path, leaving the tenant with no bot.
+	diff: { scalarKeys: ["botToken", "token", "baseUrl"], deleteBeforeReplace: true },
 });
 
 export interface IcTelegramBotArgs {
@@ -1657,6 +1663,9 @@ const emailProvider = makePutResource<EmailInputs>({
 		inboundUrl: res.inbound_url,
 		configured: res.configured,
 	}),
+	// Same refresh rule as Telegram: the API token is write-only, so an
+	// unconfigured tenant reads back as a missing token and the next `up` re-PUTs.
+	readProps: (_i, res) => (res.configured ? {} : { cloudflareApiToken: undefined }),
 	// inboundSecret excluded — IC may generate it, so it's an output, not drift.
 	diff: {
 		scalarKeys: [
@@ -1667,6 +1676,8 @@ const emailProvider = makePutResource<EmailInputs>({
 			"token",
 			"baseUrl",
 		],
+		// Fixed-path singleton, see the Telegram provider.
+		deleteBeforeReplace: true,
 	},
 });
 

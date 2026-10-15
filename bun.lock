@@ -72,7 +72,7 @@
     },
     "packages/pulumi": {
       "name": "@ingram-cloud/pulumi",
-      "version": "3.0.0",
+      "version": "3.0.1",
       "devDependencies": {
         "@pulumi/pulumi": "^3.260.0",
       },
