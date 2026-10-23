@@ -1829,15 +1829,20 @@ interface ModelKeyInputs {
 	provider: string;
 	apiKey: string;
 	providerBaseUrl?: string;
+	workspaceId?: string;
 }
 
 const modelKeyProvider = makePutResource<ModelKeyInputs>({
 	path: (i) => `/v1/tenant/model_keys/${encodeURIComponent(i.provider)}`,
 	id: (i) => i.provider,
-	body: (i) => ({ api_key: i.apiKey, base_url: i.providerBaseUrl ?? null }),
+	body: (i) => ({
+		api_key: i.apiKey,
+		base_url: i.providerBaseUrl ?? null,
+		workspace_id: i.workspaceId ?? null,
+	}),
 	diff: {
 		replaceKeys: ["provider"],
-		scalarKeys: ["apiKey", "providerBaseUrl", "token", "baseUrl"],
+		scalarKeys: ["apiKey", "providerBaseUrl", "workspaceId", "token", "baseUrl"],
 		deleteBeforeReplace: true,
 	},
 });
@@ -1845,11 +1850,14 @@ const modelKeyProvider = makePutResource<ModelKeyInputs>({
 export interface IcModelKeyArgs {
 	baseUrl: pulumi.Input<string>;
 	token: pulumi.Input<string>;
-	/** Provider id, e.g. `openai`, `anthropic`. */
+	/** Provider id, e.g. `openai`, `anthropic`, `cloudflare`. */
 	provider: pulumi.Input<string>;
 	apiKey: pulumi.Input<string>;
 	/** Optional override base URL (OpenAI-compatible backends). */
 	providerBaseUrl?: pulumi.Input<string>;
+	/** Anthropic: the workspace id an identity-linked key bills to. Cloudflare:
+	 *  the account id, required. */
+	workspaceId?: pulumi.Input<string>;
 }
 
 export class IcModelKey extends pulumi.dynamic.Resource {
@@ -1861,7 +1869,7 @@ export class IcModelKey extends pulumi.dynamic.Resource {
 		super(
 			modelKeyProvider,
 			name,
-			{ providerBaseUrl: undefined, ...args },
+			{ providerBaseUrl: undefined, workspaceId: undefined, ...args },
 			{ ...opts, additionalSecretOutputs: ["token", "apiKey"] },
 		);
 	}
