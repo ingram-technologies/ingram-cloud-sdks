@@ -48,6 +48,7 @@ import type {
 	ICEmailConfig,
 	ICEmbeddingList,
 	ICEvent,
+	ICExtraction,
 	ICFile,
 	ICFileList,
 	ICInboundEvent,
@@ -128,6 +129,7 @@ import type { DecisionsIn } from "./zod/decisions.js";
 import type { DeploymentIn, DeploymentPatch } from "./zod/deployments.js";
 import type { DiscordAppIn } from "./zod/discord.js";
 import type { EmailConfigIn } from "./zod/email.js";
+import type { ExtractIn } from "./zod/extract.js";
 import type { McpServerIn } from "./zod/mcp.js";
 import type { RecallBody, WorkingMemorySet } from "./zod/memories.js";
 import type {
@@ -1064,6 +1066,14 @@ export class IngramCloud {
 	readonly decisions = {
 		create: (body: z.input<typeof DecisionsIn>, opts?: RequestOptions) =>
 			this.json<ICDecision>("POST", "/decisions", { ...opts, body }),
+	};
+
+	/** `POST /v1/extract`: typed values read, computed, estimated or forecast
+	 *  from text and images by an extraction model. Tenant compute: no smith,
+	 *  nothing stored. One answer per field, under the field's name. */
+	readonly extract = {
+		create: (body: z.input<typeof ExtractIn>, opts?: RequestOptions) =>
+			this.json<ICExtraction>("POST", "/extract", { ...opts, body }),
 	};
 
 	// ── Observability ───────────────────────────────────────────────────────
