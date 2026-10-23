@@ -230,6 +230,12 @@ const hook = new ic.IcWebhook("acme-events", {
 export const webhookSigningSecret = hook.secret; // whsec_… (create-only secret output)
 
 new ic.IcModelKey("anthropic", { ...conn, provider: "anthropic", apiKey });
+new ic.IcModelKey("cloudflare", {
+	...conn,
+	provider: "cloudflare",
+	apiKey: cloudflareToken,
+	workspaceId: cloudflareAccountId,
+});
 ```
 
 `IcWebhook.secret` is the `whsec_…` signing secret the API returns once. It is a
