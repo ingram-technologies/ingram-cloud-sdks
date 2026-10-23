@@ -22,6 +22,7 @@ export * from "./customers.js";
 export * from "./decisions.js";
 export * from "./discord.js";
 export * from "./evaluate.js";
+export * from "./extract.js";
 export * from "./email.js";
 export * from "./files.js";
 export * from "./mcp.js";
