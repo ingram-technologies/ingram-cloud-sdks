@@ -227,8 +227,9 @@ export const ModelsListOut = z
 	.meta({ id: "ModelsListOut" });
 
 /** A BYOK model key — the `api_key` is NEVER echoed, only its presence.
- *  `workspace_id` is Anthropic's `anthropic-workspace-id`: required by an
- *  identity-linked (multi-workspace) key, implicit in a workspace-scoped one. */
+ *  `workspace_id` is Anthropic's `anthropic-workspace-id` (required by an
+ *  identity-linked key, implicit in a workspace-scoped one) or the Cloudflare
+ *  account id (required). */
 export const ModelKeyOut = z
 	.object({
 		provider: z.string(),

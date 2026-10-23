@@ -50,7 +50,8 @@ const smith = await ic.smiths.create({ external_id: "user-42" });
 The OpenAPI document is served by the API at `/openapi.json`, emitted from these
 schemas.
 
-The client covers the management plane only. Chat goes through the
+The client covers the management plane, plus the two tenant-compute calls
+`decisions.create` and `extract.create`. Chat goes through the
 OpenAI-compatible surface: use `@ingram-cloud/ai-sdk` and the standard
 `@ai-sdk/*` types. The native run stream is exposed raw: `smiths.runs.stream`
 returns the SSE `Response` unconsumed.
