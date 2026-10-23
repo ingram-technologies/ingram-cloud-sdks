@@ -76,6 +76,7 @@ export type {
 } from "./zod/deployments.js";
 export type { ICDecision, ICDecisionAnswer } from "./zod/decisions.js";
 export type { ICEvaluation } from "./zod/evaluate.js";
+export type { ICExtraction } from "./zod/extract.js";
 export type { ICDiscordApp } from "./zod/discord.js";
 export type { ICEmailConfig } from "./zod/email.js";
 export type { ICFile, ICFileList } from "./zod/files.js";
