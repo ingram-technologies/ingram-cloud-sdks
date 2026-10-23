@@ -6,7 +6,7 @@ from one workspace. MIT.
 | Package                                   | Version | What it is                                                                                            |
 | ----------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
 | [`@ingram-cloud/sdk`](packages/sdk)       | 2.5.0   | The API wire contract: Zod schemas, response and event types, and a typed management client.          |
-| [`@ingram-cloud/ai-sdk`](packages/ai-sdk) | 3.0.0   | Run a smith from the Vercel AI SDK: a Responses provider plus identity, memory and approval helpers.  |
+| [`@ingram-cloud/ai-sdk`](packages/ai-sdk) | 3.0.1   | Run a smith from the Vercel AI SDK: a Responses provider plus identity, memory and approval helpers.  |
 | [`@ingram-cloud/eve`](packages/eve)       | 3.0.0   | Run a smith as an [eve](https://vercel.com/eve) agent's model; attach hosted tools over MCP.          |
 | [`@ingram-cloud/flue`](packages/flue)     | 2.2.0   | Register a smith as a [Flue](https://flueframework.com) model provider; attach hosted tools over MCP. |
 | [`@ingram-cloud/pulumi`](packages/pulumi) | 3.0.1   | Pulumi resources for agents, MCP servers, channels, webhooks and model keys.                          |
