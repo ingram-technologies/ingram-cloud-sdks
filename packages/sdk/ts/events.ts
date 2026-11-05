@@ -82,6 +82,7 @@ export const STREAM_EVENTS = [
 	"message.delta",
 	"tool.executing",
 	"tool.completed",
+	"tool.requested",
 	"run.paused",
 	"approval.required",
 	"run.completed",
