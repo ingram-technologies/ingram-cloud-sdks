@@ -51,7 +51,7 @@ ic chat --smith user_42
 
 Starts an interactive REPL against that smith: streamed replies, an
 approve/reject prompt when a run pauses for approval, Ctrl-C to cancel a live
-turn. Pass the message as an argument instead of `--smith`'s prompt for a
+turn and return to the prompt. Pass the message as an argument instead of `--smith`'s prompt for a
 one-shot, scriptable turn:
 
 ```sh

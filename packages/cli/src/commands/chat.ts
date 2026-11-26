@@ -404,7 +404,6 @@ export function chatCommand(apiVersion: string): Command<CommandContext> {
 				});
 				let live: { sid: string; rid: string } | null = null;
 				let lastRunId: string | null = null;
-				let sigints = 0;
 				// rl.close() restores the terminal's raw mode before exit — skipping
 				// it leaves the parent shell reading a raw, no-echo tty until the
 				// user runs `stty sane`.
@@ -412,20 +411,23 @@ export function chatCommand(apiVersion: string): Command<CommandContext> {
 					rl.close();
 					process.exit(code);
 				};
+				// Ctrl-C during a turn cancels it and returns to the prompt; at the
+				// prompt, or a second time while the cancel lands, it exits. A
+				// terminal readline holds the tty in raw mode, so Ctrl-C arrives as
+				// its SIGINT event, not the process's.
+				let cancelling = false;
 				const onSigint = () => {
-					sigints += 1;
-					if (sigints === 1 && live) {
+					if (!live || cancelling) exit(130);
+					else {
+						cancelling = true;
+						process.stderr.write("\n[cancelling]\n");
 						const target = live;
 						submitDecision(session, target.sid, target.rid, {
 							kind: "cancel",
-						})
-							.catch(() => {})
-							.finally(() => exit(130));
-						setTimeout(() => exit(130), 3000).unref();
-					} else {
-						exit(130);
+						}).catch(reportError);
 					}
 				};
+				rl.on("SIGINT", onSigint);
 				process.on("SIGINT", onSigint);
 
 				if (threadId) process.stderr.write(`Thread: ${threadId}\n`);
@@ -462,6 +464,7 @@ export function chatCommand(apiVersion: string): Command<CommandContext> {
 							},
 						);
 						live = null;
+						cancelling = false;
 						threadId = newThread;
 						if (!hadThread && threadId)
 							process.stderr.write(`Thread: ${threadId}\n`);
@@ -489,6 +492,7 @@ export function chatCommand(apiVersion: string): Command<CommandContext> {
 						}
 					} catch (turnError) {
 						live = null;
+						cancelling = false;
 						reportError(turnError);
 					}
 					rl.prompt();
@@ -547,8 +551,8 @@ export function chatCommand(apiVersion: string): Command<CommandContext> {
 				"Starts a run per line, streamed. An approval prompts approve/reject " +
 				"(and, on an elicitation, each of its fields), then resumes via " +
 				"/submit — which never streams, so the resumed reply prints once it " +
-				"lands. Ctrl-C cancels the live run and exits; a second Ctrl-C exits " +
-				"at once.",
+				"lands. Ctrl-C cancels the live run and returns to the prompt; at the " +
+				"prompt, or pressed again while the cancel lands, it exits.",
 		},
 	});
 }
