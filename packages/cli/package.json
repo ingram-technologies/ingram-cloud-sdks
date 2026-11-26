@@ -1,6 +1,6 @@
 {
 	"name": "@ingram-cloud/cli",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "The Ingram Cloud command line: every /v1 operation as a command, browser sign-in, and a terminal chat with a smith.",
 	"keywords": [
 		"agents",
